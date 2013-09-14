@@ -1,17 +1,4 @@
-    <% if @user.errors.full_messages.size > 0 %>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="alert alert-dismissable alert-danger">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <ul>
-              <% @user.errors.full_messages.each do |error| %>
-                <li><%= error %></li>
-              <% end %>
-            </ul>
-          </div>
-        </div>
-      </div>
-    <% end %>
+  <%= render 'shared/errors', locals: { object: @user } %>
 
     <p>
       Sign into the Contestrus system below.

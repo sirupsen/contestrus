@@ -1,0 +1,14 @@
+<% if @record && @record.errors.full_messages.size > 0 %>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="alert alert-dismissable alert-danger">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <ul>
+          <% @record.errors.full_messages.each do |error| %>
+            <li><%= error %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+<% end %>
