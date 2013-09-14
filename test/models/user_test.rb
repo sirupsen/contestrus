@@ -22,6 +22,12 @@ class UserTest < ActiveSupport::TestCase
     assert_invalid user
   end
 
+  test "validates uniqueness of a username" do
+    first = User.first
+    user = User.new(valid_params.merge(username: first.username))
+    assert_invalid user
+  end
+
   private
   def valid_params
     {
