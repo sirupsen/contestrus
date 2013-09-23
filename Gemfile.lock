@@ -1,4 +1,12 @@
 GIT
+  remote: git@github.com:Sirupsen/localjob.git
+  revision: c7de2e688730c3d3e4be433a96ca9d833705dc1b
+  specs:
+    localjob (0.1.0)
+      SysVIPC
+      thor (= 0.18.1)
+
+GIT
   remote: https://github.com/gregbell/active_admin.git
   revision: ac4918ef99cf0272eb5f744b7e3f3fc7cde5811f
   branch: rails4
@@ -106,9 +114,6 @@ GEM
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     libv8 (3.16.14.3)
-    localjob (0.1.0)
-      SysVIPC
-      thor (= 0.18.1)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -227,7 +232,7 @@ DEPENDENCIES
   foreman
   jbuilder (~> 1.2)
   jquery-rails
-  localjob
+  localjob!
   poltergeist
   pry
   rails (= 4.0.0)

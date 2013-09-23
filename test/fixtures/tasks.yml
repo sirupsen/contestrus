@@ -4,4 +4,8 @@ mega_inversions:
   competition: open
   name: "Mega Inversions"
   body: "Number of triples for which <i>a_i > a_j > a_k</i> and <i>i < j < k</i>."
-  type: 
+
+hello_world: 
+  competition: open
+  name: "Hello World"
+  body: "Print hello world."
