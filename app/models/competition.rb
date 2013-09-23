@@ -3,4 +3,6 @@ class Competition < ActiveRecord::Base
 
   validates :start_at, presence: true, if: :end_at
   validates :end_at, presence: true, if: :start_at
+
+  has_many :tasks
 end

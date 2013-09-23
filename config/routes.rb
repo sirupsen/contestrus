@@ -4,7 +4,7 @@ Contestrus::Application.routes.draw do
 
   root 'session#new'
   resources :sessions, controller: 'session'
-  resources :competitions
+  resources :competitions, :tasks
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
