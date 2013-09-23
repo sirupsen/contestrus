@@ -50,6 +50,17 @@
           </div>
         <% end %>
 
+        <% if flash[:notice] %>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="alert alert-dismissable alert-notice">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <%= flash[:notice] %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
         <%= yield %>
       </div>
     </div>

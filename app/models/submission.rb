@@ -4,6 +4,8 @@ class Submission < ActiveRecord::Base
 
   has_many :evaluations
 
+  validates :source, presence: true
+
   after_create :queue_evaluation
 
   def queue_evaluation

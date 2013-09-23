@@ -1,10 +1,15 @@
 Contestrus::Application.routes.draw do
+  get "submissions/create"
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
   root 'session#new'
   resources :sessions, controller: 'session'
-  resources :competitions, :tasks
+  resources :competitions
+
+  resources :tasks do
+    resources :submissions
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

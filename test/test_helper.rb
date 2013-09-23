@@ -17,8 +17,8 @@ class ActiveSupport::TestCase
   end
 end
 
-require 'capybara/poltergeist'
-Capybara.current_driver = :poltergeist
+# require 'capybara/poltergeist'
+# Capybara.current_driver = :poltergeist
 
 class ActionDispatch::IntegrationTest
   include Capybara::DSL
@@ -32,5 +32,11 @@ class ActionDispatch::IntegrationTest
     click_button 'Sign in'
 
     user
+  end
+
+  private
+  def work_off_jobs
+    job = BackgroundJob.shift
+    Localjob::Worker.new(queue: ContestrusQueueName, logger: Logger.new("/dev/null")).process(job)
   end
 end

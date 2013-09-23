@@ -1,2 +1,24 @@
 <h2><%= @task.name %></h2>
 <p><%= raw @task.body %></p>
+
+<ul>
+  <% @submissions.each do |submission| %>
+    <li>
+      <% submission.evaluations.each do |evaluation| %>
+        <ul>
+          <li>Passed: <%= evaluation.passed? %></li>
+          <li><%=raw evaluation.body %></li>
+        </ul>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<%= form_for @submission, url: task_submissions_path(@task.id), method: :post do |f| %>
+  <%= f.hidden_field :task_id, value: @task.id %>
+
+  <%= f.label :source %>
+  <%= f.text_field :source %>
+
+  <%= f.button "Submit" %>
+<% end %>
