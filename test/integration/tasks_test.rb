@@ -89,4 +89,17 @@ class TasksIntegrationTest < ActionDispatch::IntegrationTest
 
     assert page.has_content?("Expected: \"Hello World")
   end
+
+  test "submit answer and status is pending" do
+    user = sign_in
+    click_link competitions(:open).name
+    click_link tasks(:hello_world).name
+
+    fill_in "Source", with: "puts 'Hello'" 
+    click_button "Submit"
+
+    visit task_path(tasks(:hello_world))
+
+    assert page.has_content?("Pending..."), "Should see pending status"
+  end
 end

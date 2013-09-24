@@ -3,7 +3,7 @@
 
 <ul>
   <% @submissions.each do |submission| %>
-    <li>
+    <li> <%= "Pending..." if submission.evaluations.empty? %>
       <% submission.evaluations.each do |evaluation| %>
         <ul>
           <li><%= evaluation.passed? ? "√" : "✘" %></li>

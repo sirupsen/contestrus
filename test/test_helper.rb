@@ -38,7 +38,7 @@ class ActionDispatch::IntegrationTest
   teardown do
     begin
       BackgroundJob.destroy
-    rescue Errno::ENOENT
+    rescue Exception
     end
   end
 

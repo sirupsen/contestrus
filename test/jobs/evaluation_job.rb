@@ -8,11 +8,6 @@ class EvaluationJobTest < ActiveSupport::TestCase
       source: "puts 'Hello World'",
       lang: "ruby"
     )
-    @worker = Localjob::Worker.new(ContestrusQueueName, logger: Logger.new("/dev/null"))
-  end
-
-  teardown do
-    BackgroundJob.destroy
   end
 
   test "create new evaluation" do
@@ -49,11 +44,5 @@ class EvaluationJobTest < ActiveSupport::TestCase
       expected: "Hello World",
       passed: true
     }], @submission.evaluations.last.body)
-  end
-
-  private
-  def work_off_jobs
-    job = BackgroundJob.shift
-    @worker.process(job)
   end
 end
