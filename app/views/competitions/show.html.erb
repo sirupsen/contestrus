@@ -1,5 +1,8 @@
 <ul>
   <% @competition.tasks.each do |task| %>
-    <li><%= link_to task.name, task_path(task) %></li>
+    <li>
+      <%= link_to task.name, task_path(task) %>
+      <%= "√" if task.passed?(current_user) %>
+    </li>
   <% end %>
 </ul>

@@ -7,6 +7,13 @@ class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
   fixtures :all
 
+  teardown do
+    begin
+      BackgroundJob.destroy
+    rescue Errno::ENOENT
+    end
+  end
+
   def assert_invalid(record, message = nil)
     assert(!record.valid?, message || "Expected #{record} to be invalid.")
   end
@@ -15,6 +22,11 @@ class ActiveSupport::TestCase
     session[:user_id] = user.id
     user
   end
+
+  def work_off_jobs
+    job = BackgroundJob.shift
+    Localjob::Worker.new(queue: ContestrusQueueName, logger: Logger.new("/dev/null")).process(job)
+  end
 end
 
 # require 'capybara/poltergeist'
@@ -22,6 +34,13 @@ end
 
 class ActionDispatch::IntegrationTest
   include Capybara::DSL
+
+  teardown do
+    begin
+      BackgroundJob.destroy
+    rescue Errno::ENOENT
+    end
+  end
 
   def sign_in(user = users(:sirup), password = 'seekrit')
     visit root_path
@@ -34,7 +53,6 @@ class ActionDispatch::IntegrationTest
     user
   end
 
-  private
   def work_off_jobs
     job = BackgroundJob.shift
     Localjob::Worker.new(queue: ContestrusQueueName, logger: Logger.new("/dev/null")).process(job)

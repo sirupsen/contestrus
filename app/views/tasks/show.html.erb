@@ -6,8 +6,17 @@
     <li>
       <% submission.evaluations.each do |evaluation| %>
         <ul>
-          <li>Passed: <%= evaluation.passed? %></li>
-          <li><%=raw evaluation.body %></li>
+          <li><%= evaluation.passed? ? "√" : "✘" %></li>
+
+          <% evaluation.body.each_with_index do |test, i| %>
+            <li>
+              <ul>
+                <li>#<%= i %>: <%= test[:passed] ? "√" : "✘" %></li>
+                <li>Program: "<%= test[:actual].gsub("\n", "<br/>") %>"</li>
+                <li>Expected: "<%= test[:expected] %>"</li>
+              </ul>
+            </li>
+          <% end %>
         </ul>
       <% end %>
     </li>
