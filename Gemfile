@@ -18,4 +18,5 @@ gem 'capybara'
 gem 'poltergeist'
 gem 'pry'
 gem 'therubyracer'
-gem 'localjob', git: "git@github.com:Sirupsen/localjob.git"
+gem 'localjob', "0.1.1"
+gem "draper"
