@@ -25,11 +25,8 @@ class EvaluationJobTest < ActiveSupport::TestCase
 
   test "incorrect code passes hello world task" do
     @submission.update_attribute :source, "puts 'omg'"
-    @submission.save!
 
-    BackgroundJob << EvaluationJob.new(@submission.id)
-    work_off_jobs # before_create hook
-    work_off_jobs # new one
+    work_off_jobs
 
     evaluation = @submission.evaluations.last
     refute evaluation.passed?, "Evaluation must not pass"

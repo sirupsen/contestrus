@@ -2,15 +2,15 @@ require 'tempfile'
 
 class EvaluationJob
   def initialize(submission_id)
-    @submission = Submission.find(submission_id).reload
+    @submission_id = submission_id
   end
 
   def perform
     program = Tempfile.new('submission')
-    program.write(@submission.source)
+    program.write(submission.source)
     program.flush
 
-    results = @submission.task.test_cases.map { |test_case|
+    results = submission.task.test_cases.map { |test_case|
       input = Tempfile.new('test_case_input')
       input.write(test_case.input)
       input.flush
@@ -25,11 +25,16 @@ class EvaluationJob
       }
     }
 
-    @submission.evaluations.create(
+    submission.evaluations.create(
       passed: results.all? { |e| e[:passed] },
       body: results
     )
 
     program.unlink
+  end
+
+  private
+  def submission
+    Submission.find(@submission_id)
   end
 end

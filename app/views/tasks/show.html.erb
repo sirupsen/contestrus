@@ -31,7 +31,7 @@
   <tbody>
     <% @submissions.each do |submission| %>
       <tr class="<%= submission_class(submission) %>"> 
-        <td><%= link_to "Submission #{submission.id}", task_submission_path(@task, submission) %></td>
+        <td><%= submission.id %></td>
         <td><%= submission.created_at.to_s %></td>
         <td><%= submission_status submission %></td>
       </tr>

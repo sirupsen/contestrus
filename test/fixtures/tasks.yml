@@ -9,3 +9,6 @@ hello_world:
   competition: open
   name: "Hello World"
   body: "Print hello world."
+  restrictions: |
+    ---
+    :time: 0.5

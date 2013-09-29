@@ -29,7 +29,7 @@ class CompetitionsIntegrationTest < ActionDispatch::IntegrationTest
 
     click_link tasks(:hello_world).name
 
-    fill_in "Source", with: "puts 'Hello World'"
+    fill_in "Submission", with: "puts 'Hello World'"
     click_button "Submit"
 
     work_off_jobs
