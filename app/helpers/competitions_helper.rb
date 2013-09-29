@@ -2,10 +2,10 @@ module CompetitionsHelper
   def task_status_class(task)
     if task.passed?(current_user)
       "success"
-    elsif current_user.submissions.where(task_id: task.id) == 0
+    elsif current_user.submissions.where(task_id: task.id).empty?
       "info"
     else
-      "error"
+      "warning"
     end
   end
 

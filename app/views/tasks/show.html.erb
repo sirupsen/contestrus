@@ -1,5 +1,5 @@
 <h2><%= @task.name %></h2>
-<p><%= raw @task.body %></p>
+<p><%= raw Markdown.render(@task.body) %></p>
 
 <%= form_for @submission, url: task_submissions_path(@task.id), method: :post do |f| %>
   <%= f.hidden_field :task_id, value: @task.id %>
@@ -16,45 +16,47 @@
   </div>
 <% end %>
 
-<table class="table table-hover results">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Time</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @submissions.each do |submission| %>
-      <tr class="<%= submission_class(submission) %> accordion-toggle" data-toggle="collapse" data-target="#evaluations-<%= submission.id %>">
-        <td><%= submission.id %></td>
-        <td><%= submission.created_at.to_s %></td>
-        <td><%= submission_status submission %></td>
-      </tr>
+<% unless @submissions.empty? %>
+  <table class="table table-hover results">
+    <thead>
       <tr>
-        <td colspan="6" style="padding: 0 !important">
-          <div class="accordian-body collapse" id="evaluations-<%= submission.id %>"> 
-            <table class="table table-condensed evaluation">
-              <thead>
-                <th>#</th>
-                <th>Output</th>
-                <th>Expected</th>
-              </thead>
-              <tbody>
-                <% unless pending?(submission) %>
-                  <% submission.evaluations.last.body.each do |test| %>
-                    <tr class="<%= submission_class(submission) %>">
-                      <td><%= test[:test_case_id] %></td>
-                      <td><%= test[:actual] %></td>
-                      <td><%= test[:expected] %></td>
-                    </tr>
-                  <% end %>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
-        </td>
+        <th>#</th>
+        <th>Time</th>
+        <th>Status</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @submissions.each do |submission| %>
+        <tr class="<%= submission_class(submission) %> accordion-toggle" data-toggle="collapse" data-target="#evaluations-<%= submission.id %>">
+          <td><%= submission.id %></td>
+          <td><%= submission.created_at.to_s %></td>
+          <td><%= submission_status submission %></td>
+        </tr>
+        <tr>
+          <td colspan="6" style="padding: 0 !important">
+            <div class="accordian-body collapse" id="evaluations-<%= submission.id %>"> 
+              <table class="table table-condensed evaluation">
+                <thead>
+                  <th>#</th>
+                  <th>Output</th>
+                  <th>Expected</th>
+                </thead>
+                <tbody>
+                  <% unless pending?(submission) %>
+                    <% submission.evaluations.last.body.each do |test| %>
+                      <tr class="<%= submission_class(submission) %>">
+                        <td><%= test[:test_case_id] %></td>
+                        <td><%= test[:actual] %></td>
+                        <td><%= test[:expected] %></td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
