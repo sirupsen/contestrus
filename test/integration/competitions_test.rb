@@ -22,10 +22,11 @@ class CompetitionsIntegrationTest < ActionDispatch::IntegrationTest
       "Page doesn't have task #{task.name}"
   end
 
-  test "indicate completed task with a checkmark" do
+  test "indicate completed task" do
     user = sign_in
     click_link competitions(:open).name
-    refute page.has_content?("√")
+
+    page.assert_no_selector("table tr.success")
 
     click_link tasks(:hello_world).name
 
@@ -34,8 +35,8 @@ class CompetitionsIntegrationTest < ActionDispatch::IntegrationTest
 
     work_off_jobs
 
-    visit competition_path(competitions(:open))
-    assert page.has_content?("√"),
-      "Competition page doesn't indicate completed task."
+    click_link "Competitions"
+
+    page.assert_selector("table tr.success")
   end
 end

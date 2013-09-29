@@ -16,7 +16,7 @@
   </div>
 <% end %>
 
-<table class="table table-hover table-condensed">
+<table class="table table-hover results">
   <thead>
     <tr>
       <th>#</th>
@@ -26,10 +26,34 @@
   </thead>
   <tbody>
     <% @submissions.each do |submission| %>
-      <tr class="<%= submission_class(submission) %>"> 
+      <tr class="<%= submission_class(submission) %> accordion-toggle" data-toggle="collapse" data-target="#evaluations-<%= submission.id %>">
         <td><%= submission.id %></td>
         <td><%= submission.created_at.to_s %></td>
         <td><%= submission_status submission %></td>
+      </tr>
+      <tr>
+        <td colspan="6" style="padding: 0 !important">
+          <div class="accordian-body collapse" id="evaluations-<%= submission.id %>"> 
+            <table class="table table-condensed evaluation">
+              <thead>
+                <th>#</th>
+                <th>Output</th>
+                <th>Expected</th>
+              </thead>
+              <tbody>
+                <% unless pending?(submission) %>
+                  <% submission.evaluations.last.body.each do |test| %>
+                    <tr class="<%= submission_class(submission) %>">
+                      <td><%= test[:test_case_id] %></td>
+                      <td><%= test[:actual] %></td>
+                      <td><%= test[:expected] %></td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </td>
       </tr>
     <% end %>
   </tbody>

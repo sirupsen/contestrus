@@ -71,3 +71,9 @@ body {
 .uneditable-input {
   cursor: pointer !important;
 }
+
+.evaluation {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  border: 0px 2px 2px 2px solid black;
+}

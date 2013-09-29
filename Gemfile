@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.0.0'
 gem 'thin'
 gem 'foreman'
-gem 'activeadmin', git: "https://github.com/gregbell/active_admin.git", branch: "rails4"
+gem 'activeadmin', git: "https://github.com/gregbell/active_admin.git", branch: "master"
 gem 'sqlite3'
 gem 'sass-rails', '~> 4.0.0'
 gem 'resque'
