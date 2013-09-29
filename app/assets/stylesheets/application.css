@@ -67,3 +67,7 @@ body {
 #submission_source {
   display: none;
 }
+
+.uneditable-input {
+  cursor: pointer !important;
+}

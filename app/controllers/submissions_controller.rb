@@ -6,10 +6,10 @@ class SubmissionsController < ApplicationController
     )
 
     if submission.save
-      flash[:notice] = "Submitted task!"
+      flash[:notice] = "Submitted solution!"
       redirect_to task_path(params[:task_id])
     else
-      flash[:error] = "Error submitting task"
+      flash[:error] = "Error submitting solution"
       redirect_to task_path(params[:task_id])
     end
   end
