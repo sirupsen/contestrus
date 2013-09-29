@@ -3,3 +3,7 @@
 sirup:
   username: sirup
   password_digest: "$2a$10$oTQoahqHtCo0rTCwhp0nZuQow19hJjAuH7h5CvlGg8cXfzh7Gyb9K" # seekrit
+
+bob:
+  username: bob
+  password_digest: "$2a$10$oTQoahqHtCo0rTCwhp0nZuQow19hJjAuH7h5CvlGg8cXfzh7Gyb9K" # seekrit

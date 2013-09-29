@@ -10,7 +10,7 @@ class TasksIntegrationTest < ActionDispatch::IntegrationTest
     assert page.has_content?("Number of triples")
   end
 
-  test "submit right answer to task and see checkmark" do
+  test "submit right answer to task and see it passed" do
     user = sign_in
     click_link competitions(:open).name
     click_link tasks(:hello_world).name
@@ -22,84 +22,19 @@ class TasksIntegrationTest < ActionDispatch::IntegrationTest
 
     visit task_path(tasks(:hello_world))
 
-    assert page.has_content?("√")
+    page.assert_selector("tbody > tr.success")
   end
 
-  test "submit right incorrect answer to task and see cross" do
+  test "submit answer and see status pending" do
     user = sign_in
     click_link competitions(:open).name
     click_link tasks(:hello_world).name
-
-    fill_in "Source", with: "puts 'Hello'" 
-    click_button "Submit"
-
-    work_off_jobs
-
-    visit task_path(tasks(:hello_world))
-
-    refute page.has_content?("√")
-    assert page.has_content?("✘")
-  end
-
-  test "submit incorrect and correct answer to task and see cross and checkmark" do
-    user = sign_in
-    click_link competitions(:open).name
-    click_link tasks(:hello_world).name
-
-    fill_in "Source", with: "puts 'Hello'" 
-    click_button "Submit"
-
-    visit task_path(tasks(:hello_world))
 
     fill_in "Source", with: "puts 'Hello World'" 
     click_button "Submit"
 
-    work_off_jobs
-    work_off_jobs
-
     visit task_path(tasks(:hello_world))
 
-    assert page.has_content?("√"), "Should show check for success submission"
-    assert page.has_content?("✘"), "Should show cross for incorrect submission"
-  end
-
-  test "submit answer and see evaluation" do
-    user = sign_in
-    click_link competitions(:open).name
-    click_link tasks(:hello_world).name
-
-    fill_in "Source", with: "puts 'Hello'" 
-    click_button "Submit"
-
-    visit task_path(tasks(:hello_world))
-
-    fill_in "Source", with: "puts 'Hello World'" 
-    click_button "Submit"
-
-    work_off_jobs
-    work_off_jobs
-
-    visit task_path(tasks(:hello_world))
-
-    assert page.has_content?("#0: ✘")
-    assert page.has_content?("Program: \"Hello\"")
-
-    assert page.has_content?("#0: √")
-    assert page.has_content?("Program: \"Hello World")
-
-    assert page.has_content?("Expected: \"Hello World")
-  end
-
-  test "submit answer and status is pending" do
-    user = sign_in
-    click_link competitions(:open).name
-    click_link tasks(:hello_world).name
-
-    fill_in "Source", with: "puts 'Hello'" 
-    click_button "Submit"
-
-    visit task_path(tasks(:hello_world))
-
-    assert page.has_content?("Pending..."), "Should see pending status"
+    page.assert_selector("tbody > tr.info")
   end
 end

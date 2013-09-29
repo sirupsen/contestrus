@@ -10,7 +10,7 @@
  *
  *= require_self
  *= require "bootstrap"
- *= require "bootstrap-theme"
+ *= require "bootstrap-responsive"
  */
 
 /* Space out content a bit */
@@ -51,4 +51,8 @@ body {
   background: #f7f7f7;
   padding: 50px 0px 30px 0px;
   border-radius: 6px;
+}
+
+.textarea-code {
+  width: 350px;
 }

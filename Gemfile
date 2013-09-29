@@ -13,7 +13,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 gem 'bcrypt-ruby', '~> 3.0.0'
-# gem 'debugger', group: [:development, :test]
+gem 'debugger', group: [:development, :test]
 gem 'capybara'
 gem 'poltergeist'
 gem 'pry'

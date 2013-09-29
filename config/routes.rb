@@ -1,4 +1,5 @@
 Contestrus::Application.routes.draw do
+  get "submissions/show"
   get "submissions/create"
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)

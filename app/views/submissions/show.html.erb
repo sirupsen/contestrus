@@ -1,0 +1,8 @@
+<h2>
+  Submission <%= @submission.id %>:
+  <% if @submission.passed? %>
+    Passed
+  <% else %>
+    Failed
+  <% end %>
+</h2>

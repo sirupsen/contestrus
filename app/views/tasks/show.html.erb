@@ -1,33 +1,40 @@
 <h2><%= @task.name %></h2>
 <p><%= raw @task.body %></p>
 
-<ul>
-  <% @submissions.each do |submission| %>
-    <li> <%= "Pending..." if submission.evaluations.empty? %>
-      <% submission.evaluations.each do |evaluation| %>
-        <ul>
-          <li><%= evaluation.passed? ? "√" : "✘" %></li>
-
-          <% evaluation.body.each_with_index do |test, i| %>
-            <li>
-              <ul>
-                <li>#<%= i %>: <%= test[:passed] ? "√" : "✘" %></li>
-                <li>Program: "<%= test[:actual].gsub("\n", "<br/>") %>"</li>
-                <li>Expected: "<%= test[:expected] %>"</li>
-              </ul>
-            </li>
-          <% end %>
-        </ul>
-      <% end %>
-    </li>
-  <% end %>
-</ul>
-
 <%= form_for @submission, url: task_submissions_path(@task.id), method: :post do |f| %>
   <%= f.hidden_field :task_id, value: @task.id %>
 
-  <%= f.label :source %>
-  <%= f.text_area :source %>
+  <div class="control-group">
+    <div class="control">
+      <%= f.label :source, "Submission", class: "control-label" %>
+      <div class="controls">
+        <%= f.text_area :source, rows: 10, class: "textarea-code" %>
+      </div>
+    </div>
+  </div>
 
-  <%= f.button "Submit" %>
+  <div class="control-group">
+    <div class="controls">
+      <%= f.button "Submit", class: "btn btn-primary" %>
+    </div>
+  </div>
 <% end %>
+
+<table class="table table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Time</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @submissions.each do |submission| %>
+      <tr class="<%= submission_class(submission) %>"> 
+        <td><%= link_to "Submission #{submission.id}", task_submission_path(@task, submission) %></td>
+        <td><%= submission.created_at.to_s %></td>
+        <td><%= submission_status submission %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -9,7 +9,7 @@ class ActiveSupport::TestCase
 
   teardown do
     begin
-      BackgroundJob.destroy
+    BackgroundJob.destroy
     rescue Errno::ENOENT
     end
   end
