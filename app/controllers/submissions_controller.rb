@@ -1,7 +1,7 @@
 class SubmissionsController < ApplicationController
   def create
     submission = current_user.submissions.build(
-      source: params[:submission][:source],
+      source: params[:submission][:source] && params[:submission][:source].read,
       task_id: params[:task_id]
     )
 

@@ -11,8 +11,9 @@ class SubmissionsControllerTest < ActionController::TestCase
   test "should create submission for a task" do
     user = sign_in
 
+    file = Rack::Test::UploadedFile.new(Rails.root + "test/data/submissions/hello_world.rb", "image/jpeg")
     assert_difference "user.submissions.count", +1 do
-      post :create, task_id: tasks(:hello_world).id, submission: { source: "puts 'Hello World'" }
+      post :create, task_id: tasks(:hello_world).id, submission: { source: file }
     end
 
     assert_not_nil flash[:notice]

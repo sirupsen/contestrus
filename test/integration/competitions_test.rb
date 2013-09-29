@@ -29,8 +29,8 @@ class CompetitionsIntegrationTest < ActionDispatch::IntegrationTest
 
     click_link tasks(:hello_world).name
 
-    fill_in "Submission", with: "puts 'Hello World'"
-    click_button "Submit"
+    attach_file "submission_source", Rails.root + "test/data/submissions/hello_world.rb"
+    click_button "Evaluate"
 
     work_off_jobs
 
