@@ -3,19 +3,15 @@
 
 <%= form_for @submission, url: task_submissions_path(@task.id), method: :post do |f| %>
   <%= f.hidden_field :task_id, value: @task.id %>
-
-  <div class="control-group">
-    <div class="control">
-      <%= f.label :source, "Submission", class: "control-label" %>
-      <div class="controls">
-        <%= f.text_area :source, rows: 10, class: "textarea-code" %>
-      </div>
-    </div>
-  </div>
-
   <div class="control-group">
     <div class="controls">
-      <%= f.button "Submit", class: "btn btn-primary" %>
+      <%= f.file_field :source %>
+
+      <div class="input-append">
+        <input class="browser" disabled id="pretty_file" class="input-large" type="text"/>
+        <a class="browser btn">Browse</a>
+        <%= f.button "Evaluate", class: "btn btn-primary" %>
+      </div>
     </div>
   </div>
 <% end %>

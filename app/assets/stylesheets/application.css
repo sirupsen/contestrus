@@ -56,3 +56,14 @@ body {
 .textarea-code {
   width: 350px;
 }
+
+.code-submission {
+  background: #f7f7f7;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  border-radius: 6px;
+}
+
+#submission_source {
+  display: none;
+}
