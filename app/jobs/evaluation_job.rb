@@ -1,4 +1,5 @@
 require 'tempfile'
+require 'evaluator'
 
 class EvaluationJob
   def initialize(submission_id)
@@ -6,35 +7,77 @@ class EvaluationJob
   end
 
   def perform
-    program = Tempfile.new('submission')
-    program.write(submission.source)
-    program.flush
+    results = []
 
-    results = submission.task.test_cases.map { |test_case|
-      input = Tempfile.new('test_case_input')
-      input.write(test_case.input)
-      input.flush
-
-      user_output = `ruby #{program.path} < #{input.path} 2>&1`
-
-      {
-        test_case_id: test_case.id,
-        actual: user_output.strip,
-        expected: test_case.output,
-        passed: user_output.strip == test_case.output.strip
+    unless evaluator.compile === true
+      results << {
+        status: "compilation failure",
+        output: evaluator.compile
       }
-    }
+    else
+      results = task.test_cases.map { |test| evaluate(test) }
+    end
 
     submission.evaluations.create(
-      passed: results.all? { |e| e[:passed] },
+      passed: results.all? { |e| e[:status] == "passed" },
       body: results
     )
 
-    program.unlink
+    evaluator.clean
+  end
+
+  def evaluate(test)
+    result = {id: test.id}
+
+    past = Time.now
+    output = run_test(test)
+
+    if output == :timeout
+      result[:status] = "timeout"
+      return result
+    end
+
+    result[:duration] = Time.now - past
+    result[:output]   = output.strip.split("\n").map { |line| line.strip }.join("\n")
+
+    unless result[:output] == test.output
+      result[:status] = "wrong answer"
+      return result
+    end
+
+    result[:status] = "passed"
+    result
+  end
+
+  def run_test(test)
+    output = Tempfile.new("output")
+
+    pid = Process.spawn("#{evaluator.command(stdin: test.input)} > #{output.path}", :pgroup => true)
+    begin
+      Timeout.timeout(task.restrictions[:time].to_f) do
+        Process.wait(pid)
+      end
+    rescue Timeout::Error
+      Process.kill("KILL", -Process.getpgid(pid))
+      return :timeout
+    end
+
+    buffer = output.read
+    output.unlink
+
+    buffer
   end
 
   private
   def submission
     Submission.find(@submission_id)
+  end
+
+  def evaluator
+    @evaluator ||= Evaluator::Languages[submission.language].new(submission.source)
+  end
+
+  def task
+    submission.task
   end
 end

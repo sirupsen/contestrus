@@ -16,4 +16,8 @@ class Submission < ActiveRecord::Base
   def passed?
     evaluations.all?(&:passed?)
   end
+
+  def language
+    @language ||= Linguist::Language.detect(self.path, self.source).name.downcase
+  end
 end

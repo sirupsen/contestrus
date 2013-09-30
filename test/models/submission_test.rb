@@ -25,4 +25,9 @@ class SubmissionTest < ActiveSupport::TestCase
 
     refute submission.passed?
   end
+
+  test "language should autodetect language" do
+    submission = Submission.create(user: @user, task: @task, source: "puts 'hello world'", path: "original.rb")
+    assert_equal "ruby", submission.language
+  end
 end

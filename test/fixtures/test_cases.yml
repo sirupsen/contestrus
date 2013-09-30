@@ -4,3 +4,8 @@ hello_world_test:
   input: ""
   output: "Hello World"
   task: hello_world
+
+sum_test:
+  input: "1 2"
+  output: "3"
+  task: sum

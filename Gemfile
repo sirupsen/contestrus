@@ -21,3 +21,4 @@ gem 'therubyracer'
 gem 'localjob', "0.1.1"
 gem "draper"
 gem "redcarpet"
+gem "github-linguist", require: "linguist"

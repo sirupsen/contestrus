@@ -38,6 +38,8 @@
               <table class="table table-condensed evaluation">
                 <thead>
                   <th>#</th>
+                  <th>Status</th>
+                  <th>Duration</th>
                   <th>Input</th>
                   <th>Output</th>
                   <th>Expected</th>
@@ -46,10 +48,12 @@
                   <% unless pending?(submission) %>
                     <% submission.evaluations.last.body.each do |test| %>
                       <tr class="<%= submission_class(submission) %>">
-                        <td><%= test[:test_case_id] %></td>
-                        <td><pre><%= ::TestCase.find_by_id(test[:test_case_id]).input %></pre></td>
-                        <td><pre><%= test[:actual] %></pre></td>
-                        <td><pre><%= test[:expected] %></pre></td>
+                        <td><%= test[:id] %></td>
+                        <td><%= test[:status].humanize %></td>
+                        <td><%= test[:duration] && "#{test[:duration].round(3)}s" %></td>
+                        <td><pre><%= ::TestCase.find(test[:id]).input %></pre></td>
+                        <td><pre><%= test[:output] %></pre></td>
+                        <td><pre><%= ::TestCase.find(test[:id]).output %></pre></td>
                       </tr>
                     <% end %>
                   <% end %>

@@ -11,4 +11,12 @@ hello_world:
   body: "Print hello world."
   restrictions: |
     ---
-    :time: 0.5
+    :time: 1.0
+
+sum: 
+  competition: open
+  name: "Sum"
+  body: "Sum two numbers."
+  restrictions: |
+    ---
+    :time: 1.0
