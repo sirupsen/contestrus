@@ -28,38 +28,53 @@
 
   <body>
 
-    <div class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li class="active"><%= link_to "Competitions", competitions_path %> </li>
-        </ul>
-        <h3 class="text-muted"><%= link_to "Contestrus", competitions_path %></h3>
-      </div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3 sidebar">
+          <ul class="nav nav-list">
+            <% Competition.all.each do |competition| %>
+              <li class="nav-header">
+                <%= link_to competition.name, competition_path(competition) %>
+              </li>
+              <% competition.tasks.each do |task| %>
+                <li>
+                  <%= link_to task_path(task) do %>
+                    <% if task.passed?(current_user) %>
+                      <span class="label label-success">Passed</span>
+                    <% end %>
+                    <%= task.name %>
+                  <% end %>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
 
-      <div class="content">
-        <% if flash[:error] %>
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="alert alert-dismissable alert-danger">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <%= flash[:error] %>
+        <div class="span9">
+          <% if flash[:error] %>
+            <div class="row-fluid">
+              <div class="span12">
+                <div class="alert alert-dismissable alert-danger">
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                  <%= flash[:error] %>
+                </div>
               </div>
             </div>
-          </div>
-        <% end %>
+          <% end %>
 
-        <% if flash[:notice] %>
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="alert alert-dismissable alert-notice">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <%= flash[:notice] %>
+          <% if flash[:notice] %>
+            <div class="row-fluid">
+              <div class="span12">
+                <div class="alert alert-dismissable alert-notice">
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                  <%= flash[:notice] %>
+                </div>
               </div>
             </div>
-          </div>
-        <% end %>
+          <% end %>
 
-        <%= yield %>
+          <%= yield %>
+        </div>
       </div>
     </div>
   </body>

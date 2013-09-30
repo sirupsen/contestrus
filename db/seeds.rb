@@ -1,19 +1,29 @@
 sirup = User.create(username: "sirup", password: "seekrit")
 
-competition = Competition.create(name: "Simon's Competition")
+punchball = Competition.create(name: "Punch Ball")
 
-hello_world_task_desc = <<-EOF
-Start your journey with a simple task. Print "Hello World" to stdout.
+sum = punchball.tasks.create do |task|
+  task.name = "Sum"
+  task.body = <<-EOF
+Alice wants to impress Bob with her math skills, unfortunately she dropped out
+of math to take up her passion of performance crocheting of trains. Help Alice by
+creating the engine for a new revolutionary application she can use from under the
+table when Bob gives her one of his evil math questions over candle dinner.
 
 ### Input
-
-This task features no input.
+Two numbers, a and b, which will fit in signed 64 bit integers.
 
 ### Output
+The sum of a and b.
+  EOF
+end
 
-Print "Hello World" to stdout. 
-EOF
-task = Task.create name: "Hello World", competition: competition, body: hello_world_task_desc
+sum.test_cases.create do |t|
+  t.input  = "1 2"
+  t.output = "3"
+end
 
-task.test_cases.create(input: "", output: "Hello World")
-task.test_cases.create(input: "", output: "Hello World")
+sum.test_cases.create do |t|
+  t.input  = "7 5"
+  t.output = "12"
+end

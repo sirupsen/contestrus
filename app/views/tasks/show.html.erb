@@ -21,7 +21,7 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>Time</th>
+        <th>Submission time</th>
         <th>Status</th>
       </tr>
     </thead>
@@ -29,7 +29,7 @@
       <% @submissions.each do |submission| %>
         <tr class="<%= submission_class(submission) %> accordion-toggle" data-toggle="collapse" data-target="#evaluations-<%= submission.id %>">
           <td><%= submission.id %></td>
-          <td><%= submission.created_at.to_s %></td>
+          <td><%= submission.created_at.to_formatted_s(:short) %></td>
           <td><%= submission_status submission %></td>
         </tr>
         <tr>
@@ -38,6 +38,7 @@
               <table class="table table-condensed evaluation">
                 <thead>
                   <th>#</th>
+                  <th>Input</th>
                   <th>Output</th>
                   <th>Expected</th>
                 </thead>
@@ -46,8 +47,9 @@
                     <% submission.evaluations.last.body.each do |test| %>
                       <tr class="<%= submission_class(submission) %>">
                         <td><%= test[:test_case_id] %></td>
-                        <td><%= test[:actual] %></td>
-                        <td><%= test[:expected] %></td>
+                        <td><pre><%= ::TestCase.find_by_id(test[:test_case_id]).input %></pre></td>
+                        <td><pre><%= test[:actual] %></pre></td>
+                        <td><pre><%= test[:expected] %></pre></td>
                       </tr>
                     <% end %>
                   <% end %>
