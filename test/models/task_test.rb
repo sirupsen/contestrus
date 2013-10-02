@@ -7,14 +7,14 @@ class TaskTest < ActiveSupport::TestCase
   end
 
   test "passed? with a user should return true with a succesful submission" do
-    Submission.create(task: @task, user: @user, source: "puts 'Hello World'")
+    Submission.create!(task: @task, user: @user, source: "puts 'Hello World'", path: "whatever.rb")
     work_off_jobs
 
     assert @task.passed?(@user)
   end
 
   test "passed? with a user should return false with no succesful submission" do
-    Submission.create(task: @task, user: @user, source: "puts 'Hello'")
+    Submission.create!(task: @task, user: @user, source: "puts 'Hello'", path: "whatever.rb")
     work_off_jobs
 
     refute @task.passed?(@user)

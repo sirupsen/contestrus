@@ -1,0 +1,2 @@
+#!/bin/bash
+bundle install --path ./vendor/bundle --standalone --binstubs --clean

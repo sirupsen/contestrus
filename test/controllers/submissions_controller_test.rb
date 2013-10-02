@@ -27,8 +27,7 @@ class SubmissionsControllerTest < ActionController::TestCase
       post :create, task_id: tasks(:hello_world).id, submission: { source: nil }
     end
 
-    assert_not_nil flash[:error]
-    assert_redirected_to task_path(tasks(:hello_world))
+    assert_template "tasks/show"
   end
 
   test "should set path for a submission" do
