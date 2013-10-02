@@ -11,7 +11,18 @@
     <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
     <%= csrf_meta_tags %>
 
-    <title>Narrow Jumbotron Template for Bootstrap</title>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']]
+        }
+      });
+    </script>
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <title>Contestrus</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../../dist/css/bootstrap.css" rel="stylesheet">
@@ -30,7 +41,7 @@
 
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span3 sidebar">
+        <div class="span3" id="sidebar">
           <ul class="nav nav-list">
             <% Competition.all.each do |competition| %>
               <li class="nav-header">
@@ -73,7 +84,9 @@
             </div>
           <% end %>
 
-          <%= yield %>
+          <div id="content">
+            <%= yield %>
+          </div>
         </div>
       </div>
     </div>

@@ -1,10 +1,28 @@
 class Submission < ActiveRecord::Base
+  Extensions = {
+    "rb" => "ruby",
+    "go" => "go"
+  }
+
   belongs_to :user
   belongs_to :task
 
   has_many :evaluations
 
   validates :source, presence: true
+  validates :path, presence: true
+
+  validate :path_file_extension
+  def path_file_extension
+    unless language
+      errors.add :path, "unknown file extension, valid languages are #{Extensions.values.inspect}"
+    end
+  end
+
+  before_create :set_language
+  def set_language
+    self.lang = language
+  end
 
   after_create :queue_evaluation
   def queue_evaluation
@@ -18,6 +36,6 @@ class Submission < ActiveRecord::Base
   end
 
   def language
-    @language ||= Linguist::Language.detect(self.path, self.source).name.downcase
+    self.path and Extensions[self.path.split(".").last]
   end
 end

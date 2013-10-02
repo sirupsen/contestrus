@@ -40,6 +40,8 @@ class ActionDispatch::IntegrationTest
       BackgroundJob.destroy
     rescue Exception
     end
+
+    sign_out
   end
 
   def sign_in(user = users(:sirup), password = 'seekrit')
@@ -51,6 +53,10 @@ class ActionDispatch::IntegrationTest
     click_button 'Sign in'
 
     user
+  end
+
+  def sign_out
+    visit sign_out_path
   end
 
   def work_off_jobs

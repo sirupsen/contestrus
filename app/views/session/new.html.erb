@@ -1,27 +1,23 @@
 <%= render 'shared/errors', locals: { record: @user } %>
 
-<p>
-Sign into the Contestrus system below.
-</p>
-
 <%= form_for :user, html: { class: "form-horizontal sign-in-form" }, url: { action: "create" } do |f| %>
-    <div class="form-group">
-    <%= f.label :username, class: "col-lg-2 control-label", width: 50 %>
-
-    <div class="col-lg-5">
+  <div class="control-group">
+    <%= f.label :username, class: "control-label", width: 50 %>
+    <div class="controls">
       <%= f.text_field :username, class: "form-control" %>
     </div>
   </div>
-  <div class="form-group">
+
+  <div class="control-group">
     <%= f.label :password, class: "col-lg-2 control-label", width: 50 %>
 
-    <div class="col-lg-5">
+    <div class="controls">
       <%= f.text_field :password, class: "form-control" %>
     </div>
   </div>
 
-  <div class="form-group">
-    <div class="col-lg-offset-2 col-lg-5">
+  <div class="control-group">
+    <div class="controls">
       <button type="submit" class="btn btn-success">Sign in</button>
       <a class="btn btn-default" href="#">Sign up</a>
     </div>

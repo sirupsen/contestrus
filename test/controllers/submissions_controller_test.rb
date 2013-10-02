@@ -41,4 +41,13 @@ class SubmissionsControllerTest < ActionController::TestCase
 
     assert_equal file.original_filename, Submission.last.path
   end
+
+  test "should not crate submission on unknown filetype" do
+    user = sign_in
+
+    file = Rack::Test::UploadedFile.new(Rails.root + "test/data/submissions/hello_world.what", "text/what")
+    assert_difference "user.submissions.count", 0 do
+      post :create, task_id: tasks(:hello_world).id, submission: { source: file }
+    end
+  end
 end

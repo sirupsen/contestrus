@@ -27,4 +27,12 @@ class SessionControllerTest < ActionController::TestCase
     assert_not_nil flash[:error]
     assert_template :new
   end
+
+  test "redirect to competition when already signed in" do
+    sign_in
+
+    get :new
+
+    assert_redirected_to competitions_path
+  end
 end

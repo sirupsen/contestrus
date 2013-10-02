@@ -23,4 +23,9 @@ class SessionIntegrationTest < ActionDispatch::IntegrationTest
     assert_equal '/sessions', current_path
     assert page.has_content?("Invalid credentials")
   end
+
+  test 'unathorized' do
+    visit competitions_path
+    assert_equal new_session_path, current_path
+  end
 end

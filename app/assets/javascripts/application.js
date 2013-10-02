@@ -15,6 +15,19 @@
 //= require turbolinks
 //= require_tree .
 
-$("#browser").click(function() {
-  console.log("clicked");
-})
+function typesetMath() {
+  console.log("TYPESETTING");
+
+  $("code").map(function(){
+    match = /^\$(.*)\$$/.exec($(this).html());
+    if (match){
+      $(this).replaceWith("<span class=hpl_mathjax_inline>" + $(this).html() + "</span>");
+      MathJax.Hub.Queue(["Typeset",MathJax.Hub,$(this).get(0)]);
+    }
+  });
+
+  MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+}
+
+$(document).ready(typesetMath)
+document.addEventListener("page:load", typesetMath)

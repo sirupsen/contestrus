@@ -54,7 +54,7 @@ class EvaluationJob
 
     pid = Process.spawn("#{evaluator.command(stdin: test.input)} > #{output.path}", :pgroup => true)
     begin
-      Timeout.timeout(task.restrictions[:time].to_f) do
+      Timeout.timeout(task.restrictions[:time] || 2.0) do
         Process.wait(pid)
       end
     rescue Timeout::Error

@@ -1,3 +1,18 @@
+<% if @submission.errors.full_messages.any? %>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="alert alert-dismissable alert-danger">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <ul>
+          <% @submission.errors.full_messages.each do |error| %>
+            <li><%= error %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <h2><%= @task.name %></h2>
 <p><%= raw Markdown.render(@task.body) %></p>
 
@@ -46,14 +61,14 @@
                 </thead>
                 <tbody>
                   <% unless pending?(submission) %>
-                    <% submission.evaluations.last.body.each do |test| %>
+                    <% submission.evaluations.last.body.each_with_index do |test, no| %>
                       <tr class="<%= submission_class(submission) %>">
-                        <td><%= test[:id] %></td>
+                        <td><%= no + 1 %></td>
                         <td><%= test[:status].humanize %></td>
                         <td><%= test[:duration] && "#{test[:duration].round(3)}s" %></td>
-                        <td><pre><%= ::TestCase.find(test[:id]).input %></pre></td>
-                        <td><pre><%= test[:output] %></pre></td>
-                        <td><pre><%= ::TestCase.find(test[:id]).output %></pre></td>
+                        <td><pre><%= ::TestCase.find(test[:id]).input.truncate(200) %></pre></td>
+                        <td><pre><%= test[:output].try(:truncate, 200) %></pre></td>
+                        <td><pre><%= ::TestCase.find(test[:id]).output.truncate(200) %></pre></td>
                       </tr>
                     <% end %>
                   <% end %>
