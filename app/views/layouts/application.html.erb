@@ -52,6 +52,8 @@
                   <%= link_to task_path(task) do %>
                     <% if task.passed?(current_user) %>
                       <span class="label label-success">Passed</span>
+                    <% elsif attempted_task?(task) %>
+                      <span class="label label-warning">Attempted</span>
                     <% end %>
                     <%= task.name %>
                   <% end %>

@@ -1,6 +1,7 @@
 class Task < ActiveRecord::Base
   belongs_to :competition
   has_many :test_cases
+  has_many :submissions
 
   serialize :restrictions, Hash
 

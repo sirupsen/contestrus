@@ -1,13 +1,13 @@
 namespace :tasks do
   desc "Requeue all unevaluated submissions"
   task :add => :environment do
-    Dir.glob("./sample/*").each do |competition_path|
+    Dir.glob("./sample/*").sort.each do |competition_path|
       competition_info = YAML.load_file(competition_path + "/competition.yml")
       competition = Competition.find_or_create_by_name(competition_info[:name])
 
       puts "Competition: #{competition.name}"
 
-      Dir.glob("#{competition_path}/**/task.yml").each do |task|
+      Dir.glob("#{competition_path}/**/task.yml").sort.each do |task|
         info = YAML.load_file(task)
 
         if Task.find_by_name(info[:name])
@@ -21,7 +21,7 @@ namespace :tasks do
                                restrictions: info[:restrictions], 
                                body: File.read(File.dirname(task) + "/task.md"))
 
-        Dir.glob(File.dirname(task) + "/tests/*.in").each do |file|
+        Dir.glob(File.dirname(task) + "/tests/*.in").sort { |name| name.split("/").last.split(".").first.to_i } .each do |file|
           id = file.split("/").last.split(".").first
 
           test = task_obj.test_cases.build
