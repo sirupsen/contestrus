@@ -1,0 +1,7 @@
+#!/bin/bash
+
+bin/rake assets:precompile
+cd ~/contestrus
+git pull origin master
+script/boostrap # Get latest gems
+rake db:migrate
