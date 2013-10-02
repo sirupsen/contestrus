@@ -38,9 +38,9 @@ class EvaluationJob
     end
 
     result[:duration] = Time.now - past
-    result[:output]   = output.strip.split("\n").map { |line| line.strip }.join("\n")
+    result[:output]   = strip_all_lines(output)
 
-    unless result[:output] == test.output
+    unless strip_all_lines(result[:output]) == strip_all_lines(test.output)
       result[:status] = "wrong answer"
       return result
     end
@@ -79,5 +79,9 @@ class EvaluationJob
 
   def task
     submission.task
+  end
+
+  def strip_all_lines(s)
+    s.strip.split("\n").map { |line| line.strip }.join("\n")
   end
 end
