@@ -1,7 +1,9 @@
 require File.expand_path('../boot', __FILE__)
 
+require 'sqlite3'
 require 'rails/all'
-require 'activeadmin'
+require 'jquery-rails'
+require 'turbolinks'
 
 module Contestrus
   class Application < Rails::Application

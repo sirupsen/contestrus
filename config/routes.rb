@@ -1,8 +1,4 @@
 Contestrus::Application.routes.draw do
-  get "submissions/show"
-  get "submissions/create", ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
-
   root 'session#new'
   resources :sessions, controller: 'session'
   resources :competitions
