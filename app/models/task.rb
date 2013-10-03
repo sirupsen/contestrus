@@ -6,8 +6,6 @@ class Task < ActiveRecord::Base
   serialize :restrictions, Hash
 
   def passed?(user)
-    user.submissions.where(task_id: self.id).any? { |s|
-      s.passed?
-    }
+    user.submissions.where(task_id: self.id).any? { |s| s.passed? } 
   end
 end

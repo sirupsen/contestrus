@@ -1,3 +1,5 @@
+require 'pry'
+
 module ApplicationHelper
   def completed_task?(task)
     task.passed?(current_user) if current_user

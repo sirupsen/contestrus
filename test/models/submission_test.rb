@@ -50,6 +50,11 @@ class SubmissionTest < ActiveSupport::TestCase
     refute submission.passed?
   end
 
+  test "passed? should return false when there are no evaluations" do
+    submission = Submission.create(valid_submission_attributes)
+    refute submission.passed?, "Submission with no evaluations should fail"
+  end
+
   private
   def valid_submission_attributes
     {

@@ -32,7 +32,7 @@ class Submission < ActiveRecord::Base
   # Every evaluation has to pass because programs must be deterministic and not
   # rely on randomness to do better or worse.
   def passed?
-    evaluations.all?(&:passed?)
+    evaluations.any? && evaluations.all?(&:passed?)
   end
 
   def language
