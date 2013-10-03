@@ -28,11 +28,23 @@ class UserTest < ActiveSupport::TestCase
     assert_invalid user
   end
 
+  test "validates presence of email" do
+    user = User.new(valid_params.merge(email: nil))
+    assert_invalid user
+  end
+
+  test "validates uniqueness of an email" do
+    first = User.first
+    user = User.new(valid_params.merge(email: first.email))
+    assert_invalid user
+  end
+
   private
   def valid_params
     {
       username: "Simon Hørup Eskildsen",
-      password: "seekrit"
+      password: "seekrit",
+      email: "simon@sirupsen.com"
     }
   end
 end

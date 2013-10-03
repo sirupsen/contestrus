@@ -17,3 +17,4 @@
 
 vendor/bundle/ruby/*
 bin
+public/assets

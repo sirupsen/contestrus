@@ -7,6 +7,8 @@ Contestrus::Application.routes.draw do
     resources :submissions
   end
 
+  resources :users
+
   get 'sign_out' => 'session#sign_out'
 
   # The priority is based upon order of creation: first created -> highest priority.

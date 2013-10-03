@@ -13,11 +13,19 @@
   </div>
 <% end %>
 
-<%= form_for :user, html: { class: "form-horizontal sign-in-form" }, url: { action: "create" } do |f| %>
+<%= form_for @user, html: { class: "form-horizontal sign-in-form" } do |f| %>
   <div class="control-group">
     <%= f.label :username, class: "control-label", width: 50 %>
     <div class="controls">
       <%= f.text_field :username, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <%= f.label :email, class: "control-label", width: 50 %>
+
+    <div class="controls">
+      <%= f.text_field :email, class: "form-control" %>
     </div>
   </div>
 
@@ -31,8 +39,7 @@
 
   <div class="control-group">
     <div class="controls">
-      <button type="submit" class="btn btn-success">Sign in</button>
-      <%= link_to "Sign up", new_user_path, class: "btn btn-default" %>
+      <button type="submit" class="btn btn-success">Sign up</button>
     </div>
   </div>
 <% end %>
