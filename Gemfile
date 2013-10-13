@@ -12,7 +12,6 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'therubyracer'
-gem 'localjob', git: "https://github.com/Sirupsen/localjob"
 gem "redcarpet"
 
 group :test do

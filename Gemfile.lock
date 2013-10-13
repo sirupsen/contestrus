@@ -1,15 +1,6 @@
-GIT
-  remote: https://github.com/Sirupsen/localjob
-  revision: 092e4092ac3d0be61b76c7db4fcc68d5578af826
-  specs:
-    localjob (0.1.1)
-      SysVIPC
-      thor (= 0.18.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
-    SysVIPC (0.9.9)
     actionmailer (4.0.0)
       actionpack (= 4.0.0)
       mail (~> 2.5.3)
@@ -181,7 +172,6 @@ DEPENDENCIES
   debugger
   foreman
   jquery-rails
-  localjob!
   poltergeist
   pry
   rails (= 4.0.0)

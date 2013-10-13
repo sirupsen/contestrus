@@ -4,7 +4,6 @@ ruby_engine = defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby'
 ruby_version = RbConfig::CONFIG["ruby_version"]
 path = File.expand_path('..', __FILE__)
 $:.unshift File.expand_path("#{path}/../#{ruby_engine}/#{ruby_version}/gems/rake-10.1.0/lib")
-$:.unshift File.expand_path("#{path}/../#{ruby_engine}/#{ruby_version}/gems/SysVIPC-0.9.9/lib")
 $:.unshift File.expand_path("#{path}/../#{ruby_engine}/#{ruby_version}/gems/i18n-0.6.5/lib")
 $:.unshift File.expand_path("#{path}/../#{ruby_engine}/#{ruby_version}/gems/minitest-4.7.5/lib")
 $:.unshift File.expand_path("#{path}/../#{ruby_engine}/#{ruby_version}/gems/multi_json-1.8.0/lib")
@@ -51,7 +50,6 @@ $:.unshift File.expand_path("#{path}/../#{ruby_engine}/#{ruby_version}/gems/hike
 $:.unshift File.expand_path("#{path}/../#{ruby_engine}/#{ruby_version}/gems/jquery-rails-3.0.4/lib")
 $:.unshift File.expand_path("#{path}/../#{ruby_engine}/#{ruby_version}/gems/libv8-3.16.14.3-x86_64-darwin-12/lib")
 $:.unshift File.expand_path("#{path}/../#{ruby_engine}/#{ruby_version}/gems/libv8-3.16.14.3-x86_64-darwin-12/ext")
-$:.unshift File.expand_path("#{path}/../#{ruby_engine}/#{ruby_version}/bundler/gems/localjob-092e4092ac3d/lib")
 $:.unshift File.expand_path("#{path}/../#{ruby_engine}/#{ruby_version}/gems/method_source-0.8.2/lib")
 $:.unshift File.expand_path("#{path}/../#{ruby_engine}/#{ruby_version}/gems/mono_logger-1.1.0/lib")
 $:.unshift File.expand_path("#{path}/../#{ruby_engine}/#{ruby_version}/gems/websocket-driver-0.3.0/lib")
