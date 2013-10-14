@@ -1,7 +1,7 @@
 namespace :tasks do
   desc "Requeue all unevaluated submissions"
   task :add => :environment do
-    Dir.glob("./sample/*").sort.each do |competition_path|
+    Dir.glob("./contests/*").sort.each do |competition_path|
       competition_info = YAML.load_file(competition_path + "/competition.yml")
       competition = Competition.find_or_create_by_name(competition_info[:name])
 
