@@ -1,3 +1,5 @@
 # Contestrus
 
-Run `script/bootstrap` to get going.
+## Development
+
+Run `script/bootstrap` to install. Then run `rake test`.

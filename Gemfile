@@ -16,7 +16,6 @@ gem "delayed_job", "4.0.0"
 gem 'delayed_job_active_record'
 
 group :test do
-  gem 'debugger'
   gem 'pry'
   gem 'capybara'
   gem 'poltergeist'
