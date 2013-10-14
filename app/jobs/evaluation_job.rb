@@ -71,7 +71,7 @@ class EvaluationJob
 
   private
   def evaluator
-    Evaluator::Languages[submission.language].new(submission.source)
+    Evaluator::Languages[submission.lang].new(submission.source)
   end
 
   def task

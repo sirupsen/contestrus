@@ -23,7 +23,7 @@ class SubmissionsControllerTest < ActionController::TestCase
     assert_template "tasks/show"
   end
 
-  test "should set path for a submission" do
+  test "should set language for a submission" do
     user = sign_in
 
     file = Rack::Test::UploadedFile.new(Rails.root + "test/data/submissions/hello_world.rb", "text/ruby")
@@ -31,7 +31,7 @@ class SubmissionsControllerTest < ActionController::TestCase
       post :create, task_id: tasks(:hello_world).id, submission: { source: file }
     end
 
-    assert_equal file.original_filename, Submission.last.path
+    assert_equal "ruby", Submission.last.lang
   end
 
   test "should not crate submission on unknown filetype" do

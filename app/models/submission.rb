@@ -9,19 +9,21 @@ class Submission < ActiveRecord::Base
 
   has_many :evaluations
 
+  attr_accessor :path
+
   validates :source, presence: true
   validates :path, presence: true
 
   validate :path_file_extension
   def path_file_extension
-    unless language
+    unless language_from_path
       errors.add :path, "unknown file extension, valid languages are #{Extensions.values.inspect}"
     end
   end
 
   before_create :set_language
   def set_language
-    self.lang = language
+    self.lang = language_from_path
   end
 
   after_create :queue_evaluation
@@ -35,7 +37,8 @@ class Submission < ActiveRecord::Base
     evaluations.any? && evaluations.all?(&:passed?)
   end
 
-  def language
-    self.path and Extensions[self.path.split(".").last]
+  private
+  def language_from_path
+    @path && Extensions[@path.split(".").last]
   end
 end
