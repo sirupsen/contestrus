@@ -1,13 +1,6 @@
 require 'test_helper'
 
 class SubmissionsControllerTest < ActionController::TestCase
-  teardown do
-    begin
-    BackgroundJob.destroy
-    rescue Errno::ENOENT
-    end
-  end
-
   test "should create submission for a task" do
     user = sign_in
 

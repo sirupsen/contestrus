@@ -27,16 +27,8 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_equal "ruby", submission.lang
   end
 
-  test "enqueue evaluation job after create" do
-    assert_difference "BackgroundJob.size", +1 do
-      Submission.create(valid_submission_attributes)
-    end
-  end
-
   test "passed? should return true if all evaluations passed" do
     submission = Submission.create(valid_submission_attributes)
-    work_off_jobs
-
     assert submission.passed?
   end
 
@@ -44,14 +36,12 @@ class SubmissionTest < ActiveSupport::TestCase
     submission = Submission.create(valid_submission_attributes.merge(
       source: "puts 'Hello'"
     ))
-
-    work_off_jobs
-
     refute submission.passed?
   end
 
   test "passed? should return false when there are no evaluations" do
     submission = Submission.create(valid_submission_attributes)
+    submission.evaluations.destroy_all
     refute submission.passed?, "Submission with no evaluations should fail"
   end
 

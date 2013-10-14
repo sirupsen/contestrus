@@ -23,6 +23,10 @@ end
 class ActionDispatch::IntegrationTest
   include Capybara::DSL
 
+  teardown do
+    sign_out
+  end
+
   def sign_in(user = users(:sirup), password = 'seekrit')
     visit root_path
 

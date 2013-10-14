@@ -23,6 +23,7 @@ class EvaluationJob
       body: results
     )
 
+  ensure
     evaluator.clean
   end
 
@@ -69,16 +70,16 @@ class EvaluationJob
   end
 
   private
-  def submission
-    Submission.find(@submission_id)
-  end
-
   def evaluator
-    @evaluator ||= Evaluator::Languages[submission.language].new(submission.source)
+    Evaluator::Languages[submission.language].new(submission.source)
   end
 
   def task
     submission.task
+  end
+
+  def submission
+    @submission ||= Submission.find(@submission_id)
   end
 
   def strip_all_lines(s)

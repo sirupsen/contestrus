@@ -33,7 +33,7 @@ module Evaluator
 
     private
     def binary_path
-      "#{tmp_file}.binary"
+      "/tmp/whatever.go"
     end
 
     def tmp_file

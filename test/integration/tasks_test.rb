@@ -21,24 +21,22 @@ class TasksIntegrationTest < ActionDispatch::IntegrationTest
     attach_file "submission_source", Rails.root + "test/data/submissions/hello_world.rb"
     click_button "Evaluate"
 
-    work_off_jobs
-
     visit task_path(tasks(:hello_world))
 
     page.assert_selector("tbody > tr.success")
   end
 
-  test "submit answer and see status pending" do
+  test "submit incorrect answer and see status failed" do
     user = sign_in
     within "#sidebar" do
       click_link tasks(:hello_world).name
     end
 
-    attach_file "submission_source", (Rails.root + "test/data/submissions/hello_world.rb").to_s
+    attach_file "submission_source", (Rails.root + "test/data/submissions/hello.rb").to_s
     click_button "Evaluate"
 
     visit task_path(tasks(:hello_world))
 
-    page.assert_selector("tbody > tr.info")
+    page.assert_selector("tbody > tr.error")
   end
 end

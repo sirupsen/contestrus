@@ -49,8 +49,6 @@ class CompetitionsIntegrationTest < ActionDispatch::IntegrationTest
     attach_file "submission_source", Rails.root + "test/data/submissions/hello_world.rb"
     click_button "Evaluate"
 
-    work_off_jobs
-
     within "#sidebar" do
       click_link competitions(:open).name
     end

@@ -26,7 +26,7 @@ class Submission < ActiveRecord::Base
 
   after_create :queue_evaluation
   def queue_evaluation
-    BackgroundJob << EvaluationJob.new(self.id)
+    EvaluationJob.new(self.id).delay.perform
   end
 
   # Every evaluation has to pass because programs must be deterministic and not
