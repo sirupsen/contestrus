@@ -1,3 +1,4 @@
-:name: Sum
-:restrictions:
-  :time: 1.0
+name: Sum
+restrictions:
+  time: 1.0
+  memory: 256mb

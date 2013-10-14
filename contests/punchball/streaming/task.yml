@@ -1,3 +1,4 @@
-:name: "Streaming"
-:restrictions:
+name: "Streaming"
+restrictions:
   time: 2.0
+  memory: 256mb
