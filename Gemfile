@@ -14,6 +14,7 @@ gem "redcarpet", "3.0.0"
 gem "delayed_job", "4.0.0"
 gem "daemons", "1.1.9"
 gem 'delayed_job_active_record', "4.0.0"
+gem "docker-api", :git => "git://github.com/swipely/docker-api.git", :require => 'docker'
 
 group :test, :development do
   gem 'pry', '0.9.12.2'
