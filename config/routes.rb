@@ -2,7 +2,13 @@ Contestrus::Application.routes.draw do
   root 'session#new'
 
   resources :sessions, controller: 'session'
-  resources :competitions, :users
+  resources :competitions do
+    member do
+      get "leaderboard" => "competitions#leaderboard"
+    end
+  end
+  
+  resources :users
 
   resources :tasks do
     resources :submissions

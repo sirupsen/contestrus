@@ -1,0 +1,18 @@
+<table class="table table-hover results">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <% @tasks.each do |task| %>
+        <th><%= link_to task.name, task_path(task) %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <td><%= user.username.humanize %></td>
+      <% @tasks.each do |task| %>
+        <td><%= task_status_badge(task) %></td>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

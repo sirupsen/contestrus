@@ -28,3 +28,11 @@ past_hello_world:
   restrictions: |
     ---
     :time: 1.0
+
+ongoing_hello_world: 
+  competition: ongoing
+  name: "Ongoing World"
+  body: "Print hello world."
+  restrictions: |
+    ---
+    :time: 1.0
