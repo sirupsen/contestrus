@@ -20,3 +20,11 @@ sum:
   restrictions: |
     ---
     :time: 1.0
+
+past-sum: 
+  competition: past
+  name: "Sum"
+  body: "Sum two numbers."
+  restrictions: |
+    ---
+    :time: 1.0
