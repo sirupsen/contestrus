@@ -29,7 +29,7 @@ bin/delayed_job stop --pid-dir /app/shared
 
 echo "stopped."
 
-echo -n  "Waiting for Puma processes to roll over..."
+echo -n  "Waiting for Puma processes to roll over... "
 
 while [ -d "/proc/$OLD_PID" ]; do
   sleep 0.1

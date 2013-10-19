@@ -1,5 +1,4 @@
-#bind "unix:///app/shared/puma.sock"
-bind "tcp://0.0.0.0:3000"
+bind "unix:///app/shared/puma.sock"
 daemonize true
 directory "/app/current"
 environment "production"
