@@ -6,15 +6,18 @@ bundle install --path ./vendor/bundle --standalone --clean --binstubs
 
 # we don't want to check in Rails' binstubs, so write them out by hand here:
 cat <<RUBY > bin/rails
-#!/usr/bin/env ruby
+#!
 APP_PATH = File.expand_path('../../config/application',  __FILE__)
 require_relative '../config/boot'
 require 'rails/commands'
 RUBY
 
 cat <<RUBY > bin/rake
-#!/usr/bin/env ruby
+#!
 require_relative '../config/boot'
 require 'rake'
 Rake.application.run
 RUBY
+
+# rewrite shebangs to point directly to the Ruby binary instead of going through env
+RUBY_PATH="$(which ruby)" perl -pi -e 's/^#!.*$/#!$ENV{RUBY_PATH}/g' bin/*
