@@ -19,8 +19,10 @@ require 'rake'
 Rake.application.run
 RUBY
 
+export RUBY_BIN="$(ruby -e 'puts Gem.ruby')"
+
 # rewrite shebangs to point directly to the Ruby binary instead of going through env
-RUBY_PATH="$(which ruby)" perl -pi -e 's/^#!.*$/#!$ENV{RUBY_PATH}/g' bin/*
+perl -pi -e 's/^#!.*$/#!$ENV{RUBY_BIN}/g' bin/*
 
 # symlink bin/ruby to the Ruby binary
-ln -sf "$(which ruby)" bin/ruby
+ln -sf "$RUBY_BIN" bin/ruby
