@@ -36,6 +36,14 @@ class CompetitionTest < ActiveSupport::TestCase
     assert competitions(:open).open?
   end
 
+  test "always_open? returns true when competition is not time limited" do
+    assert competitions(:open).always_open?
+  end
+
+  test "always_open? returns false when competition is not time limited" do
+    refute competitions(:past).always_open?
+  end
+
   private
   def valid_params
     {
