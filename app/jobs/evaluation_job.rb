@@ -3,6 +3,8 @@ require 'rubygems/package'
 
 require 'docker'
 
+require 'fileutils'
+
 class EvaluationJob
   SANDBOX_DIR = '/sandbox'
   SEGFAULT_STATUS = 139
@@ -37,6 +39,8 @@ class EvaluationJob
         body: @build_body
       )
     end
+  ensure
+    FileUtils.rm_rf @temporary_dir
   end
 
   private
