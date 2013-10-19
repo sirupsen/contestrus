@@ -16,14 +16,7 @@ module ApplicationHelper
       nil
     elsif competition.open?
       seconds = (competition.end_at - Time.now).to_i
-
-      hours = seconds / 3600
-      seconds -= hours * 3600
-
-      minutes = seconds / 60
-      seconds -= minutes * 60
-
-      "<span class='badge badge-info'>#{hours}:#{minutes}:#{seconds}</span>".html_safe
+      "<span class='badge badge-info'>#{seconds / 3600}:#{seconds / 60 % 60}:#{seconds % 60}</span>".html_safe
     else
       "<span class='label label-warning'>Completed</span>".html_safe
     end
