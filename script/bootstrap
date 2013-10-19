@@ -1,10 +1,16 @@
 #!/bin/bash
 
+set -e
+
 cd "$(dirname "$0")/.."
 
 rm -f bin/*
 
-bundle install --path ./vendor/bundle --standalone --clean --binstubs --quiet
+if [ "$RAILS_ENV" = "production" ]; then
+  BUNDLE_ARGS="--deployment --without development --without test"
+fi
+
+bundle install --path ./vendor/bundle --standalone --clean --binstubs --quiet $BUNDLE_ARGS
 
 export RUBY_BIN="$(ruby -e 'puts Gem.ruby')"
 

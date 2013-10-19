@@ -1,0 +1,50 @@
+#!/bin/bash
+# Do NOT run this on development machines.
+# This is intended to run on the production server as part of deploys.
+
+export RAILS_ENV=production
+export PATH=/app/rubies/ruby-2.0.0-p247/bin:$PATH
+
+set -e
+
+ln -sfn /app/shared/app_config.yml config/app_config.yml
+ln -sfn /app/shared/log log
+
+if ! sudo /usr/local/bin/check-nginx-syntax &> /dev/null; then
+  sudo /usr/local/bin/check-nginx-syntax
+  exit 1
+fi
+
+script/bootstrap
+bin/rake assets:precompile
+
+if [ -e /app/current ]; then
+  OLD_DEPLOY="$(readlink /app/current)"
+fi
+
+ln -sfn "$(pwd)" /app/current
+
+OLD_PID="$(cat /app/shared/puma.pid)"
+
+echo -n "Stopping delayed job... "
+bin/delayed_job stop --pid-dir /app/shared
+echo "stopped."
+
+echo -n  "Waiting for Puma processes to roll over... "
+kill -USR2 "$OLD_PID"
+while [ -d "/proc/$OLD_PID" ]; do
+  sleep 0.1
+done
+echo "new Puma has PID $(cat /app/shared/puma.pid)."
+
+echo -n "Starting delayed job... "
+bin/delayed_job start --pid-dir /app/shared
+echo "started."
+
+echo -n "Reloading nginx... "
+sudo /usr/local/bin/restart-nginx
+echo "ok."
+
+if [ -n "$OLD_DEPLOY" ]; then
+  rm -rf "$OLD_DEPLOY"
+fi
