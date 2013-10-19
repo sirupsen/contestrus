@@ -2,17 +2,23 @@
   <thead>
     <tr>
       <td>Task</td>
+      <% if admin_or_expired?(@competition) %>
+        <td>Solved</td>
+      <% end %>
     </tr>
   </thead>
   <tbody>
     <% @competition.tasks.each do |task| %>
       <tr class="<%= task_status_class(task) %>">
         <td><%= link_to task.name, task_path(task) %></td>
+        <% if admin_or_expired?(@competition) %>
+          <td><%= task.times_solved %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<% if !@competition.ongoing? || current_user.admin? %>
+<% if admin_or_expired?(@competition) %>
   <%= link_to "Leaderboard", leaderboard_competition_path(@competition), class: "btn" %>
 <% end %>
