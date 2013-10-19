@@ -1,7 +1,33 @@
 #!/bin/bash
 
-bin/rake assets:precompile
-cd ~/contestrus
-git pull origin master
-script/boostrap # Get latest gems
-rake db:migrate
+DEPLOY_USER="app"
+DEPLOY_HOST="contestrus"
+
+if [ -n "git status -u no -s" ] && [ -z "$DIRTY_DEPLOY" ]; then
+  echo "Not deploying with a dirty working tree."
+  exit 1
+fi
+
+DEPLOY_TARGET="${1:-HEAD}"
+SHA="$(git rev-parse "$DEPLOY_TARGET")"
+ABBREV_SHA="${SHA:0:10}"
+
+read -p "Deploying $ABBREV_SHA to production. Proceed? " -n 1
+echo
+
+if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
+  exit 1
+fi
+
+ssh "$DEPLOY_USER@$DEPLOY_HOST" -- "
+  set -x
+  set -e
+  if [ ! -d $ABBREV_SHA ]; then
+    mkdir $ABBREV_SHA
+    cp -r current/.git $ABBREV_SHA/
+  fi
+  cd $ABBREV_SHA
+  git fetch origin -q
+  git reset --hard $SHA
+  script/deploy-bootstrap
+"
