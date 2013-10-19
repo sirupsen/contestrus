@@ -10,15 +10,15 @@ namespace :tasks do
       Dir.glob("#{competition_path}/**/task.yml").sort.each do |task|
         info = YAML.load_file(task)
 
-        if Task.find_by_name(info[:name])
-          puts "\t#{info[:name]} already exists"
+        if Task.find_by_name(info["name"])
+          puts "\t#{info["name"]} already exists"
           next
         end
 
-        puts "\tAdding #{info[:name]}"
+        puts "\tAdding #{info["name"]}"
 
-        task_obj = competition.tasks.create(name: info[:name], 
-                               restrictions: info[:restrictions], 
+        task_obj = competition.tasks.create(name: info["name"], 
+                               restrictions: info["restrictions"], 
                                body: File.read(File.dirname(task) + "/task.md"))
 
         Dir.glob(File.dirname(task) + "/tests/*.in").sort { |name| name.split("/").last.split(".").first.to_i } .each do |file|
