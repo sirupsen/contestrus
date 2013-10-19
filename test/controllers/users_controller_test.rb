@@ -33,4 +33,15 @@ class UsersControllerTest < ActionController::TestCase
 
     assert_template :new
   end
+  
+  test "forbidden on showing user when not signed in" do
+    get :show, id: users(:sirup).id
+    assert_response :redirect
+  end
+
+  test "success  on user when signed in" do
+    sign_in
+    get :show, id: users(:sirup).id
+    assert_response :success
+  end
 end

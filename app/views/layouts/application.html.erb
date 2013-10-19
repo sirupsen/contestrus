@@ -37,6 +37,8 @@
       <div class="row-fluid">
         <div class="span3" id="sidebar">
           <ul class="nav nav-list">
+            <li><%= link_to "My profile", user_path(current_user) %></li>
+
             <% Competition.all.includes(:tasks).each do |competition| %>
               <li class="nav-header">
                 <%= link_to competition_path(competition) do %>
@@ -78,8 +80,10 @@
             </div>
           <% end %>
 
-          <div id="content">
-            <%= yield %>
+          <div class="row-fluid" id="content">
+            <div class="span12">
+              <%= yield %>
+            </div>
           </div>
         </div>
       </div>
