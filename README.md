@@ -18,8 +18,9 @@ feature:
 * Contest and training. Support both running contests but also an open
   environment to train on tasks of previous contests.
 
-Many contest environments are complicated to set up. Contestrus is aimed to be
-extremely simple to run within Docker containers.
+Many contest environments are complicated to set up. Contestrus is aiming to be
+extremely simple to set up and will be run inside Docker containers for maximum
+deployment and development ease.
 
 ## External dependencies
 
