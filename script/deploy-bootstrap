@@ -23,7 +23,7 @@ OLD_PID="$(cat /app/shared/puma.pid)"
 
 kill -USR2 "$OLD_PID"
 
-echo "Waiting for old Puma to roll over..."
+echo "Waiting for Puma processes to roll over..."
 
 while [ -d "/proc/$OLD_PID" ]; do
   sleep 0.1
