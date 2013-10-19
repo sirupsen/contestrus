@@ -37,7 +37,7 @@
       <div class="row-fluid">
         <div class="span3" id="sidebar">
           <ul class="nav nav-list">
-            <% Competition.all.each do |competition| %>
+            <% Competition.all.includes(:tasks).each do |competition| %>
               <li class="nav-header">
                 <%= link_to competition.name, competition_path(competition) %>
               </li>
