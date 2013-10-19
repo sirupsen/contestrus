@@ -12,7 +12,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20131014210210) do
-
   create_table "competitions", force: true do |t|
     t.string   "name"
     t.datetime "start_at"
@@ -87,5 +86,7 @@ ActiveRecord::Schema.define(version: 20131014210210) do
     t.datetime "updated_at"
     t.string   "email"
   end
+
+  add_index "users", ["id"], name: "index_users_on_id"
 
 end
