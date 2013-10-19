@@ -9,12 +9,14 @@
     </tr>
   </thead>
   <tbody>
-    <% @users.each_with_index do |user, rank| %>
-      <td>#<%= rank + 1 %></td>
-      <td><%= user.username.humanize %></td>
-      <% @tasks.each do |task| %>
-        <td><%= task_status_badge(task) %></td>
+      <% @users.each_with_index do |user, rank| %>
+        <tr>
+          <td>#<%= rank + 1 %></td>
+          <td><%= user.username.humanize %></td>
+          <% @tasks.each do |task| %>
+            <td><%= task_status_badge(task) %></td>
+          <% end %>
+        </tr>
       <% end %>
-    <% end %>
   </tbody>
 </table>
