@@ -32,11 +32,13 @@ planned for Contestrus.
 
 ## Development
 
-Run `script/bootstrap`. This sets up your development environment:
+Run `script/setup`. This sets up your development environment:
 
 * Vendor all Contestrus' dependencies.
+* Create binstubs.
 * Creates the database.
 * Seeds the database with initial settings.
+* Seeds the database with a test contest.
 
 Run `bin/rake` to test Contestrus on your own machine.
 
