@@ -21,10 +21,10 @@ sum:
     ---
     :time: 1.0
 
-past-sum: 
+past_hello_world: 
   competition: past
-  name: "Sum"
-  body: "Sum two numbers."
+  name: "Past World"
+  body: "Print hello world."
   restrictions: |
     ---
     :time: 1.0
