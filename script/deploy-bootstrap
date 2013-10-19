@@ -23,13 +23,25 @@ OLD_PID="$(cat /app/shared/puma.pid)"
 
 kill -USR2 "$OLD_PID"
 
-echo "Waiting for Puma processes to roll over..."
+echo -n "Stopping delayed job... "
+
+bin/delayed_job stop --pid-dir /app/shared/delayed_job_pids
+
+echo "stopped."
+
+echo -n  "Waiting for Puma processes to roll over..."
 
 while [ -d "/proc/$OLD_PID" ]; do
   sleep 0.1
 done
 
-echo "New Puma has PID $(cat /app/shared/puma.pid)"
+echo "new Puma has PID $(cat /app/shared/puma.pid)."
+
+echo -n "Starting delayed job... "
+
+bin/delayed_job start --pid-dir /app/shared/delayed_job_pids
+
+echo "started."
 
 if [ -n "$OLD_DEPLOY" ]; then
   rm -rf "$OLD_DEPLOY"
