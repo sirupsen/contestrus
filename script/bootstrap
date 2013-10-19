@@ -8,7 +8,7 @@ bundle install --path ./vendor/bundle --standalone --clean --binstubs --quiet
 
 export RUBY_BIN="$(ruby -e 'puts Gem.ruby')"
 
-perl -pi -e 's/^#!.*$/#!$ENV{RUBY_BIN}/g' bin/*
+perl -pi -e 's/^#!.*$/#!$ENV{RUBY_BIN} --disable-gem/g' bin/*
 
 for script in script/*; do
   bin="bin/${script##*/}"
