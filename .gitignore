@@ -15,6 +15,6 @@
 /log/*.log
 /tmp
 
-vendor/bundle/ruby/*
+vendor/bundle/*
 bin
 public/assets
