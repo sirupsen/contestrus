@@ -21,6 +21,15 @@ class Submission < ActiveRecord::Base
     end
   end
 
+  # Validates that the submission was performed within the duration of the
+  # contest.
+  validate :contest_expirement
+  def contest_expirement
+    unless task.competition.open?
+      errors.add :base, "Competition is no longer open"
+    end
+  end
+
   before_create :set_language
   def set_language
     self.lang = language_from_path

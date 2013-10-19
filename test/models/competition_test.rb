@@ -22,6 +22,20 @@ class CompetitionTest < ActiveSupport::TestCase
     assert_invalid competition
   end
 
+  test "open? returns whether a competition is open" do
+    competition = competitions(:past)
+    start, ending = competition.start_at, competition.end_at
+    assert competition.open?(start + 10.minutes)
+    assert competition.open?(start)
+    assert competition.open?(ending)
+    refute competition.open?(ending + 10.minutes)
+    refute competition.open?(start - 10.minutes)
+  end
+
+  test "open? returns true when competition is not time limited" do
+    assert competitions(:open).open?
+  end
+
   private
   def valid_params
     {

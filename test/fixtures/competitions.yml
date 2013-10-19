@@ -7,3 +7,8 @@ time_limited:
 
 open:
   name: Open Competition
+
+past:
+  name: Past competition
+  start_at: 2013-08-30 22:00:00
+  end_at: 2013-08-30 24:00:00

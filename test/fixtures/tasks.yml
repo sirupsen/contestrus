@@ -20,3 +20,11 @@ sum:
   restrictions: |
     ---
     :time: 1.0
+
+past_hello_world: 
+  competition: past
+  name: "Past World"
+  body: "Print hello world."
+  restrictions: |
+    ---
+    :time: 1.0

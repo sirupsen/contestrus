@@ -22,6 +22,13 @@ class SubmissionTest < ActiveSupport::TestCase
     refute Submission.new(valid_submission_attributes.merge(path: "test.txt")).valid?
   end
 
+  test "validates within contest is within open time" do
+    competition = competitions(:past)
+    task = competition.tasks.first
+    refute Submission.new(valid_submission_attributes.merge(task: task)).valid?, 
+      "Submission for past competition should give a validation error."
+  end
+
   test "set language on creation" do
     submission = Submission.create(valid_submission_attributes)
     assert_equal "ruby", submission.lang
@@ -29,7 +36,7 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test "passed? should return true if all evaluations passed" do
     submission = Submission.create(valid_submission_attributes)
-    assert submission.passed?
+    assert submission.passed?, "Submission should pass when code is correct."
   end
 
   test "passed? should return false if an evaluations did not pass" do
