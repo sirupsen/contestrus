@@ -25,7 +25,7 @@ kill -USR2 "$OLD_PID"
 
 echo -n "Stopping delayed job... "
 
-bin/delayed_job stop --pid-dir /app/shared/delayed_job_pids
+bin/delayed_job stop --pid-dir /app/shared
 
 echo "stopped."
 
@@ -39,7 +39,7 @@ echo "new Puma has PID $(cat /app/shared/puma.pid)."
 
 echo -n "Starting delayed job... "
 
-bin/delayed_job start --pid-dir /app/shared/delayed_job_pids
+bin/delayed_job start --pid-dir /app/shared
 
 echo "started."
 
