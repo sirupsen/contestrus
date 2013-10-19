@@ -39,7 +39,10 @@
           <ul class="nav nav-list">
             <% Competition.all.includes(:tasks).each do |competition| %>
               <li class="nav-header">
-                <%= link_to competition.name, competition_path(competition) %>
+                <%= link_to competition_path(competition) do %>
+                  <%= competition.name %>
+                  <%= time_left_badge(competition) %>
+                <% end %>
               </li>
               <% competition.tasks.each do |task| %>
                 <li>
