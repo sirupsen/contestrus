@@ -19,7 +19,7 @@ ssh "$DEPLOY_USER@$DEPLOY_HOST" -- "
   set -e
   dir_name=\"\$(date +%s)-$ABBREV_SHA\"
   if [ -e current ]; then
-    cp current \$dir_name
+    cp -r current \$dir_name
   else
     git clone git@github.com:Sirupsen/contestrus.git \$dir_name
   fi
