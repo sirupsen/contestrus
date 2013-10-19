@@ -1,10 +1,10 @@
 module ApplicationHelper
   def task_badge(task)
     if completed_task?(task) 
-      "<span class='label label-success'>Passed</span>"
+      "<span class='label label-success'>Passed</span>".html_safe
     elsif attempted_task?(task)
-      "<span class='label label-warning'>Attempted</span>"
-    end.html_safe
+      "<span class='label label-warning'>Attempted</span>".html_safe
+    end
   end
 
   def render_markdown(markdown)
