@@ -22,11 +22,10 @@ fi
 ssh "$DEPLOY_USER@$DEPLOY_HOST" -- "
   set -x
   set -e
-  if [ ! -d $ABBREV_SHA ]; then
-    mkdir $ABBREV_SHA
-    cp -r current/.git $ABBREV_SHA/
-  fi
-  cd $ABBREV_SHA
+  dir_name=\"\$(date +%s)-$ABBREV_SHA\"
+  mkdir \$dir_name
+  cp -r current/.git \$dir_name/
+  cd \$dir_name
   git fetch origin -q
   git reset --hard $SHA
   script/deploy-bootstrap
