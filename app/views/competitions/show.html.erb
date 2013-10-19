@@ -12,3 +12,7 @@
     <% end %>
   </tbody>
 </table>
+
+<% if current_user.admin? %>
+  <%= link_to "Leaderboard", leaderboard_competition_path(@competition), class: "btn" %>
+<% end %>

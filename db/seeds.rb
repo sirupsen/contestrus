@@ -1,1 +1,1 @@
-sirup = User.create!(username: "sirup", password: "seekrit", email: 'whoever@example.com')
+sirup = User.create!(username: "sirup", password: "seekrit", admin: true, email: 'whoever@example.com')

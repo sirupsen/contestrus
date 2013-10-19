@@ -16,4 +16,12 @@ class ApplicationController < ActionController::Base
   def current_user
     @user ||= User.find_by_id(session[:user_id])
   end
+
+  def require_admin
+    unless current_user.admin?
+      flash[:notice] = "Go away."
+      render :nothing => true, status: 403
+      return false
+    end
+  end
 end

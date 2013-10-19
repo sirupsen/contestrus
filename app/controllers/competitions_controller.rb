@@ -1,4 +1,6 @@
 class CompetitionsController < ApplicationController
+  before_filter :require_admin, only: [:leaderboard]
+
   def index
     @competitions = Competition.all
   end
