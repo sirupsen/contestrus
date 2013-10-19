@@ -10,6 +10,11 @@ set -e
 ln -sfn /app/shared/app_config.yml config/app_config.yml
 ln -sfn /app/shared/log log
 
+if ! sudo /usr/local/bin/check-nginx-syntax &> /dev/null; then
+  sudo /usr/local/bin/check-nginx-syntax
+  exit 1
+fi
+
 script/bootstrap
 bin/rake assets:precompile
 
@@ -20,15 +25,6 @@ fi
 ln -sfn "$(pwd)" /app/current
 
 OLD_PID="$(cat /app/shared/puma.pid)"
-
-if [ -n "$OLD_DEPLOY" ] && [ -z "$(diff $OLD_DEPLOY/config/nginx.conf config/nginx.conf)" ]; then
-  NGINX_CONF_CHANGED=1
-
-  if ! sudo /usr/local/bin/check-nginx-syntax &> /dev/null; then
-    sudo /usr/local/bin/check-nginx-syntax
-    exit 1
-  fi
-fi
 
 echo -n "Stopping delayed job... "
 bin/delayed_job stop --pid-dir /app/shared
@@ -45,11 +41,9 @@ echo -n "Starting delayed job... "
 bin/delayed_job start --pid-dir /app/shared
 echo "started."
 
-if [ -n "$NGINX_CONF_CHANGED" ]; then
-  echo -n "Reloading nginx... "
-  sudo /usr/local/bin/restart-nginx
-  echo "ok."
-fi
+echo -n "Reloading nginx... "
+sudo /usr/local/bin/restart-nginx
+echo "ok."
 
 if [ -n "$OLD_DEPLOY" ]; then
   rm -rf "$OLD_DEPLOY"
