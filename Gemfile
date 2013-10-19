@@ -12,6 +12,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'therubyracer', "0.12.0"
 gem "redcarpet", "3.0.0"
 gem "delayed_job", "4.0.0"
+gem "daemons"
 gem 'delayed_job_active_record', "4.0.0"
 
 group :test, :development do
