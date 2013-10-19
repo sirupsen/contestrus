@@ -8,14 +8,9 @@ echo "Bundling"
 
 bundle install --path ./vendor/bundle --standalone --clean --binstubs --quiet
 
-RUBY_BIN="$(ruby -e 'puts Gem.ruby')"
+export RUBY_BIN="$(ruby -e 'puts Gem.ruby')"
 
-for bin in bin/*; do
-  load="$(tail -n1 "$bin")"
-  echo "#!$RUBY_BIN --disable-gem" > "$bin"
-  echo '$:.unshift File.expand_path("../vendor/lib", __dir__)' >> "$bin"
-  echo "$load" >> "$bin"
-done
+perl -pi -e 's/^#!.*$/#!$ENV{RUBY_BIN}/g' bin/*
 
 for script in script/*; do
   bin="bin/${script##*/}"
