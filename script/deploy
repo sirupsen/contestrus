@@ -18,8 +18,12 @@ ssh "$DEPLOY_USER@$DEPLOY_HOST" -- "
   set -x
   set -e
   dir_name=\"\$(date +%s)-$ABBREV_SHA\"
-  mkdir \$dir_name
-  cp -r current/.git \$dir_name/
+  if [ -e current ]; then
+    mkdir \$dir_name
+    cp -r current/.git \$dir_name/
+  else
+    git clone git@github.com:Sirupsen/contestrus.git \$dir_name
+  fi
   cd \$dir_name
   git fetch origin -q
   git reset --hard $SHA
