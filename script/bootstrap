@@ -4,18 +4,11 @@ cd "$(dirname "$0")/.."
 
 rm -f bin/*
 
-echo "Bundling"
-
 bundle install --path ./vendor/bundle --standalone --clean --binstubs --quiet
 
-RUBY_BIN="$(ruby -e 'puts Gem.ruby')"
+export RUBY_BIN="$(ruby -e 'puts Gem.ruby')"
 
-for bin in bin/*; do
-  load="$(tail -n1 "$bin")"
-  echo "#!$RUBY_BIN --disable-gem" > "$bin"
-  echo '$:.unshift File.expand_path("../vendor/environment/lib", __dir__)' >> "$bin"
-  echo "$load" >> "$bin"
-done
+perl -pi -e 's/^#!.*$/#!$ENV{RUBY_BIN}/g' bin/*
 
 for script in script/*; do
   bin="bin/${script##*/}"
@@ -31,25 +24,4 @@ done
 
 ln -sf "$RUBY_BIN" bin/ruby
 
-rm -rf vendor/lib
-rm -rf vendor/environment
-mkdir vendor/environment
-mkdir vendor/environment/lib
-mkdir vendor/environment/vendor
-
-echo "Flattening load path"
-
-bin/ruby -rfileutils <<RUBY
-  LOAD_PATH_BEFORE = $:.dup
-  require "./vendor/bundle/bundler/setup"
-  ($: - LOAD_PATH_BEFORE).each do |load_path|
-    Dir["#{load_path}/*"].each do |file|
-      FileUtils.cp_r(file, "vendor/environment/lib/")
-    end
-    if Dir.exist?("#{load_path}/../vendor")
-      Dir["#{load_path}/../vendor/*"].each do |file|
-        FileUtils.cp_r(file, "vendor/environment/vendor/")
-      end
-    end
-  end
-RUBY
+rm -rf vendor/environment vendor/lib

@@ -8,4 +8,4 @@ module Kernel
   end
 end
 
-$:.unshift File.expand_path("../vendor/environment/lib", __dir__)
+require_relative '../vendor/bundle/bundler/setup'
