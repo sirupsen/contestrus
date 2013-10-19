@@ -8,4 +8,4 @@ module Kernel
   end
 end
 
-$:.unshift File.expand_path("../vendor/lib", __dir__)
+$: << File.expand_path("../vendor/lib", __dir__)
