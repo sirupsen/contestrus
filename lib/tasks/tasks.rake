@@ -3,7 +3,11 @@ namespace :tasks do
   task :add => :environment do
     Dir.glob("./contests/*").sort.each do |competition_path|
       competition_info = YAML.load_file(competition_path + "/competition.yml")
-      competition = Competition.find_or_create_by_name(competition_info[:name])
+      competition = Competition.find_by_name(competition_info["name"])
+
+      unless competition
+        competition = Competition.create(competition_info)
+      end
 
       puts "Competition: #{competition.name}"
 
