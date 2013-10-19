@@ -21,27 +21,35 @@ ln -sfn "$(pwd)" /app/current
 
 OLD_PID="$(cat /app/shared/puma.pid)"
 
-kill -USR2 "$OLD_PID"
+if [ -n "$OLD_DEPLOY" ] && [ -z "$(diff $OLD_DEPLOY/config/nginx.conf config/nginx.conf)" ]; then
+  NGINX_CONF_CHANGED=1
+
+  if ! nginx -t &> /dev/null; then
+    nginx -t
+    exit 1
+  fi
+fi
 
 echo -n "Stopping delayed job... "
-
 bin/delayed_job stop --pid-dir /app/shared
-
 echo "stopped."
 
 echo -n  "Waiting for Puma processes to roll over... "
-
+kill -USR2 "$OLD_PID"
 while [ -d "/proc/$OLD_PID" ]; do
   sleep 0.1
 done
-
 echo "new Puma has PID $(cat /app/shared/puma.pid)."
 
 echo -n "Starting delayed job... "
-
 bin/delayed_job start --pid-dir /app/shared
-
 echo "started."
+
+if [ -n "$NGINX_CONF_CHANGED" ]; then
+  echo -n "Reloading nginx... "
+  sudo restart-nginx # this is the only binary /etc/sudoers allows the app user to run
+  echo "ok."
+fi
 
 if [ -n "$OLD_DEPLOY" ]; then
   rm -rf "$OLD_DEPLOY"
