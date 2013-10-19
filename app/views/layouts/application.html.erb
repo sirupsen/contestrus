@@ -44,12 +44,7 @@
               <% competition.tasks.each do |task| %>
                 <li>
                   <%= link_to task_path(task) do %>
-                    <% if completed_task?(task) %>
-                      <span class="label label-success">Passed</span>
-                    <% elsif attempted_task?(task) %>
-                      <span class="label label-warning">Attempted</span>
-                    <% end %>
-                    <%= task.name %>
+                    <%= task_badge(task) %> <%= task.name %>
                   <% end %>
                 </li>
               <% end %>
