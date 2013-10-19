@@ -1,5 +1,6 @@
 /.bundle
 /bin
+/config/app_config.yml
 /db/*.sqlite3
 /db/*.sqlite3-journal
 /log/*.log
