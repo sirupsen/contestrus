@@ -20,7 +20,17 @@ fi
 
 ln -sfn "$(pwd)" /app/current
 
-# TODO - ensure all processes have rolled over
+OLD_PID="$(cat /app/shared/puma.pid)"
+
+kill -USR2 "$OLD_PID"
+
+echo "Waiting for old Puma to roll over..."
+
+while [ -d "/proc/$OLD_PID" ]; do
+  sleep 0.1
+done
+
+echo "New Puma has PID $(cat /app/shared/puma.pid)"
 
 if [ -n "$OLD_DEPLOY" ]; then
   rm -rf "$OLD_DEPLOY"
