@@ -1,0 +1,3 @@
+require_relative "../config/environment"
+require "delayed/command"
+Delayed::Command.new(ARGV).daemonize
