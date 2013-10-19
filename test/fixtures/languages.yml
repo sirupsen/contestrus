@@ -1,0 +1,36 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+ruby:
+  name: "Ruby"
+  extension: "rb"
+  image: "bouk/ruby"
+  build: "ruby -c /sandbox/file.rb"
+  run: "ruby /sandbox/file.rb"
+
+cpp:
+  name: "C++"
+  extension: "cpp"
+  image: "bouk/gcc"
+  build: "g++ -std=c++11 -O2 -o /binary /sandbox/file.cpp"
+  run: "/binary"
+
+c:
+  name: "C"
+  extension: "c"
+  image: "bouk/gcc"
+  build: "gcc -std=c99 -O2 -o /binary /sandbox/file.c"
+  run: "/binary"
+
+go:
+  name: "Golang"
+  extension: "go"
+  image: "bouk/golang"
+  build: "go build -o /binary /sandbox/file.go"
+  run: "/binary"
+
+coffee:
+  name: "Coffeescript"
+  extension: "coffee"
+  image: "bouk/coffee"
+  build: "coffee -c -o /tmp /sandbox/file.coffee"
+  run: "node /tmp/file.js"

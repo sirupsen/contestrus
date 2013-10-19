@@ -23,7 +23,7 @@ class EvaluationJobTest < ActiveSupport::TestCase
   end
 
   test "incorrect code fails hello world task" do
-    @submission.update_attribute :source, "puts 'omg'"
+    @submission.source = "puts 'omg'"
     @submission.save!
 
     refute latest_evaluation.passed?, "Evaluation must not pass"
@@ -46,8 +46,8 @@ class EvaluationJobTest < ActiveSupport::TestCase
     past = Time.now
     @submission.save!
 
-    assert_in_delta @submission.task.restrictions[:time], Time.now - past, 0.5
-    assert_equal "timeout", latest_evaluation.body.first[:status]
+    assert_in_delta @submission.task.restrictions["time"], Time.now - past, 0.5
+    assert_equal "Time limit exceeded", latest_evaluation.body.first[:status]
   end
 
   test "set duration for program" do
@@ -71,7 +71,7 @@ class EvaluationJobTest < ActiveSupport::TestCase
     @submission.path = "file.go"
     @submission.save!
 
-    assert @submission.passed?, 
+    assert @submission.passed?,
       "Evaluation failed: #{latest_evaluation.inspect}"
   end
 
@@ -88,8 +88,8 @@ class EvaluationJobTest < ActiveSupport::TestCase
     @submission.path = "file.go"
     @submission.save!
 
-    assert_equal "compilation failure", latest_test[:status]
-    assert_match /undefined: fmt/, latest_test[:output]
+    assert_equal "Build failed", latest_evaluation.status
+    assert_match /undefined: fmt/, latest_evaluation.body
   end
 
   test "reports ruby compilation errors" do
@@ -100,8 +100,8 @@ class EvaluationJobTest < ActiveSupport::TestCase
     @submission.source = ruby
     @submission.save!
 
-    assert_equal "compilation failure", latest_test[:status]
-    assert_match /unterminated string/, latest_test[:output]
+    assert_equal "Build failed", latest_evaluation.status
+    assert_match /unterminated string/, latest_evaluation.body
   end
 
   private

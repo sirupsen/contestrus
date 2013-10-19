@@ -18,7 +18,7 @@ class SubmissionTest < ActiveSupport::TestCase
     refute Submission.new(valid_submission_attributes.merge(path: nil)).valid?
   end
 
-  test "validates unknown file extension" do
+  test "validates unknown language" do
     refute Submission.new(valid_submission_attributes.merge(path: "test.txt")).valid?
   end
 
@@ -31,7 +31,7 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test "set language on creation" do
     submission = Submission.create(valid_submission_attributes)
-    assert_equal "ruby", submission.lang
+    assert_equal languages(:ruby), submission.language
   end
 
   test "passed? should return true if all evaluations passed" do

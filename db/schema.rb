@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131019155640) do
+ActiveRecord::Schema.define(version: 20131019195956) do
 
   create_table "competitions", force: true do |t|
     t.string   "name"
@@ -46,6 +46,16 @@ ActiveRecord::Schema.define(version: 20131019155640) do
     t.string   "status"
   end
 
+  create_table "languages", force: true do |t|
+    t.string   "name"
+    t.string   "extension"
+    t.string   "image"
+    t.string   "build"
+    t.string   "run"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "participations", force: true do |t|
     t.integer  "user_id"
     t.integer  "competition_id"
@@ -55,11 +65,12 @@ ActiveRecord::Schema.define(version: 20131019155640) do
 
   create_table "submissions", force: true do |t|
     t.text     "source"
-    t.string   "lang"
     t.integer  "task_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "language_id"
+    t.string   "path"
   end
 
   create_table "tasks", force: true do |t|
@@ -86,6 +97,7 @@ ActiveRecord::Schema.define(version: 20131019155640) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "email"
+    t.boolean  "admin"
   end
 
   add_index "users", ["id"], name: "index_users_on_id"

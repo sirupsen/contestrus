@@ -15,4 +15,24 @@ class TaskTest < ActiveSupport::TestCase
     Submission.create!(task: @task, user: @user, source: "puts 'Hello'", path: "whatever.rb")
     refute @task.passed?(@user)
   end
+
+  test "times_solved should return the number of times a task has been solved" do
+    Submission.create!(task: @task, user: users(:sirup), source: "puts 'Hello World'", path: "whatever.rb")
+    Submission.create!(task: @task, user: users(:bob), source: "puts 'Hello World'", path: "whatever.rb")
+
+    assert_equal 2, @task.reload.times_solved
+  end
+
+  test "times_solved should only count successful submissions once" do
+    Submission.create!(task: @task, user: users(:sirup), source: "puts 'Hello World'", path: "whatever.rb")
+    Submission.create!(task: @task, user: users(:sirup), source: "puts 'Hello World'", path: "whatever.rb")
+
+    assert_equal 1, @task.reload.times_solved
+  end
+
+  test "times_solved should not count incorrect submissions" do
+    Submission.create!(task: @task, user: users(:sirup), source: "puts 'wrong'", path: "whatever.rb")
+
+    assert_equal 0, @task.reload.times_solved
+  end
 end

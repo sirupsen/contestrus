@@ -5,21 +5,21 @@ mega_inversions:
   name: "Mega Inversions"
   body: "Number of triples for which <i>a_i > a_j > a_k</i> and <i>i < j < k</i>."
 
-hello_world: 
+hello_world:
   competition: open
   name: "Hello World"
   body: "Print hello world."
   restrictions: |
     ---
-    :time: 1.0
+    time: 1.0
 
-sum: 
+sum:
   competition: open
   name: "Sum"
   body: "Sum two numbers."
   restrictions: |
     ---
-    :time: 1.0
+    time: 1.0
 
 past_hello_world: 
   competition: past
@@ -27,4 +27,12 @@ past_hello_world:
   body: "Print hello world."
   restrictions: |
     ---
-    :time: 1.0
+    time: 1.0
+
+ongoing_hello_world: 
+  competition: ongoing
+  name: "Ongoing World"
+  body: "Print hello world."
+  restrictions: |
+    ---
+    time: 1.0

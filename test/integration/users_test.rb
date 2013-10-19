@@ -28,4 +28,14 @@ class CompetitionsIntegrationTest < ActionDispatch::IntegrationTest
 
     assert page.has_content? "Username can't be blank"
   end
+
+  test "navigate to own profile and see email" do
+    user = sign_in 
+
+    click_link "My profile"
+
+    within "#content" do
+      assert page.has_content?(user.email)
+    end
+  end
 end

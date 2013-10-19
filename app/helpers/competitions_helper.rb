@@ -1,4 +1,12 @@
 module CompetitionsHelper
+  def competition_status_class(competition)
+    if competition.tasks.all? { |task| task.passed?(current_user) }
+      "success"
+    else
+      "warning"
+    end
+  end
+
   def task_status_class(task)
     if task.passed?(current_user)
       "success"
@@ -9,11 +17,21 @@ module CompetitionsHelper
     end
   end
 
-  def competition_status_class(competition)
-    if competition.tasks.all? { |task| task.passed?(current_user) }
-      "success"
+  def task_status_human(task)
+    if task.passed?(current_user)
+      "Passed"
+    elsif current_user.submissions.where(task_id: task.id).empty?
+      "Not attempted"
     else
-      "warning"
+      "Attempted"
     end
+  end
+
+  def admin_or_expired?(competition)
+    !@competition.ongoing? || current_user.admin?
+  end
+
+  def task_status_badge(task)
+    "<span class='label label-#{task_status_class(task)}'>#{task_status_human(task)}</span>".html_safe
   end
 end

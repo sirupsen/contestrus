@@ -55,4 +55,39 @@ class CompetitionsIntegrationTest < ActionDispatch::IntegrationTest
 
     page.assert_selector("table tr.success")
   end
+
+  test "user who has not submitted should not show up on the leaderboard" do
+    user = sign_in
+    competition = competitions(:ongoing)
+
+    visit leaderboard_competition_path(competition)
+
+    within "#content" do
+      refute page.has_content?(user.username)
+    end
+  end
+
+  test "user who has submitted should show up on the leaderboard" do
+    user = sign_in
+
+    competition = competitions(:ongoing)
+
+    within "#content" do
+      click_link competition.name
+    end
+
+    within "#content" do
+      click_link competition.tasks.first.name
+    end
+
+    attach_file "submission_source", Rails.root + "test/data/submissions/hello_world.rb"
+    click_button "Evaluate"
+
+    visit leaderboard_competition_path(competition)
+
+    within "#content" do
+      assert page.has_content?(user.username.humanize), 
+        "Should show user #{user.username} on leaderboard after submitting solution to task."
+    end
+  end
 end
