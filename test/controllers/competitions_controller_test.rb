@@ -18,4 +18,13 @@ class CompetitionsControllerTest < ActionController::TestCase
 
     assert_response :success
   end
+
+  test "non-admin users have access to results of past competitions" do
+    sign_in users(:bob)
+    competition = competitions(:past)
+
+    get :leaderboard, id: competition
+
+    assert_response :success
+  end
 end
