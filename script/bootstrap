@@ -21,3 +21,6 @@ RUBY
 
 # rewrite shebangs to point directly to the Ruby binary instead of going through env
 RUBY_PATH="$(which ruby)" perl -pi -e 's/^#!.*$/#!$ENV{RUBY_PATH}/g' bin/*
+
+# symlink bin/ruby to the Ruby binary
+ln -sf "$(which ruby)" bin/ruby
