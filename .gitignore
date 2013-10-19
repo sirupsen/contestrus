@@ -6,4 +6,4 @@
 /public/assets
 /tmp
 /vendor/bundle
-/vendor/environment
+/vendor/lib
