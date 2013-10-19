@@ -1,3 +1,3 @@
 class Evaluation < ActiveRecord::Base
-  serialize :body, Array
+  serialize :body
 end

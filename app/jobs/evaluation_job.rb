@@ -1,88 +1,138 @@
-require 'tempfile'
-require 'evaluator'
+require 'rubygems'
+require 'rubygems/package'
+
+require 'docker'
 
 class EvaluationJob
+  SANDBOX_DIR = '/sandbox'
+  SEGFAULT_STATUS = 139
+
   def initialize(submission_id)
     @submission_id = submission_id
   end
 
   def perform
-    results = []
+    @temporary_dir = mktemp_dir
 
-    unless evaluator.compile === true
-      results << {
-        status: "compilation failure",
-        output: evaluator.compile
-      }
-    else
-      results = task.test_cases.map { |test| evaluate(test) }
+    File.open(File.join(@temporary_dir, "file.#{language.extension}"), 'w') do |f|
+      f.write submission.source
     end
 
-    submission.evaluations.create(
-      passed: results.all? { |e| e[:status] == "passed" },
-      body: results
-    )
-
-  ensure
-    evaluator.clean
-  end
-
-  def evaluate(test)
-    result = {id: test.id}
-
-    past = Time.now
-    output = run_test(test)
-
-    if output == :timeout
-      result[:status] = "timeout"
-      return result
-    end
-
-    result[:duration] = Time.now - past
-    result[:output]   = strip_all_lines(output)
-
-    unless strip_all_lines(result[:output]) == strip_all_lines(test.output)
-      result[:status] = "wrong answer"
-      return result
-    end
-
-    result[:status] = "passed"
-    result
-  end
-
-  def run_test(test)
-    output = Tempfile.new("output")
-
-    pid = Process.spawn("#{evaluator.command(stdin: test.input)} > #{output.path}", :pgroup => true)
-    begin
-      Timeout.timeout(task.restrictions[:time] || 2.0) do
-        Process.wait(pid)
+    if prepare_image
+      begin
+        @result = task.test_cases.map {|test_case| evaluate(test_case)}
+        passed = @result.all? {|r| r[:status] == "Correct"}
+        submission.evaluations.create(
+          status: if passed then "Passed" else "Failed" end,
+          body: @result,
+          passed: passed
+        )
+      ensure
+        @prepared_image.remove if @prepared_image
       end
-    rescue Timeout::Error
-      Process.kill("KILL", -Process.getpgid(pid))
-      return :timeout
+    else
+      submission.evaluations.create(
+        status: "Build failed",
+        passed: false,
+        body: @build_body
+      )
     end
-
-    buffer = output.read
-    output.unlink
-
-    buffer
   end
 
   private
-  def evaluator
-    Evaluator::Languages[submission.lang].new(submission.source)
+
+  def prepare_image
+    c = create_container(language.image, "#{language.build} 1> /stdout 2> /stderr")
+    c.start!(start_options)
+    unless c.wait(30)['StatusCode'].zero?
+      files = retrieve_stderr_stdout(c)
+      @build_body = files['stdout'] + files['stderr']
+      return false
+    end
+    @prepared_image = c.commit
+  ensure
+    c.delete
+  end
+
+  def evaluate(test_case)
+    File.open(File.join(@temporary_dir, 'stdin'), 'w') do |f|
+      f.write test_case.input
+    end
+
+    c = create_container(@prepared_image.id, "#{language.run} 1> /stdout 2> /stderr < #{SANDBOX_DIR}/stdin")
+    t = Time.now
+    c.start!(start_options)
+    status_code = c.wait(task.restrictions["time"] || 2)['StatusCode']
+    if status_code == SEGFAULT_STATUS
+      {
+        status: "Segmentation fault",
+        duration: Time.now - t
+      }
+    else
+      files = retrieve_stderr_stdout(c)
+
+      {
+        output: files['stdout'] + files['stderr'],
+        status: if test_case.output.strip == files['stdout'].strip
+          "Correct"
+        else
+          "Wrong"
+        end,
+        duration: Time.now - t
+      }
+    end
+  rescue Docker::Error::TimeoutError
+    {status: "Time limit exceeded", duration: Time.now - t}
+  rescue => e
+    {status: "Error"}
+  ensure
+    c.kill
+    c.delete
+  end
+
+  def start_options
+    {'Binds' => ["#{@temporary_dir}:#{SANDBOX_DIR}:r"]}
+  end
+
+  def retrieve_stderr_stdout(container)
+    files = {}
+    %w(/stderr /stdout).each do |name|
+      data = StringIO.new
+      container.copy(name) do |block|
+        data << block
+      end
+      data.rewind
+      Gem::Package::TarReader.new(data) do |tar|
+       tar.each do |tarfile|
+         files[tarfile.full_name] = tarfile.read || ""
+       end
+      end
+    end
+    files
+  end
+
+  def create_container(image, command)
+    Docker::Container.create(
+      'Image' => image,
+      'Cmd' => ["/bin/bash", "-c", command],
+      'Volumes' => {SANDBOX_DIR => {}},
+      'NetworkDisabled' => true
+    )
+  end
+
+  def language
+    submission.language
   end
 
   def task
     submission.task
   end
 
-  def submission
-    @submission ||= Submission.find(@submission_id)
+  def mktemp_dir
+    `mktemp --directory`.strip
   end
 
-  def strip_all_lines(s)
-    s.strip.split("\n").map { |line| line.strip }.join("\n")
+  def submission
+    @submission ||= Submission.find(@submission_id)
   end
 end

@@ -31,7 +31,7 @@ class SubmissionsControllerTest < ActionController::TestCase
       post :create, task_id: tasks(:hello_world).id, submission: { source: file }
     end
 
-    assert_equal "ruby", Submission.last.lang
+    assert_equal languages(:ruby), Submission.last.language
   end
 
   test "should not crate submission on unknown filetype" do

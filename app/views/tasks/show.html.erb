@@ -42,14 +42,21 @@
     </thead>
     <tbody>
       <% @submissions.each do |submission| %>
+        <% evaluation = submission.evaluations.last %>
         <tr class="<%= submission_class(submission) %> accordion-toggle" data-toggle="collapse" data-target="#evaluations-<%= submission.id %>">
           <td><%= submission.id %></td>
           <td><%= submission.created_at.to_formatted_s(:short) %></td>
-          <td><%= submission_status submission %></td>
+          <td><%= evaluation.status %></td>
         </tr>
+        <% unless pending?(submission) %>
         <tr>
+        <% if evaluation.status == "Build failed" %>
           <td colspan="6" style="padding: 0 !important">
-            <div class="accordian-body collapse" id="evaluations-<%= submission.id %>"> 
+          <%= evaluation.body %>
+          </td>
+        <% else %>
+          <td colspan="6" style="padding: 0 !important">
+            <div class="accordian-body collapse" id="evaluations-<%= submission.id %>">
               <table class="table table-condensed evaluation">
                 <thead>
                   <th>#</th>
@@ -60,23 +67,24 @@
                   <th>Expected</th>
                 </thead>
                 <tbody>
-                  <% unless pending?(submission) %>
-                    <% submission.evaluations.last.body.each_with_index do |test, no| %>
-                      <tr class="<%= submission_class(submission) %>">
-                        <td><%= no + 1 %></td>
-                        <td><%= test[:status].humanize %></td>
-                        <td><%= test[:duration] && "#{test[:duration].round(3)}s" %></td>
-                        <td><pre><%= ::TestCase.find(test[:id]).input.truncate(200) %></pre></td>
-                        <td><pre><%= test[:output].try(:truncate, 200) %></pre></td>
-                        <td><pre><%= ::TestCase.find(test[:id]).output.truncate(200) %></pre></td>
-                      </tr>
-                    <% end %>
-                  <% end %>
+                <% evaluation.body.zip(submission.task.test_cases).each_with_index do |zippy, no| %>
+                  <% eval, test_case = zippy[0], zippy[1] %>
+                  <tr class="<%= submission_class(submission) %>">
+                    <td><%= no + 1 %></td>
+                    <td><%= eval[:status].humanize %></td>
+                    <td><%= eval[:duration] && "#{eval[:duration].round(3)}s" %></td>
+                    <td><pre><%= test_case.input.truncate(200) %></pre></td>
+                    <td><pre><%= eval[:output].try(:truncate, 200) %></pre></td>
+                    <td><pre><%= test_case.output.truncate(200) %></pre></td>
+                  </tr>
+                <% end %>
                 </tbody>
               </table>
             </div>
           </td>
+          <% end %>
         </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>
