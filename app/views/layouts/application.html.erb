@@ -44,7 +44,7 @@
               <% competition.tasks.each do |task| %>
                 <li>
                   <%= link_to task_path(task) do %>
-                    <%= task_badge(task) %> <%= task.name %>
+                    <%= raw task_badge(task) %> <%= task.name %>
                   <% end %>
                 </li>
               <% end %>
