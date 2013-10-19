@@ -1,4 +1,4 @@
 name: "Mega Inversions"
 restrictions:
   time: 5.0
-  memory: 256mb
+  memory: 256000000

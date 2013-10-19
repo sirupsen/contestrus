@@ -51,7 +51,7 @@ class EvaluationJob
     end
     @prepared_image = c.commit
   ensure
-    c.delete
+    c.delete if c
   end
 
   def evaluate(test_case)
@@ -114,6 +114,8 @@ class EvaluationJob
   def create_container(image, command)
     Docker::Container.create(
       'Image' => image,
+      'Memory' => task.restrictions["memory"] || 128*1024*1024,
+      'MemorySwap' => -1,
       'Cmd' => ["/bin/bash", "-c", command],
       'Volumes' => {SANDBOX_DIR => {}},
       'NetworkDisabled' => true
