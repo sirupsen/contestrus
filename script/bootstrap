@@ -1,4 +1,7 @@
 #!/bin/bash
+
+cd "$(dirname "$0")/.."
+
 bundle install --path ./vendor/bundle --standalone --clean --binstubs
 
 # we don't want to check in Rails' binstubs, so write them out by hand here:
