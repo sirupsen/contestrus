@@ -1,6 +1,7 @@
 <table class="table table-hover results">
   <thead>
     <tr>
+      <th>Rank</th>
       <th>Username</th>
       <% @tasks.each do |task| %>
         <th><%= link_to task.name, task_path(task) %></th>
@@ -8,7 +9,8 @@
     </tr>
   </thead>
   <tbody>
-    <% @users.each do |user| %>
+    <% @users.each_with_index do |user, rank| %>
+      <td>#<%= rank + 1 %></td>
       <td><%= user.username.humanize %></td>
       <% @tasks.each do |task| %>
         <td><%= task_status_badge(task) %></td>
