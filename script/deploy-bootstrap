@@ -14,4 +14,14 @@ ln -sf /app/shared/log log
 script/bootstrap
 bin/rake assets:precompile
 
+if [ -e /app/current ]; then
+  OLD_DEPLOY="$(readlink /app/current)"
+fi
+
 ln -sf "$(pwd)" /app/current
+
+# TODO - ensure all processes have rolled over
+
+if [ -n "$OLD_DEPLOY" ]; then
+  rm -rf "$OLD_DEPLOY"
+fi
