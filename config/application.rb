@@ -1,6 +1,5 @@
 require File.expand_path('../boot', __FILE__)
 
-require 'daemons'
 require 'sqlite3'
 require 'rails'
 require 'active_record/railtie'
