@@ -2,7 +2,9 @@
 # Do NOT run this on development machines.
 # This is intended to run on the production server as part of deploys.
 
+export RAILS_ENV=production
+
 set -e
 set -x
 
-echo "Hello world!"
+script/bootstrap
