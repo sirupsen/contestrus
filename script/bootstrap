@@ -8,13 +8,21 @@ bundle install --path ./vendor/bundle --standalone --clean --binstubs --quiet
 
 export RUBY_BIN="$(ruby -e 'puts Gem.ruby')"
 
-perl -pi -e 's/^#!.*$/#!$ENV{RUBY_BIN} --disable-gem/g' bin/*
+for binstub in bin/*; do
+  load_line="$(tail -n1 "$binstub")"
+  load_line="${load_line##*../../}"
+  load_line="${load_line%%\'*}"
+  echo "#!$RUBY_BIN" > "$binstub"
+  echo 'Dir.chdir(File.expand_path("..", __dir__))' >> "$binstub"
+  echo 'load "vendor/bundle/bundler/setup.rb"' >> "$binstub"
+  echo "load \"$load_line\"" >> "$binstub"
+done
 
 for script in script/*; do
   bin="bin/${script##*/}"
   echo '#!/bin/bash' > "$bin"
+  echo 'cd "$(dirname "$0")/.."' >> "$bin"
   if head -n1 "$script" | grep -q ruby; then
-    echo 'cd "$(dirname "$0")/.."' >> "$bin"
     echo "exec bin/ruby $script \"\$@\"" >> "$bin"
   else
     echo "exec $script \"\$@\"" >> "$bin"
