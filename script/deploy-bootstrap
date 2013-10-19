@@ -24,8 +24,8 @@ OLD_PID="$(cat /app/shared/puma.pid)"
 if [ -n "$OLD_DEPLOY" ] && [ -z "$(diff $OLD_DEPLOY/config/nginx.conf config/nginx.conf)" ]; then
   NGINX_CONF_CHANGED=1
 
-  if ! nginx -t &> /dev/null; then
-    nginx -t
+  if ! sudo /usr/local/bin/check-nginx-syntax &> /dev/null; then
+    sudo /usr/local/bin/check-nginx-syntax
     exit 1
   fi
 fi
@@ -47,7 +47,7 @@ echo "started."
 
 if [ -n "$NGINX_CONF_CHANGED" ]; then
   echo -n "Reloading nginx... "
-  sudo restart-nginx # this is the only binary /etc/sudoers allows the app user to run
+  sudo /usr/local/bin/restart-nginx
   echo "ok."
 fi
 
