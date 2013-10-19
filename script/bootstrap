@@ -4,8 +4,6 @@ cd "$(dirname "$0")/.."
 
 rm -f bin/*
 
-echo "Bundling"
-
 bundle install --path ./vendor/bundle --standalone --clean --binstubs --quiet
 
 export RUBY_BIN="$(ruby -e 'puts Gem.ruby')"
@@ -25,18 +23,3 @@ for script in script/*; do
 done
 
 ln -sf "$RUBY_BIN" bin/ruby
-
-rm -rf vendor/lib
-mkdir vendor/lib
-
-echo "Flattening load path"
-
-bin/ruby -rfileutils <<RUBY
-  LOAD_PATH_BEFORE = $:.dup
-  require "./vendor/bundle/bundler/setup"
-  ($: - LOAD_PATH_BEFORE).each do |load_path|
-    Dir["#{load_path}/*"].each do |file|
-      FileUtils.cp_r(file, "vendor/lib/")
-    end
-  end
-RUBY

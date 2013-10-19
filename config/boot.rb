@@ -8,4 +8,4 @@ module Kernel
   end
 end
 
-$: << File.expand_path("../vendor/lib", __dir__)
+require_relative '../vendor/bundle/bundler/setup'
