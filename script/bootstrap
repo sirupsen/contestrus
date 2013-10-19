@@ -8,6 +8,8 @@ echo "Bundling"
 
 bundle install --path ./vendor/bundle --standalone --clean --binstubs --quiet
 
+export RUBY_BIN="$(ruby -e 'puts Gem.ruby')"
+
 perl -pi -e 's/^#!.*$/#!$ENV{RUBY_BIN}/g' bin/*
 
 for script in script/*; do
@@ -21,8 +23,6 @@ for script in script/*; do
   fi
   chmod +x "$bin"
 done
-
-export RUBY_BIN="$(ruby -e 'puts Gem.ruby')"
 
 ln -sf "$RUBY_BIN" bin/ruby
 
