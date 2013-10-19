@@ -6,7 +6,11 @@ module ApplicationHelper
       "<span class='label label-success'>Passed</span>"
     elsif attempted_task?(task)
       "<span class='label label-warning'>Attempted</span>"
-    end
+    end.html_safe
+  end
+
+  def render_markdown(markdown)
+    Markdown.render(markdown).html_safe
   end
 
   private

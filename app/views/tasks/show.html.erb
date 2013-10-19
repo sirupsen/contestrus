@@ -14,7 +14,7 @@
 <% end %>
 
 <h2><%= @task.name %></h2>
-<p><%= raw Markdown.render(@task.body) %></p>
+<p><%= render_markdown(@task.body) %></p>
 
 <%= form_for @submission, url: task_submissions_path(@task.id), method: :post do |f| %>
   <%= f.hidden_field :task_id, value: @task.id %>
