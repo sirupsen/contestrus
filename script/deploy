@@ -3,11 +3,6 @@
 DEPLOY_USER="app"
 DEPLOY_HOST="contestrus"
 
-if [ -n "git status -u no -s" ] && [ -z "$DIRTY_DEPLOY" ]; then
-  echo "Not deploying with a dirty working tree."
-  exit 1
-fi
-
 DEPLOY_TARGET="${1:-HEAD}"
 SHA="$(git rev-parse "$DEPLOY_TARGET")"
 ABBREV_SHA="${SHA:0:10}"
