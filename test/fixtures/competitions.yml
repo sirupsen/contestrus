@@ -12,3 +12,8 @@ past:
   name: Past competition
   start_at: 2013-08-30 22:00:00
   end_at: 2013-08-30 24:00:00
+
+ongoing:
+  name: Ongoing Competition
+  start_at: <%= Time.now - 10.minutes %>
+  end_at: <%= (Time.now - 10.minutes) + 2.hours %>

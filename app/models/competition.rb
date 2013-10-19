@@ -10,4 +10,10 @@ class Competition < ActiveRecord::Base
   def open?(time = Time.now)
     !end_at || (start_at..end_at).cover?(time)
   end
+
+  # Returns whether this competition is always open, which it is if end_at or
+  # start_at is not set.
+  def always_open?
+    !end_at
+  end
 end
