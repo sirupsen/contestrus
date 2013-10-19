@@ -8,8 +8,8 @@ export PATH=/app/rubies/ruby-2.0.0-p247/bin:$PATH
 set -e
 set -x
 
-ln -sf /app/shared/app_config.yml config/app_config.yml
-ln -sF /app/shared/log log
+ln -sfn /app/shared/app_config.yml config/app_config.yml
+ln -sfn /app/shared/log log
 
 script/bootstrap
 bin/rake assets:precompile
@@ -18,7 +18,7 @@ if [ -e /app/current ]; then
   OLD_DEPLOY="$(readlink /app/current)"
 fi
 
-ln -sF "$(pwd)" /app/current
+ln -sfn "$(pwd)" /app/current
 
 # TODO - ensure all processes have rolled over
 
