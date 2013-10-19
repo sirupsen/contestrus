@@ -14,7 +14,8 @@ Vagrant::Config.run do |config|
   config.vm.box_url = BOX_URI
 
   config.ssh.forward_agent = true
-  config.vm.share_folder "contestrus", "/contestrus", "~/code/contestrus"
+  config.vm.share_folder "contestrus", "/contestrus", `pwd`.strip
+  config.vm.forward_port 3000, 3001
 
   # Provision docker and new kernel if deployment was not done.
   # It is assumed Vagrant can successfully launch the provider instance.
@@ -25,6 +26,11 @@ Vagrant::Config.run do |config|
       "apt-get update -qq; apt-get install -q -y --force-yes lxc-docker; "
     # Add Ubuntu raring backported kernel
     pkg_cmd << "apt-get update -qq; apt-get install -q -y linux-image-generic-lts-raring; "
+    pkg_cmd << "apt-get -y install libsqlite3-dev build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev wget"
+    pkg_cmd << "wget http://cache.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p247.tar.gz -O- | tar -xzf-"
+    pkg_cmd << "cd ruby-2.0.0-p247; ./configure --prefix=/usr/local; make; make install"
+    pkg_cmd << "gem install bundler"
+
     # Add guest additions if local vbox VM. As virtualbox is the default provider,
     # it is assumed it won't be explicitly stated.
     if ENV["VAGRANT_DEFAULT_PROVIDER"].nil? && ARGV.none? { |arg| arg.downcase.start_with?("--provider") }
