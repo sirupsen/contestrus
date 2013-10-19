@@ -134,13 +134,13 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt-ruby (~> 3.0.0)
-  capybara
+  capybara (= 2.1.0)
   coffee-rails (~> 4.0.0)
   delayed_job (= 4.0.0)
   delayed_job_active_record (= 4.0.0)
   foreman (= 0.63.0)
   jquery-rails (= 3.0.4)
-  pry
+  pry (= 0.9.12.2)
   rails (= 4.0.0)
   redcarpet (= 3.0.0)
   sass-rails (~> 4.0.0)
