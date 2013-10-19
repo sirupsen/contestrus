@@ -1,6 +1,5 @@
 #!/bin/bash
 bundle install --path ./vendor/bundle --standalone --clean --binstubs
-bin/rake db:drop db:create db:migrate db:test:prepare db:seed
 
 # we don't want to check in Rails' binstubs, so write them out by hand here:
 cat <<RUBY > bin/rails

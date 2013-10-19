@@ -1,0 +1,3 @@
+#!/bin/bash
+script/bootstrap
+bin/rake db:drop db:create db:migrate db:test:prepare db:seed tasks:add
