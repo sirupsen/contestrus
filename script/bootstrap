@@ -23,3 +23,5 @@ for script in script/*; do
 done
 
 ln -sf "$RUBY_BIN" bin/ruby
+
+rm -rf vendor/environment vendor/lib
