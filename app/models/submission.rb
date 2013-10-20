@@ -12,9 +12,7 @@ class Submission < ActiveRecord::Base
 
   serialize :body
 
-  def self.passed
-    where(:passed => true)
-  end
+  scope :passed, -> { where(:passed => true) }
 
   # Validates that the submission was performed within the duration of the
   # contest.
