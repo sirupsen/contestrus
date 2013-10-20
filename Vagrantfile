@@ -11,5 +11,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Because Virtualbox's shared filesystem is extremely slow
   config.vm.synced_folder ".", "/vagrant", nfs: true
+  # NFS requires this
   config.vm.network "private_network", ip: "192.168.50.4"
+
+  config.vm.network "forwarded_port", guest: 3000, host: 3000
 end
