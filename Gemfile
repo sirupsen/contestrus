@@ -12,6 +12,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem "redcarpet", "3.0.0"
 gem "daemons", "1.1.9"
 gem "docker-api", :git => "git://github.com/swipely/docker-api.git", :require => 'docker'
+gem 'pusher'
 
 group :test, :development do
   gem 'pry', '0.9.12.2'
