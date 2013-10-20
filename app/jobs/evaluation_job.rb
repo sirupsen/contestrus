@@ -71,7 +71,10 @@ class EvaluationJob
       f.write test_case.input
     end
 
-    c = create_container(@prepared_image.id, "#{language.run} 1> /stdout 2> /stderr < #{SANDBOX_DIR}/stdin")
+    c = create_container(@prepared_image.id, "#{language.run} 1> /stdout 2> /stderr < #{SANDBOX_DIR}/stdin",
+      'Memory' => task.restrictions["memory"] || 128*1024*1024,
+      'MemorySwap' => -1
+    )
     t = Time.now
     c.start!(start_options)
     status_code = c.wait(task.restrictions["time"] || 2)['StatusCode']
@@ -123,15 +126,13 @@ class EvaluationJob
     files
   end
 
-  def create_container(image, command)
-    Docker::Container.create(
+  def create_container(image, command, opts={})
+    Docker::Container.create({
       'Image' => image,
-      'Memory' => task.restrictions["memory"] || 128*1024*1024,
-      'MemorySwap' => -1,
       'Cmd' => ["/bin/bash", "-c", command],
       'Volumes' => {SANDBOX_DIR => {}},
       'NetworkDisabled' => true
-    )
+    }.merge(opts))
   end
 
   def language
