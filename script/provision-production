@@ -50,3 +50,16 @@ app ALL=NOPASSWD: /usr/local/bin/check-nginx-syntax
 SUDOERS
 
 fi
+
+if [ -f ~/id_rsa.pub ]; then
+  mkdir -p ~/.ssh
+  if [ ! -f ~/.ssh/authorized_keys ]; then
+    cp ~/id_rsa.pub ~/.ssh/authorized_keys
+  fi
+
+  mkdir -p /app/.ssh
+  if [ ! -f /app/.ssh/authorized_keys ]; then
+    cp ~/id_rsa.pub /app/.ssh/authorized_keys
+    chown app:app /app/.ssh/authorized_keys
+  fi
+fi

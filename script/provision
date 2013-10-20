@@ -7,6 +7,12 @@ if [ "$#" = "0" ]; then
   exit 1
 fi
 
-scp script/provision-basic script/provision-production root@"$1":
+FILES="script/provision-basic script/provision-production"
+
+if [ -f "$HOME/.ssh/id_rsa.pub" ]; then
+  FILES="$FILES $HOME/.ssh/id_rsa.pub"
+fi
+
+scp $FILES root@"$1":
 
 ssh root@"$1" ./provision-production
