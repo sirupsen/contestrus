@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ "$#" = "0" ]; then
+  echo "Usage: script/provision host"
+  echo
+  echo "Provisions a new production Contestrus server."
+  exit 1
+fi
+
+scp script/provision-basic script/provision-production root@"$1":
+
+ssh root@"$1" ./provision-production
