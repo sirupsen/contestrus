@@ -40,10 +40,16 @@ run a provision script also used for production to install:
 Once that's all done, you can go to the repository and run the tests:
 
 ```bash
-# On host box
+## On host box
+
+# This will take a good while the first time to download and install everything.
+# Network is the main bottleneck here. script/provision-development is run when
+# the box is booted to provision it.
+$ vagrant up
+# ssh into the now provisioned Vagrant box.
 $ vagrant ssh
 
-# Inside Vagrant-managed box
+## Inside Vagrant-managed box
 $ cd /vagrant # Shared directory with host for Contestrus
 $ bin/rake # Run all tests
 ```
