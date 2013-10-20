@@ -19,7 +19,8 @@ for binstub in bin/*; do
   load_line="${load_line##*../../}"
   load_line="${load_line%%\'*}"
   echo "#!$RUBY_BIN" > "$binstub"
-  echo 'Dir.chdir(File.expand_path("..", __dir__))' >> "$binstub"
+  echo 'ENV["PWD"] = File.expand_path("..", __dir__)' >> "$binstub"
+  echo 'Dir.chdir(ENV["PWD"])' >> "$binstub"
   echo 'load "vendor/bundle/bundler/setup.rb"' >> "$binstub"
   echo "load \"$load_line\"" >> "$binstub"
 done
