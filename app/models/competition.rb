@@ -6,6 +6,7 @@ class Competition < ActiveRecord::Base
 
   has_many :tasks
   has_many :submissions, through: :tasks
+  has_many :participating_users, through: :submissions, source: :user
 
   # Returns a range for which this contest is running.
   def open?(time = Time.now)
