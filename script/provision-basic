@@ -1,0 +1,104 @@
+#!/bin/bash
+# This script is intended to be run on a fresh Ubuntu 13.04 x64 machine.
+# It sets up a production environment for the Contestrus app to run.
+
+PARALLEL=4
+
+set -e
+set -x
+
+if [ $UID -ne 0 ]; then
+  echo "Please run script/provision as root."
+  exit 1
+fi
+
+cd /
+
+## Install packages we depend on
+
+apt-get update
+
+apt-get install -y \
+  build-essential \
+  git \
+  htop \
+  libreadline6-dev \
+  libsqlite3-dev \
+  libssl-dev \
+  libxml2-dev \
+  libxslt-dev \
+  libyaml-dev \
+  ncurses-dev \
+  nodejs \
+  openssl \
+  sqlite3 \
+  sudo \
+  vim \
+  zlib1g-dev
+
+## Create the app user and the /app directory
+
+if [ ! -d /app ]; then
+  useradd --home-dir /app --create-home --shell /bin/bash app
+fi
+
+## Install ruby-2.0.0-p247 into /app/rubies/ruby-2.0.0-p247
+
+if [ ! -d /app/rubies/ruby-2.0.0-p247 ]; then
+  (
+    cd /tmp
+    wget http://cache.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p247.tar.bz2 -O- | tar xjf -
+    cd ruby-2.0.0-p247
+    ./configure --prefix=/app/rubies/ruby-2.0.0-p247 --disable-install-doc
+    make -j "$PARALLEL"
+    make install
+    /app/rubies/ruby-2.0.0-p247/bin/gem install bundler
+  )
+fi
+
+## Setup the /app/shared folder and app_config.yml with random secret token
+
+mkdir -p /app/shared
+mkdir -p /app/shared/log
+if [ ! -f /app/shared/app_config.yml ]; then
+  echo "secret_token: $(openssl rand -hex 32)" > /app/shared/app_config.yml
+fi
+
+## Install Docker
+
+if ! which docker >/dev/null; then
+  wget -qO- https://get.docker.io/gpg | apt-key add -
+  echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list
+  apt-get update
+  apt-get install -y lxc-docker
+fi
+
+## Add the app user to the Docker group
+
+usermod -G docker -a app
+
+## Install Docker images
+
+docker pull bouk/coffee
+docker pull bouk/gcc
+docker pull bouk/golang
+docker pull bouk/node
+docker pull bouk/ruby
+
+## Create .ssh and an empty authorized_keys for app
+
+mkdir -p /app/.ssh
+touch /app/.ssh/authorized_keys
+
+## Add github.com public keys to known_hosts
+
+if [ ! -f /app/.ssh/known_hosts ]; then
+  cat > /app/.ssh/known_hosts <<KNOWN_HOSTS
+|1|diWgaRR5v1U/5b2V5BFjWVApxvY=|VEprbEVtgtMebXhmNB7yfc77kDc= ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
+|1|4n4ARSOPBEmRUVOWaKiI3XsjmG4=|QIanVGwVfEQeKfWgWkUrhXi6Vkg= ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
+KNOWN_HOSTS
+fi
+
+## chown all of /app back to the app user
+
+chown -R app:app /app

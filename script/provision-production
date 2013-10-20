@@ -1,0 +1,52 @@
+#!/bin/bash
+
+set -e
+set -x
+
+./provision-basic
+
+apt-get install -y nginx
+
+cat > /etc/nginx/nginx.conf <<NGINX
+user app;
+worker_processes 1;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    default_type        application/octet-stream;
+    gzip                on;
+    include             mime.types;
+    keepalive_timeout   65;
+    sendfile            on;
+
+    types_hash_max_size 2048;
+
+    include /app/current/config/nginx.conf;
+}
+NGINX
+
+cat > /usr/local/bin/restart-nginx <<SHELL
+if [ -f /run/nginx.pid ] && [ -d "/proc/\$(cat /run/nginx.pid)" ]; then
+  kill -HUP "\$(cat /run/nginx.pid)"
+else
+  service nginx start
+fi
+SHELL
+chmod +x /usr/local/bin/restart-nginx
+
+cat > /usr/local/bin/check-nginx-syntax <<SHELL
+nginx -t
+SHELL
+chmod +x /usr/local/bin/check-nginx-syntax
+
+if ! grep -q restart-nginx /etc/sudoers; then
+
+  cat >> /etc/sudoers <<SUDOERS
+app ALL=NOPASSWD: /usr/local/bin/restart-nginx
+app ALL=NOPASSWD: /usr/local/bin/check-nginx-syntax
+SUDOERS
+
+fi
