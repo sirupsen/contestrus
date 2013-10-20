@@ -90,11 +90,11 @@
         </div>
       </div>
     </div>
-    <% if APP_CONFIG['pusher'] && current_user %>
+    <% if APP_CONFIG['pusher'] && current_user.try(:username) %>
     <script src="http://js.pusher.com/2.1/pusher.min.js" type="text/javascript"></script>
     <script>
     var pusher = new Pusher('<%= APP_CONFIG['pusher']['key'] %>');
-    var channel = pusher.subscribe('<%=  APP_CONFIG['pusher']['prefix'] + current_user.username %>');
+    var channel = pusher.subscribe('<%= APP_CONFIG['pusher']['prefix'] + current_user.username %>');
     channel.bind('submission_judged', function(data) {
         window.location.reload();
     });
