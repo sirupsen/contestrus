@@ -7,8 +7,8 @@ module CompetitionsHelper
     end
   end
 
-  def task_status_class(task)
-    if task.passed?(current_user)
+  def task_status_class(task, user = current_user)
+    if task.passed?(user)
       "success"
     elsif current_user.submissions.where(task_id: task.id).empty?
       "info"
@@ -17,8 +17,8 @@ module CompetitionsHelper
     end
   end
 
-  def task_status_human(task)
-    if task.passed?(current_user)
+  def task_status_human(task, user = current_user)
+    if task.passed?(user)
       "Passed"
     elsif current_user.submissions.where(task_id: task.id).empty?
       "Not attempted"
@@ -31,7 +31,7 @@ module CompetitionsHelper
     !@competition.ongoing? || current_user.admin?
   end
 
-  def task_status_badge(task)
-    "<span class='label label-#{task_status_class(task)}'>#{task_status_human(task)}</span>".html_safe
+  def task_status_badge(task, user = current_user)
+    "<span class='label label-#{task_status_class(task, user)}'>#{task_status_human(task, user)}</span>".html_safe
   end
 end

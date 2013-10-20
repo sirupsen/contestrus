@@ -14,7 +14,7 @@
           <td>#<%= rank + 1 %></td>
           <td><%= user.username.humanize %></td>
           <% @tasks.each do |task| %>
-            <td><%= task_status_badge(task) %></td>
+            <td><%= task_status_badge(task, user) %></td>
           <% end %>
         </tr>
       <% end %>
