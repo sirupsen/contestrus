@@ -30,25 +30,27 @@ closely reflect production environments and other developers' environments.
 Run `vagrant up` to create an Ubuntu 13.04 box for local development. This will
 run a provision script also used for production to install:
 
-* Install a lot of basic packages
-* Compile and install ruby 2.0.0
-* Docker
+* Basic packages (openssl, libxml2, lxc, ..)
+* Compile and install Ruby 2.0.0
+* Install Docker and relevant system patches
 * Docker containers for languages supported by Contestrus
-* Clones down Contestrus. This is done instead of sharing because the shared
-  filesystem with Virtualbox is extremely slow.
-* Sets up Contestrus development database and gems
+* Sets up Contestrus's development database
+* Installs Contestrus's gems
 
 Once that's all done, you can go to the repository and run the tests:
 
 ```bash
+# On host box
 $ vagrant ssh
 
 # Inside Vagrant-managed box
-$ cd contestrus
-$ bin/rake # run all tests
+$ cd /vagrant # Shared directory with host for Contestrus
+$ bin/rake # Run all tests
 ```
 
-You can then run `bin/rails server` to boot the Rails server.
+You can then run `bin/rails server` to boot the Rails server from within Vagrant. 
+This listens on port 3000 inside the Vagrant box. This is forwarded to port 3001
+on your own machine.
 
 ## Deployment
 
