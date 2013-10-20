@@ -39,4 +39,8 @@ class Submission < ActiveRecord::Base
   def extension
     path.split(".").last if path
   end
+
+  def passed?
+    status == "Correct"
+  end
 end
