@@ -28,6 +28,8 @@ trap "INT" do
   end
 end
 
+puts "comedy_worker: now listening"
+
 while working
   $0 = "comedy_worker: idle"
   job = Comedy::Job.first
