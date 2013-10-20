@@ -44,7 +44,13 @@ class EvaluationJob
         body: @build_body
       )
     end
-    Pusher["contestrus_" + submission.user.username].trigger('submission_judged', {})
+
+    if config = APP_CONFIG['pusher']
+      Thread.new(submission.user.username) do |username|
+        sleep config['delay'].seconds
+        Pusher[config['prefix'] + username].trigger('submission_judged', {})
+      end
+    end
   ensure
     FileUtils.rm_rf @temporary_dir
   end
