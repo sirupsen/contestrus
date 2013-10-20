@@ -22,7 +22,7 @@ ssh -A "$DEPLOY_USER@$DEPLOY_HOST" -- "
     cp -r \"\$(readlink current)\" \$dir_name
   else
     export COLD_DEPLOY=1
-    git clone git@github.com:Sirupsen/contestrus.git \$dir_name
+    git clone https://github.com/Sirupsen/contestrus.git \$dir_name
   fi
   cd \$dir_name
   git fetch origin -q
