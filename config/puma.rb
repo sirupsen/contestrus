@@ -6,7 +6,7 @@ environment "production"
 pidfile "/app/shared/puma.pid"
 state_path "/app/shared/puma.state"
 stdout_redirect "/app/shared/log/puma_stdout", "/app/shared/log/puma_stderr", true
-threads 3
+threads 3, 3
 workers 3
 
 on_restart do
