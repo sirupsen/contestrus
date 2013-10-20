@@ -1,10 +1,6 @@
 require 'rubygems'
 require 'rubygems/package'
 
-require 'pusher'
-Pusher.url = "http://92dab36b76c99a3d4cdb:651364431d5cea642023@api.pusherapp.com/apps/57268"
-Pusher.logger = Rails.logger
-
 require 'docker'
 
 require 'fileutils'
