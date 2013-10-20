@@ -9,7 +9,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails', "3.0.4"
 gem 'turbolinks', "1.3.0"
 gem 'bcrypt-ruby', '~> 3.0.0'
-gem "redcarpet", "3.0.0"
+gem "kramdown"
 gem "daemons", "1.1.9"
 gem "docker-api", "1.6.0.705afb6"
 gem 'pusher'
