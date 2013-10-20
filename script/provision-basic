@@ -8,7 +8,7 @@ set -e
 set -x
 
 if [ $UID -ne 0 ]; then
-  echo "Please run script/provision as root."
+  echo "Please run script/provision-basic as root."
   exit 1
 fi
 
@@ -34,7 +34,8 @@ apt-get install -y \
   sqlite3 \
   sudo \
   vim \
-  zlib1g-dev
+  zlib1g-dev \
+  linux-image-extra-`uname -r`
 
 ## Create the app user and the /app directory
 

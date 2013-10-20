@@ -13,6 +13,6 @@ if [ -f "$HOME/.ssh/id_rsa.pub" ]; then
   FILES="$FILES $HOME/.ssh/id_rsa.pub"
 fi
 
-scp $FILES root@"$1":
+scp $FILES "$1":
 
-ssh root@"$1" ./provision-production
+ssh "$1" sudo ./provision-production
