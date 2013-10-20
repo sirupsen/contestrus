@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131020161137) do
+ActiveRecord::Schema.define(version: 20131020211301) do
 
   create_table "comedy_jobs", force: true do |t|
     t.string   "class_name", null: false
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20131020161137) do
     t.string   "status",      default: "Pending"
     t.text     "body"
     t.boolean  "passed",      default: false
+    t.string   "language"
   end
 
   create_table "tasks", force: true do |t|
