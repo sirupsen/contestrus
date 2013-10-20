@@ -34,29 +34,19 @@ run a provision script also used for production to install:
 * Compile and install ruby 2.0.0
 * Docker
 * Docker containers for languages supported by Contestrus
+* Clones down Contestrus
+* Sets up Contestrus development database and gems
 
-Once that's all done, you can clone down the repository and run the tests:
+Once that's all done, you can go to the repository and run the tests:
 
 ```bash
 $ vagrant ssh
 
-# inside of vagrant
-$ git clone git@github.com:Sirupsen/contestrus.git
+# Inside Vagrant-managed box
 $ cd contestrus
-$ script/setup # setup dev environment, database, gems, etc.
 $ bin/rake # run all tests
 ```
-
-`script/setup` does things like..
-
-* Vendor all Contestrus' dependencies.
-* Create binstubs.
-* Creates the database.
-* Seeds the database with initial settings.
-* Seeds the database with a test contest.
-
-Run `bin/rake` to test Contestrus on your own machine. You can then run
-`bin/rails server` to boot the rails server.
+You can then run `bin/rails server` to boot the Rails server.
 
 ## Deployment
 
