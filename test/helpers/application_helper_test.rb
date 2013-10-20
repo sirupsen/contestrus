@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ApplicationHelperTest < ActionView::TestCase
   test "#time_left_badge on an open competition returns nil" do
-    assert_match /Open/, time_left_badge(competitions(:open))
+    refute time_left_badge(competitions(:open))
   end
 
   test "#time_left_badge for an ongoing competition returns time remaining" do

@@ -8,9 +8,13 @@ class Competition < ActiveRecord::Base
 
   # Returns a range for which this contest is running.
   def open?(time = Time.now)
-    !end_at || (start_at..end_at).cover?(time)
+    !end_at || ongoing?(time)
   end
   alias_method :ongoing?, :open?
+
+  def ongoing?(time = Time.now)
+    (start_at..end_at).cover?(time)
+  end
 
   # Returns whether this competition is always open, which it is if end_at or
   # start_at is not set.
