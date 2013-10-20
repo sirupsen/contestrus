@@ -3,7 +3,7 @@
 # This is intended to run on the production server as part of deploys.
 
 export RAILS_ENV=production
-export PATH=/app/rubies/ruby-2.0.0-p247/bin:$PATH
+export PATH=/app/rubies/jruby-1.7.5/bin:$PATH
 
 set -e
 
