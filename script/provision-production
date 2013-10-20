@@ -28,20 +28,6 @@ http {
 }
 NGINX
 
-cat > /usr/local/bin/restart-nginx <<SHELL
-if [ -f /run/nginx.pid ] && [ -d "/proc/\$(cat /run/nginx.pid)" ]; then
-  kill -HUP "\$(cat /run/nginx.pid)"
-else
-  service nginx start
-fi
-SHELL
-chmod +x /usr/local/bin/restart-nginx
-
-cat > /usr/local/bin/check-nginx-syntax <<SHELL
-nginx -t
-SHELL
-chmod +x /usr/local/bin/check-nginx-syntax
-
 if ! grep -q 'app ALL=NOPASSWD: ALL' /etc/sudoers; then
 
   cat >> /etc/sudoers <<SUDOERS
