@@ -34,7 +34,8 @@ run a provision script also used for production to install:
 * Compile and install ruby 2.0.0
 * Docker
 * Docker containers for languages supported by Contestrus
-* Clones down Contestrus
+* Clones down Contestrus. This is done instead of sharing because the shared
+  filesystem with Virtualbox is extremely slow.
 * Sets up Contestrus development database and gems
 
 Once that's all done, you can go to the repository and run the tests:
@@ -46,6 +47,7 @@ $ vagrant ssh
 $ cd contestrus
 $ bin/rake # run all tests
 ```
+
 You can then run `bin/rails server` to boot the Rails server.
 
 ## Deployment
