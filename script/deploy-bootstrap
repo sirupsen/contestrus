@@ -31,30 +31,23 @@ fi
 
 ln -sfn "$(pwd)" /app/current
 
-if [ -f /app/shared/comedy_worker.pid ] && [ -d "/proc/$(cat /app/shared/comedy_worker.pid)" ]; then
-  echo -n "Reloading comedy_worker... "
-  kill -USR2 "$(cat /app/shared/comedy_worker.pid)"
+comedy_worker_pid="$(initctl status comedy_worker | grep /running | awk '{print $NF}')"
+if [ ! -z "$comedy_worker_pid" ]; then
+  echo "Reloading comedy_worker"
+  kill -SIGUSR2 "$comedy_worker_pid"
 else
-  echo -n "Starting comedy_worker... "
-  bin/comedy_worker
-fi
-echo "ok."
-
-if [ -f /app/shared/puma.pid ] && [ -d "/proc/$(cat /app/shared/puma.pid)" ]; then
-  OLD_PID="$(cat /app/shared/puma.pid)"
-  kill -USR2 "$OLD_PID"
-  echo -n "Waiting for Pumas to roll over... "
-  while [ ! -f /app/shared/puma.pid ] || [ "$(cat /app/shared/puma.pid)" = "$OLD_PID" ]; do
-    sleep 0.1
-  done
-  echo "ok."
-else
-  bin/puma -C config/puma.rb
+  sudo service comedy_worker start
 fi
 
-echo -n "Reloading nginx... "
-sudo /usr/local/bin/restart-nginx
-echo "ok."
+puma_pid="$(initctl status puma | grep /running | awk '{print $NF}')"
+if [ ! -z "$puma_pid" ]; then
+  echo "Reloading puma"
+  kill -SIGUSR2 "$puma_pid"
+else
+  sudo service puma start
+fi
+
+sudo service nginx reload
 
 if [ -n "$OLD_DEPLOY" ]; then
   rm -rf "$OLD_DEPLOY"
