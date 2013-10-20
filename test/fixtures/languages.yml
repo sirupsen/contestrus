@@ -41,3 +41,10 @@ node:
   image: "bouk/node"
   build: "echo 'hello world'"
   run: "node /sandbox/file.js"
+
+python:
+  name: "Python"
+  extension: "py"
+  image: "bouk/python"
+  build: python -c "from subprocess import check_output;import py_compile;py_compile.compile('/sandbox/file.py',cfile=check_output(['mktemp']).strip(), doraise=True)"
+  run: "python /sandbox/file.py"
