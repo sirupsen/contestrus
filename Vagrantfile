@@ -8,6 +8,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "raring"
   config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/raring/current/raring-server-cloudimg-amd64-vagrant-disk1.box" 
   config.vm.provision :shell, :path => "script/provision-development"
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "1024", "--ioapic", "on"]
+  end
 
   # Because Virtualbox's shared filesystem is extremely slow
   config.vm.synced_folder ".", "/vagrant", nfs: true
