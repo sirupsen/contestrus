@@ -3,11 +3,13 @@
 set -e
 set -x
 
-./provision-basic
+/vagrant/script/provision-basic
 
-## Clones down contestrus and runs setup
+apt-get install nfs-server
+
 (
-  git clone git@github.com:Sirupsen/contestrus.git
-  cd contestrus
-  script/setup
+cd /vagrant
+script/setup
 )
+
+usermod -G docker -a vagrant

@@ -10,9 +10,9 @@ if [ "$RAILS_ENV" = "production" ]; then
   BUNDLE_ARGS="--deployment --without development --without test"
 fi
 
-bundle install --path ./vendor/bundle --standalone --clean --binstubs --quiet $BUNDLE_ARGS
+/app/rubies/ruby-2.0.0-p247/bin/bundle install --path ./vendor/bundle --standalone --clean --binstubs $BUNDLE_ARGS
 
-export RUBY_BIN="$(ruby -e 'puts Gem.ruby')"
+export RUBY_BIN=/app/rubies/ruby-2.0.0-p247/bin/ruby
 
 for binstub in bin/*; do
   load_line="$(tail -n1 "$binstub")"
