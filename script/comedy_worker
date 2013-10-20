@@ -28,12 +28,14 @@ trap "INT" do
 end
 
 while working
+  $0 = "comedy_worker: idle"
   job = Comedy::Job.first
   if job.nil?
     sleep 0.5
     next
   end
 
+  $0 = "comedy_worker: #{job.class_name} #{job.ivars}"
   $stdout.puts "Running #{job.class_name} #{job.ivars}"
   job.delete
 
