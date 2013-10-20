@@ -32,18 +32,8 @@ fi
 ln -sfn "$(pwd)" /app/current
 
 if [ -f /app/shared/puma.pid ] && [ -d "/proc/$(cat /app/shared/puma.pid)" ]; then
-  echo -n  "Waiting for Puma processes to roll over... "
-  OLD_PID="$(cat /app/shared/puma.pid)"
-  kill -USR2 "$OLD_PID"
-  while [ -d "/proc/$OLD_PID" ]; do
-    sleep 0.1
-  done
-  if [ -f /app/shared/puma.pid ]; then
-    echo "new Puma has PID $(cat /app/shared/puma.pid)."
-  else
-    echo
-    bin/puma -C config/puma.rb
-  fi
+  bin/pumactl -S ../shared/puma.state phased-restart
+  sleep 3
 else
   bin/puma -C config/puma.rb
 fi
