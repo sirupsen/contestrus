@@ -1,6 +1,7 @@
-require 'redcarpet'
+require 'kramdown'
 
-Markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, 
-                                   autolink: true, 
-                                   space_after_headers: true,
-                                   tables: true)
+module Markdown
+  def self.render(str)
+    Kramdown::Document.new(str).to_html
+  end
+end
