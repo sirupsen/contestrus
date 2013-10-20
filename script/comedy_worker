@@ -1,0 +1,62 @@
+#!/usr/bin/env ruby
+require "./config/environment"
+require "comedy"
+
+if ARGV.include?("--daemon") || (Rails.env.production? && !ARGV.include?("--no-daemon"))
+  Process.daemon
+  File.write("/app/shared/comedy_worker.pid", $$.to_s) if Rails.env.production?
+  $stdout.reopen("/app/shared/log/comedy_worker_stdout", "a")
+  $stderr.reopen("/app/shared/log/comedy_worker_stderr", "a")
+  Dir.chdir("/app/current")
+end
+
+working = true
+
+should_restart = false
+
+trap "USR2" do
+  working = false
+  should_restart = true
+  puts "Restarting..."
+end
+
+trap "INT" do
+  working = false
+  puts "Stopping... (send SIGINT again to exit immediately)"
+  trap "INT" do
+    exit!
+  end
+end
+
+while working
+  $0 = "comedy_worker: idle"
+  job = Comedy::Job.first
+  if job.nil?
+    sleep 0.5
+    next
+  end
+
+  $0 = "comedy_worker: #{job.class_name} #{job.ivars}"
+  $stdout.puts "Running #{job.class_name} #{job.ivars}"
+  job.delete
+
+  begin
+    bm = Benchmark.measure do
+      job.perform
+    end
+  rescue Exception => e
+    $stderr.puts "Exception while running #{job.class_name} job: #{e}: #{e.message}"
+    e.backtrace.each do |bt|
+      $stderr.puts "  #{bt}"
+    end
+    $stderr.puts
+  end
+
+  $stdout.puts "#{job.class_name} completed in %.2f sec" % bm.real
+end
+
+if should_restart
+  # gotta do this instead of exec'ing if we ever want to support JRuby
+  Process.spawn("/app/current/bin/comedy_worker")
+end
+

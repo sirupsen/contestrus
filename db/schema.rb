@@ -11,7 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131020043322) do
+ActiveRecord::Schema.define(version: 20131020045603) do
+
+  create_table "comedy_jobs", force: true do |t|
+    t.string   "class_name", null: false
+    t.text     "ivars",      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "competitions", force: true do |t|
     t.string   "name"
