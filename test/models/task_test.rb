@@ -37,12 +37,17 @@ class TaskTest < ActiveSupport::TestCase
   end
 
   test "#solved returns tasks that have been solved" do
-    Submission.create!(task: @task, user: users(:sirup), source: "puts 'wrong'", path: "whatever.rb")
+    Submission.create!(task: @task, user: users(:sirup), source: "puts 'Hello World'", path: "whatever.rb")
     assert_equal [@task], users(:sirup).tasks.solved
   end
 
-  test "#solved returns tasks only that one user has solved" do
+  test "#solved does not return tasks that have not been solved" do
     Submission.create!(task: @task, user: users(:sirup), source: "puts 'wrong'", path: "whatever.rb")
+    assert_equal [], users(:sirup).tasks.solved
+  end
+
+  test "#solved returns tasks only that one user has solved" do
+    Submission.create!(task: @task, user: users(:sirup), source: "puts 'Hello World'", path: "whatever.rb")
     assert_equal [], users(:bob).tasks.solved
   end
 end

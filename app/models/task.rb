@@ -6,7 +6,7 @@ class Task < ActiveRecord::Base
   serialize :restrictions, Hash
 
   def self.solved
-    joins(:submissions)
+    joins(:submissions).where(:submissions => { passed: true})
   end
 
   def passed?(user)

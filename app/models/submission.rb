@@ -12,6 +12,10 @@ class Submission < ActiveRecord::Base
 
   serialize :body
 
+  def self.passed
+    where(:passed => true)
+  end
+
   # Validates that the submission was performed within the duration of the
   # contest.
   validate :contest_expirement
