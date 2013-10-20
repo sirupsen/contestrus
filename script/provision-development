@@ -15,5 +15,5 @@ apt-get install nfs-server
 usermod -G docker -a vagrant
 
 if ! grep -q /app/rubies ~/.bashrc; then
-  echo "PATH=/app/rubies/ruby-2.0.0-p247/bin:\$PATH script/setup" >> ~/.bashrc
+  echo "PATH=/app/rubies/ruby-2.0.0-p247/bin:\$PATH" >> ~/.bashrc
 fi
