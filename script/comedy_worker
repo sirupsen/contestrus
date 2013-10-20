@@ -3,9 +3,9 @@ require "./config/environment"
 require "comedy"
 
 puts "Comedy worker started on pid #{$$}"
-File.write("/app/shared/comedy_worker.pid", $$.to_s) if Rails.env.production?
 
-if Rails.env.production?
+if ARGV.include?("--daemon") || (Rails.env.production? && !ARGV.include?("--no-daemon"))
+  File.write("/app/shared/comedy_worker.pid", $$.to_s) if Rails.env.production?
   Process.daemonize
   $stdout.reopen("/app/shared/log/comedy_worker_stdout", "a")
   $stderr.reopen("/app/shared/log/comedy_worker_stderr", "a")
