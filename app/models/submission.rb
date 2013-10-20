@@ -28,7 +28,7 @@ class Submission < ActiveRecord::Base
 
   after_create :queue_evaluation, on: :create
   def queue_evaluation
-    ComedyWorker << EvaluationJob.new(self.id)
+    Comedy << EvaluationJob.new(self.id)
   end
 
   # Every evaluation has to pass because programs must be deterministic and not
