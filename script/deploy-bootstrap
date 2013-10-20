@@ -26,18 +26,23 @@ fi
 
 ln -sfn "$(pwd)" /app/current
 
-OLD_PID="$(cat /app/shared/puma.pid)"
+if [ -f /app/shared/delayed_job.pid ] || [ ! -d "/proc/$(cat /app/shared/delayed_job.pid)" ]; then
+  echo -n "Stopping delayed job... "
+  bin/delayed_job stop --pid-dir /app/shared
+  echo "stopped."
+fi
 
-echo -n "Stopping delayed job... "
-bin/delayed_job stop --pid-dir /app/shared
-echo "stopped."
-
-echo -n  "Waiting for Puma processes to roll over... "
-kill -USR2 "$OLD_PID"
-while [ -d "/proc/$OLD_PID" ]; do
-  sleep 0.1
-done
-echo "new Puma has PID $(cat /app/shared/puma.pid)."
+if [ -f /app/shared/puma.pid ] || [ ! -d "/proc/$(cat /app/shared/puma.pid)" ]; then
+  echo -n  "Waiting for Puma processes to roll over... "
+  OLD_PID="$(cat /app/shared/puma.pid)"
+  kill -USR2 "$OLD_PID"
+  while [ -d "/proc/$OLD_PID" ]; do
+    sleep 0.1
+  done
+  echo "new Puma has PID $(cat /app/shared/puma.pid)."
+else
+  bin/puma -C config/puma.rb
+fi
 
 echo -n "Starting delayed job... "
 bin/delayed_job start --pid-dir /app/shared
