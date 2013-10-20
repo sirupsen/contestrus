@@ -10,7 +10,7 @@ module CompetitionsHelper
   def task_status_class(task, user = current_user)
     if task.passed?(user)
       "success"
-    elsif current_user.submissions.where(task_id: task.id).empty?
+    elsif user.submissions.where(task_id: task.id).empty?
       "info"
     else
       "warning"
@@ -20,7 +20,7 @@ module CompetitionsHelper
   def task_status_human(task, user = current_user)
     if task.passed?(user)
       "Passed"
-    elsif current_user.submissions.where(task_id: task.id).empty?
+    elsif user.submissions.where(task_id: task.id).empty?
       "Not attempted"
     else
       "Attempted"
