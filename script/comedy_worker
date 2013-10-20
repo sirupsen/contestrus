@@ -2,21 +2,16 @@
 require "./config/environment"
 require "comedy"
 
-if ARGV.include?("--daemon") || (Rails.env.production? && !ARGV.include?("--no-daemon"))
-  Process.daemon
+if Rails.env.production?
   File.write("/app/shared/comedy_worker.pid", $$.to_s) if Rails.env.production?
   $stdout.reopen("/app/shared/log/comedy_worker_stdout", "a")
   $stderr.reopen("/app/shared/log/comedy_worker_stderr", "a")
-  Dir.chdir("/app/current")
 end
 
 working = true
 
-should_restart = false
-
-trap "USR2" do
+trap "HUP" do
   working = false
-  should_restart = true
   puts "Restarting..."
 end
 
@@ -58,9 +53,3 @@ while working
 
   $stdout.puts "#{job.class_name} completed in %.2f sec" % bm.real
 end
-
-if should_restart
-  # gotta do this instead of exec'ing if we ever want to support JRuby
-  Process.spawn("/app/current/bin/comedy_worker")
-end
-
