@@ -27,7 +27,7 @@ class Competition < ActiveRecord::Base
   # Low hanging perf fruit. Goal of this function is sort the users by number of
   # successful submissions unique on tasks.
   def leaderboard
-    users = User.all.select { |user| participating?(user) }.sort_by { |user| user.tasks.solved.where(competition_id: self.id).count }.reverse.group_by { |user| user.tasks.solved.where(competition_id: self.id).count }.map { |i, group| group.sort_by { |user| user.submissions.where(task_id: self.tasks.map(&:id), passed: true).order("submissions.id ASC").group("submissions.task_id").inject(0) { |sum, sub| sum + sub.created_at.to_i } } }.flatten
+    users = participating_users.sort_by { |user| user.tasks.solved.where(competition_id: self.id).count }.reverse.group_by { |user| user.tasks.solved.where(competition_id: self.id).count }.map { |i, group| group.sort_by { |user| user.submissions.where(task_id: self.tasks.map(&:id), passed: true).order("submissions.id ASC").group("submissions.task_id").inject(0) { |sum, sub| sum + sub.created_at.to_i } } }.flatten
   end
 
   # Returns true if a user has submitted to a contest.
