@@ -42,7 +42,6 @@
     </thead>
     <tbody>
       <% @submissions.each do |submission| %>
-        <% evaluation = submission.evaluations.last %>
         <tr class="<%= submission_class(submission) %> accordion-toggle" data-toggle="collapse" data-target="#evaluations-<%= submission.id %>">
           <td><%= submission.id %></td>
           <td><%= submission.created_at.to_formatted_s(:short) %></td>
@@ -50,15 +49,15 @@
           <% if pending?(submission) %>
             <td>Pending</td>
           <% else %>
-            <td><%= evaluation.status %></td>
+            <td><%= submission.status %></td>
           <% end %>
         </tr>
         <% unless pending?(submission) %>
         <tr>
-        <% if evaluation.status == "Build failed" %>
+        <% if submission.status == "Build failed" %>
           <td colspan="6" style="padding: 0 !important">
           <pre>
-          <%= evaluation.body %>
+          <%= submission.body %>
           </pre>
           </td>
         <% else %>
@@ -74,7 +73,7 @@
                   <th>Expected</th>
                 </thead>
                 <tbody>
-                <% evaluation.body.zip(submission.task.test_cases).each_with_index do |zippy, no| %>
+                <% submission.body.zip(submission.task.test_cases).each_with_index do |zippy, no| %>
                   <% eval, test_case = zippy[0], zippy[1] %>
                   <tr class="<%= eval[:status] == "Correct" ? "success" : "error" %>">
                     <td><%= no + 1 %></td>

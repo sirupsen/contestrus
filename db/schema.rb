@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131020045603) do
+ActiveRecord::Schema.define(version: 20131020161137) do
 
   create_table "comedy_jobs", force: true do |t|
     t.string   "class_name", null: false
@@ -26,15 +26,6 @@ ActiveRecord::Schema.define(version: 20131020045603) do
     t.datetime "end_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "evaluations", force: true do |t|
-    t.text     "body"
-    t.boolean  "passed"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "submission_id"
-    t.string   "status"
   end
 
   create_table "languages", force: true do |t|
@@ -62,6 +53,9 @@ ActiveRecord::Schema.define(version: 20131020045603) do
     t.datetime "updated_at"
     t.integer  "language_id"
     t.string   "path"
+    t.string   "status",      default: "Pending"
+    t.text     "body"
+    t.boolean  "passed",      default: false
   end
 
   create_table "tasks", force: true do |t|

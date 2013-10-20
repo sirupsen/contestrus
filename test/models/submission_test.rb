@@ -34,22 +34,16 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_equal languages(:ruby), submission.language
   end
 
-  test "passed? should return true if all evaluations passed" do
+  test "passed? should return true if evaluation passed" do
     submission = Submission.create(valid_submission_attributes)
-    assert submission.passed?, "Submission should pass when code is correct."
+    assert submission.reload.passed?, "Submission should pass when code is correct."
   end
 
-  test "passed? should return false if an evaluations did not pass" do
+  test "passed? should return false if evaluation did not pass" do
     submission = Submission.create(valid_submission_attributes.merge(
       source: "puts 'Hello'"
     ))
     refute submission.passed?
-  end
-
-  test "passed? should return false when there are no evaluations" do
-    submission = Submission.create(valid_submission_attributes)
-    submission.evaluations.destroy_all
-    refute submission.passed?, "Submission with no evaluations should fail"
   end
 
   private

@@ -24,7 +24,8 @@ class EvaluationJob
       begin
         @result = task.test_cases.map {|test_case| evaluate(test_case)}
         passed = @result.all? {|r| r[:status] == "Correct"}
-        submission.evaluations.create(
+
+        submission.update_attributes(
           status: if passed then "Passed" else "Failed" end,
           body: @result,
           passed: passed
@@ -33,7 +34,7 @@ class EvaluationJob
         @prepared_image.remove if @prepared_image
       end
     else
-      submission.evaluations.create(
+      submission.update_attributes(
         status: "Build failed",
         passed: false,
         body: @build_body

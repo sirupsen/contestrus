@@ -21,6 +21,6 @@ module TasksHelper
   end
 
   def pending?(submission)
-    submission.evaluations.count == 0
+    submission.status == "Pending"
   end
 end

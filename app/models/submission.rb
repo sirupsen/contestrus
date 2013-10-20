@@ -5,12 +5,12 @@ class Submission < ActiveRecord::Base
   belongs_to :task
   belongs_to :language
 
-  has_many :evaluations
-
   validates :source, presence: true
   validates :path, presence: true
 
   validates :language, presence: true
+
+  serialize :body
 
   # Validates that the submission was performed within the duration of the
   # contest.
@@ -29,12 +29,6 @@ class Submission < ActiveRecord::Base
   after_create :queue_evaluation, on: :create
   def queue_evaluation
     Comedy << EvaluationJob.new(self.id)
-  end
-
-  # Every evaluation has to pass because programs must be deterministic and not
-  # rely on randomness to do better or worse.
-  def passed?
-    evaluations.any? && evaluations.all?(&:passed?)
   end
 
   private

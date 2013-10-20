@@ -10,23 +10,16 @@ class EvaluationJobTest < ActiveSupport::TestCase
     )
   end
 
-  test "create new evaluation" do
-    assert_difference "Evaluation.count", +1 do
-      @submission.save!
-    end
-  end
-
   test "correct code passes hello world task" do
     @submission.save!
-
-    assert latest_evaluation.passed?, "Evaluation didn't pass: #{latest_evaluation.body.inspect}"
+    assert @submission.reload.passed?, "Evaluation didn't pass: #{@submission.body.inspect}"
   end
 
   test "incorrect code fails hello world task" do
     @submission.source = "puts 'omg'"
     @submission.save!
 
-    refute latest_evaluation.passed?, "Evaluation must not pass"
+    refute @submission.reload.passed?, "Evaluation must not pass"
   end
 
   test "handles input from standard input" do
@@ -38,7 +31,7 @@ class EvaluationJobTest < ActiveSupport::TestCase
     )
 
     submission.save!
-    assert submission.passed?, "Submission should pass"
+    assert submission.reload.passed?, "Submission should pass"
   end
 
   test "roughly honor execution time limit for program" do
@@ -46,14 +39,15 @@ class EvaluationJobTest < ActiveSupport::TestCase
     past = Time.now
     @submission.save!
 
+    @submission.reload
+
     assert_in_delta @submission.task.restrictions["time"], Time.now - past, 0.5
-    assert_equal "Time limit exceeded", latest_evaluation.body.first[:status]
+    assert_equal "Time limit exceeded", @submission.body.first[:status]
   end
 
   test "set duration for program" do
     @submission.save!
-
-    assert latest_test[:duration], "Duration should be set"
+    assert @submission.reload.body.first[:duration], "Duration should be set"
   end
 
   test "run go program" do
@@ -71,8 +65,10 @@ class EvaluationJobTest < ActiveSupport::TestCase
     @submission.path = "file.go"
     @submission.save!
 
+    @submission.reload
+
     assert @submission.passed?,
-      "Evaluation failed: #{latest_evaluation.inspect}"
+      "Evaluation failed: #{@submission.body.inspect}"
   end
 
   test "reports go compilation errors" do
@@ -88,8 +84,10 @@ class EvaluationJobTest < ActiveSupport::TestCase
     @submission.path = "file.go"
     @submission.save!
 
-    assert_equal "Build failed", latest_evaluation.status
-    assert_match /undefined: fmt/, latest_evaluation.body
+    @submission.reload
+
+    assert_equal "Build failed", @submission.status
+    assert_match /undefined: fmt/, @submission.body
   end
 
   test "reports ruby compilation errors" do
@@ -100,8 +98,10 @@ class EvaluationJobTest < ActiveSupport::TestCase
     @submission.source = ruby
     @submission.save!
 
-    assert_equal "Build failed", latest_evaluation.status
-    assert_match /unterminated string/, latest_evaluation.body
+    @submission.reload
+
+    assert_equal "Build failed", @submission.status
+    assert_match /unterminated string/, @submission.body
   end
 
   test "run node program" do
@@ -113,7 +113,7 @@ class EvaluationJobTest < ActiveSupport::TestCase
     @submission.path = "file.js"
     @submission.save!
 
-    assert_equal true, @submission.passed?
+    assert_equal true, @submission.reload.reload.passed?
   end
 
   test "run coffee program" do
@@ -125,7 +125,7 @@ class EvaluationJobTest < ActiveSupport::TestCase
     @submission.path = "file.coffee"
     @submission.save!
 
-    assert_equal true, @submission.passed?
+    assert_equal true, @submission.reload.reload.passed?
   end
 
   test "run c program" do
@@ -142,7 +142,7 @@ int main() {
     @submission.path = "file.c"
     @submission.save!
 
-    assert_equal true, @submission.passed?
+    assert_equal true, @submission.reload.passed?
   end
 
   test "run cpp program" do
@@ -160,15 +160,6 @@ int main() {
     @submission.path = "file.cpp"
     @submission.save!
 
-    assert_equal true, @submission.passed?
-  end
-
-  private
-  def latest_evaluation
-    @submission.evaluations.last
-  end
-
-  def latest_test
-    latest_evaluation.body.last
+    assert_equal true, @submission.reload.passed?
   end
 end
