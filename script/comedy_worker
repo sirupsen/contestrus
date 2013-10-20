@@ -6,7 +6,7 @@ puts "Comedy worker started on pid #{$$}"
 
 if ARGV.include?("--daemon") || (Rails.env.production? && !ARGV.include?("--no-daemon"))
   File.write("/app/shared/comedy_worker.pid", $$.to_s) if Rails.env.production?
-  Process.daemonize
+  Process.daemon
   $stdout.reopen("/app/shared/log/comedy_worker_stdout", "a")
   $stderr.reopen("/app/shared/log/comedy_worker_stderr", "a")
   Dir.chdir("/app/current")
