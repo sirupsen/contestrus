@@ -5,12 +5,14 @@ class Language
     @name = name
   end
 
-  alias_method :key, :name
+  def key
+    name.downcase
+  end
 
   class << self
     def define(name)
       yield language = Language.new(name)
-      languages[name] = language
+      languages[language.key] = language
     end
 
     def [](name)
@@ -21,7 +23,6 @@ class Language
       languages.values.find { |lang| lang.extension == extension }
     end
 
-    private
     attr_accessor :languages
 
     def languages

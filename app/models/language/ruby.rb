@@ -1,4 +1,4 @@
-Language.define "ruby" do |lang|
+Language.define "Ruby" do |lang|
   lang.extension = "rb"
   lang.image = "bouk/ruby"
   lang.build = "ruby -c /sandbox/file.rb"

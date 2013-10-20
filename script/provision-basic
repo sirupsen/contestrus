@@ -80,12 +80,13 @@ usermod -G docker -a app
 
 ## Install Docker images
 
-docker pull bouk/node
-docker pull bouk/coffee
-docker pull bouk/gcc
-docker pull bouk/golang
-docker pull bouk/python
-docker pull bouk/ruby
+PATH=/app/rubies/ruby-2.0.0-p247/bin:$PATH ruby <<RUBY
+require "./app/models/language"
+
+Language.languages.values.each do |language|
+  system "docker pull #{language.image}"
+end
+RUBY
 
 ## Create .ssh and an empty authorized_keys for app
 
