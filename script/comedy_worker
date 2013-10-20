@@ -10,11 +10,8 @@ end
 
 working = true
 
-should_restart = false
-
-trap "USR2" do
+trap "HUP" do
   working = false
-  should_restart = true
   puts "Restarting..."
 end
 
@@ -56,9 +53,3 @@ while working
 
   $stdout.puts "#{job.class_name} completed in %.2f sec" % bm.real
 end
-
-if should_restart
-  # gotta do this instead of exec'ing if we ever want to support JRuby
-  Process.spawn("/app/current/bin/comedy_worker")
-end
-
