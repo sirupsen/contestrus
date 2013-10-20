@@ -31,6 +31,10 @@ class Submission < ActiveRecord::Base
     Comedy << EvaluationJob.new(self.id)
   end
 
+  def passed?
+    status == "Correct"
+  end
+
   private
   def language_from_path
     Language.find_by_extension(extension)
@@ -38,9 +42,5 @@ class Submission < ActiveRecord::Base
 
   def extension
     path.split(".").last if path
-  end
-
-  def passed?
-    status == "Correct"
   end
 end
