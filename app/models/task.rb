@@ -5,8 +5,12 @@ class Task < ActiveRecord::Base
 
   serialize :restrictions, Hash
 
+  def self.solved
+    joins(:submissions)
+  end
+
   def passed?(user)
-    user.submissions.where(task_id: self.id).any? { |s| s.passed? } 
+    user.submissions.where(task_id: self.id, passed: true).any?
   end
 
   # Returns the number of distinct users who've solved a certain task.

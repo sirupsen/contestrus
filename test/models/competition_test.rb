@@ -44,6 +44,70 @@ class CompetitionTest < ActiveSupport::TestCase
     refute competitions(:past).always_open?
   end
 
+  test "#participating? returns true if user has submitted successfully to contest" do
+    user = users(:sirup)
+    Submission.create(task: tasks(:hello_world), user: user, 
+                      source: 'puts "Hello World"', path: "hello.rb")
+
+    assert_equal true, competitions(:open).participating?(user)
+  end
+
+  test "#participating? returns true if user has submitted insuccessfully to contest" do
+    user = users(:sirup)
+    Submission.create(task: tasks(:hello_world), user: user, 
+                      source: 'puts "failed"', path: "hello.rb")
+
+    assert_equal true, competitions(:open).participating?(user)
+  end
+
+  test "#participating? returns false if user has not submitted to contest" do
+    user = users(:sirup)
+    assert_equal false, competitions(:open).participating?(user)
+  end
+
+  test "#leaderboard should return an empty array when no user have submitted to a competition" do
+    assert_equal [], competitions(:open).leaderboard 
+  end
+
+  test "#leaderboard should return single user with submission" do
+    competition = competitions(:open)
+    user = users(:sirup)
+    Submission.create(task: tasks(:hello_world), user: user, 
+                      source: 'puts "Hello World"', path: "hello.rb")
+
+    assert_equal [user], competitions(:open).leaderboard 
+  end
+
+  test "#leaderboard should return user with most submissions first" do
+    competition = competitions(:open)
+
+    user = users(:sirup)
+    Submission.create(task: tasks(:hello_world), user: user, 
+                      source: 'puts "Hello World"', path: "hello.rb")
+    Submission.create(task: tasks(:sum), user: user, 
+                      source: 'puts $stdin.gets.split(" ").map(&:to_i).reduce(:+)', path: "sum.rb")
+
+    bob = users(:bob)
+    Submission.create(task: tasks(:hello_world), user: bob, 
+                      source: 'puts "Hello World"', path: "hello.rb")
+
+    assert_equal [user, bob], competitions(:open).leaderboard 
+  end
+
+  test "#leaderboard should return user with earliest submission first at tie" do
+    competition = competitions(:open)
+
+    bob = users(:bob)
+    Submission.create(task: tasks(:hello_world), user: bob, 
+                      source: 'puts "Hello World"', path: "hello.rb")
+
+    sirup = users(:sirup)
+    Submission.create(task: tasks(:hello_world), user: sirup, 
+                      source: 'puts "Hello World"', path: "hello.rb")
+
+    assert_equal [bob, sirup], competitions(:open).leaderboard 
+  end
+
   private
   def valid_params
     {

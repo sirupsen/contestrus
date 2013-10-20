@@ -21,4 +21,15 @@ class Competition < ActiveRecord::Base
   def always_open?
     !end_at
   end
+
+  # Low hanging perf fruit. Goal of this function is sort the users by number of
+  # successful submissions unique on tasks.
+  def leaderboard
+    users = User.all.select { |user| participating?(user) }.sort_by { |user| user.tasks.solved.where(competition_id: self.id).count }.reverse.group_by { |user| user.tasks.solved.where(competition_id: self.id).count }.map { |i, group| group.sort_by { |user| user.submissions.where(task_id: self.tasks.map(&:id), passed: true).order("submissions.id ASC").group("submissions.task_id").inject(0) { |sum, sub| sum + sub.created_at.to_i } } }.flatten
+  end
+
+  # Returns true if a user has submitted to a contest.
+  def participating?(user)
+    Submission.joins(:task).where(user_id: user.id, tasks: { competition_id: self.id }).any?
+  end
 end
