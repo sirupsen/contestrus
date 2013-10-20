@@ -1,5 +1,4 @@
 bind "unix:///app/shared/puma.sock"
-daemonize true
 directory "/app/current"
 environment "production"
 pidfile "/app/shared/puma.pid"
