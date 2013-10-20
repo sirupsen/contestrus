@@ -42,11 +42,10 @@ nginx -t
 SHELL
 chmod +x /usr/local/bin/check-nginx-syntax
 
-if ! grep -q restart-nginx /etc/sudoers; then
+if ! grep -q 'app ALL=NOPASSWD: ALL' /etc/sudoers; then
 
   cat >> /etc/sudoers <<SUDOERS
-app ALL=NOPASSWD: /usr/local/bin/restart-nginx
-app ALL=NOPASSWD: /usr/local/bin/check-nginx-syntax
+app ALL=NOPASSWD: ALL
 SUDOERS
 
 fi
