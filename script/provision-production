@@ -63,3 +63,7 @@ if [ -f ~/id_rsa.pub ]; then
     chown app:app /app/.ssh/authorized_keys
   fi
 fi
+
+if ! grep -q RAILS_ENV /etc/profile; then
+  echo "export RAILS_ENV=production" >> /etc/profile
+fi
