@@ -80,10 +80,11 @@ usermod -G docker -a app
 
 ## Install Docker images
 
+docker pull bouk/node
 docker pull bouk/coffee
 docker pull bouk/gcc
 docker pull bouk/golang
-docker pull bouk/node
+docker pull bouk/python
 docker pull bouk/ruby
 
 ## Create .ssh and an empty authorized_keys for app
