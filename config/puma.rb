@@ -1,3 +1,4 @@
+activate_control_app "unix:///app/shared/pumactl.sock"
 bind "unix:///app/shared/puma.sock"
 daemonize true
 directory "/app/current"
