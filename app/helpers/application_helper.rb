@@ -12,9 +12,7 @@ module ApplicationHelper
   end
 
   def time_left_badge(competition)
-    if competition.always_open?
-      "<span class='label label-success'>Open</span>".html_safe
-    elsif competition.open?
+    if competition.ongoing?
       seconds = (competition.end_at - Time.now).to_i
       "<span class='badge badge-info'>#{seconds / 3600}:#{seconds / 60 % 60}:#{seconds % 60}</span>".html_safe
     else
