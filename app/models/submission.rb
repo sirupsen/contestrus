@@ -1,3 +1,5 @@
+require "comedy_worker"
+
 class Submission < ActiveRecord::Base
   belongs_to :user
   belongs_to :task
@@ -26,7 +28,7 @@ class Submission < ActiveRecord::Base
 
   after_create :queue_evaluation, on: :create
   def queue_evaluation
-    EvaluationJob.new(self.id).delay.perform
+    ComedyWorker << EvaluationJob.new(self.id)
   end
 
   # Every evaluation has to pass because programs must be deterministic and not

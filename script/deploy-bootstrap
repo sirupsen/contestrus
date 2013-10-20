@@ -31,12 +31,6 @@ fi
 
 ln -sfn "$(pwd)" /app/current
 
-if [ -f /app/shared/delayed_job.pid ] && [ -d "/proc/$(cat /app/shared/delayed_job.pid)" ]; then
-  echo -n "Stopping delayed job... "
-  bin/delayed_job stop --pid-dir /app/shared
-  echo "stopped."
-fi
-
 if [ -f /app/shared/puma.pid ] && [ -d "/proc/$(cat /app/shared/puma.pid)" ]; then
   echo -n  "Waiting for Puma processes to roll over... "
   OLD_PID="$(cat /app/shared/puma.pid)"
@@ -53,10 +47,6 @@ if [ -f /app/shared/puma.pid ] && [ -d "/proc/$(cat /app/shared/puma.pid)" ]; th
 else
   bin/puma -C config/puma.rb
 fi
-
-echo -n "Starting delayed job... "
-bin/delayed_job start --pid-dir /app/shared
-echo "started."
 
 echo -n "Reloading nginx... "
 sudo /usr/local/bin/restart-nginx
