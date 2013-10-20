@@ -56,7 +56,9 @@
         <tr>
         <% if evaluation.status == "Build failed" %>
           <td colspan="6" style="padding: 0 !important">
+          <pre>
           <%= evaluation.body %>
+          </pre>
           </td>
         <% else %>
           <td colspan="6" style="padding: 0 !important">
