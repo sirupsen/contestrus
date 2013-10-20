@@ -28,9 +28,9 @@ class Competition < ActiveRecord::Base
     submissions.passed.group_by { |submission|
       submission.user
     }.sort_by { |user, submissions|
-      [submissions.uniq(&:task_id).count, submissions.average(&:created_at)]
-    }.reverse
-     .map { |user, _|
+      submissions = submissions.uniq(&:task_id)
+      [submissions.count, -submissions.inject(0) { |sum, sub| sum + sub.created_at.to_i }]
+    }.reverse.map { |user, _|
       user
     }
   end

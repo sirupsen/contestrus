@@ -101,6 +101,8 @@ class CompetitionTest < ActiveSupport::TestCase
     Submission.create(task: tasks(:hello_world), user: bob, 
                       source: 'puts "Hello World"', path: "hello.rb")
 
+    sleep 1
+
     sirup = users(:sirup)
     Submission.create(task: tasks(:hello_world), user: sirup, 
                       source: 'puts "Hello World"', path: "hello.rb")
