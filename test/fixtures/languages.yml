@@ -34,3 +34,10 @@ coffee:
   image: "bouk/coffee"
   build: "coffee -c -o /tmp /sandbox/file.coffee"
   run: "node /tmp/file.js"
+
+node:
+  name: "Javascript"
+  extension: "js"
+  image: "bouk/node"
+  build: "echo 'hello world'"
+  run: "node /sandbox/file.js"

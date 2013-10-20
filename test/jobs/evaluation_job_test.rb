@@ -104,6 +104,65 @@ class EvaluationJobTest < ActiveSupport::TestCase
     assert_match /unterminated string/, latest_evaluation.body
   end
 
+  test "run node program" do
+    js = <<-EOS
+      console.log("Hello World")
+    EOS
+
+    @submission.source = js
+    @submission.path = "file.js"
+    @submission.save!
+
+    assert_equal true, @submission.passed?
+  end
+
+  test "run coffee program" do
+    coffee = <<-EOS
+      console.log "Hello World"
+    EOS
+
+    @submission.source = coffee
+    @submission.path = "file.coffee"
+    @submission.save!
+
+    assert_equal true, @submission.passed?
+  end
+
+  test "run c program" do
+    c = <<-EOS
+#include<stdio.h>
+
+int main() {
+  printf("Hello World\\n");
+  return 0;
+}
+    EOS
+
+    @submission.source = c
+    @submission.path = "file.c"
+    @submission.save!
+
+    assert_equal true, @submission.passed?
+  end
+
+  test "run cpp program" do
+    c = <<-EOS
+#include<iostream>
+using namespace std;
+
+int main() {
+  cout << "Hello World" << endl;
+  return 0;
+}
+    EOS
+
+    @submission.source = c
+    @submission.path = "file.cpp"
+    @submission.save!
+
+    assert_equal true, @submission.passed?
+  end
+
   private
   def latest_evaluation
     @submission.evaluations.last
