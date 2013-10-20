@@ -5,6 +5,7 @@ class Competition < ActiveRecord::Base
   validates :end_at, presence: true, if: :start_at
 
   has_many :tasks
+  has_many :submissions, through: :tasks
 
   # Returns a range for which this contest is running.
   def open?(time = Time.now)
@@ -30,6 +31,6 @@ class Competition < ActiveRecord::Base
 
   # Returns true if a user has submitted to a contest.
   def participating?(user)
-    Submission.joins(:task).where(user_id: user.id, tasks: { competition_id: self.id }).any?
+    submissions.where(user_id: user.id).any?
   end
 end
