@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ $# -lt 2 ]; then
+  echo "Usage: script/tarball-ruby <host> <ruby>"
+  echo
+  echo "Creates a tarball for the Ruby version <ruby> from <host>."
+  echo
+  echo "For example, to package /app/rubies/ruby-2.0.0-p247, run:"
+  echo "    script/tarball-ruby my-user@my-host ruby-2.0.0-p247"
+  exit 1
+fi
+
+if [ -z "$(ssh "$1" -- ls /app/rubies/"$2")" ]; then
+  echo "No such ruby '$2' on host."
+  exit 1
+fi
+
+tarball_name="$2-$(ssh "$1" -- 'lsb_release -s -c; uname -m' | xargs echo | tr ' ' '-').tar.bz2"
+
+echo "Packaging $tarball_name..."
+
+ssh "$1" -- "cd /; tar cfj /tmp/$tarball_name app/rubies/$2"
+
+scp "$1":"/tmp/$tarball_name" .
