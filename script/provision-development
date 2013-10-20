@@ -8,8 +8,8 @@ set -x
 apt-get install nfs-server
 
 (
-cd /vagrant
-script/setup
+  cd /vagrant
+  PATH=/app/rubies/ruby-2.0.0-p247/bin:$PATH script/setup
 )
 
 usermod -G docker -a vagrant
