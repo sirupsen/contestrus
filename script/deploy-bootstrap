@@ -44,7 +44,12 @@ if [ -f /app/shared/puma.pid ] && [ -d "/proc/$(cat /app/shared/puma.pid)" ]; th
   while [ -d "/proc/$OLD_PID" ]; do
     sleep 0.1
   done
-  echo "new Puma has PID $(cat /app/shared/puma.pid)."
+  if [ -f /app/shared/puma.pid ]; then
+    echo "new Puma has PID $(cat /app/shared/puma.pid)."
+  else
+    echo
+    bin/puma -C config/puma.rb
+  fi
 else
   bin/puma -C config/puma.rb
 fi
