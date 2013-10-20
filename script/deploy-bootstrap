@@ -18,6 +18,11 @@ if [ -z "$COLD_DEPLOY" ]; then
 fi
 
 script/bootstrap
+
+if [ -n "$COLD_DEPLOY" ]; then
+  bin/rake db:create db:migrate db:seed
+fi
+
 bin/rake assets:precompile
 
 if [ -e /app/current ]; then
