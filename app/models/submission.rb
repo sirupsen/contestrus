@@ -31,10 +31,6 @@ class Submission < ActiveRecord::Base
     Comedy << EvaluationJob.new(self.id)
   end
 
-  def passed?
-    status == "Correct"
-  end
-
   private
   def language_from_path
     Language.find_by_extension(extension)
