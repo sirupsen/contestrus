@@ -31,6 +31,15 @@ fi
 
 ln -sfn "$(pwd)" /app/current
 
+if [ -f /app/shared/comedy_worker.pid ] && [ -d "/proc/$(cat /app/shared/comedy_worker.pid)" ]; then
+  echo -n "Reloading comedy_worker... "
+  kill -USR2 "$(cat /app/shared/comedy_worker.pid)"
+else
+  echo -n "Starting comedy_worker... "
+  bin/comedy_worker
+fi
+echo "ok."
+
 if [ -f /app/shared/puma.pid ] && [ -d "/proc/$(cat /app/shared/puma.pid)" ]; then
   OLD_PID="$(cat /app/shared/puma.pid)"
   bin/pumactl -S /app/shared/puma.state restart

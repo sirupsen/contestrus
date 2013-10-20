@@ -14,7 +14,8 @@ working = true
 
 trap "USR2" do
   working = false
-  puts "Stopping..."
+  puts "Restarting..."
+  exec "/app/current/bin/comedy_worker"
 end
 
 trap "INT" do
@@ -51,3 +52,4 @@ while working
 
   $stdout.puts "#{job.class_name} completed in %.2f sec" % bm.real
 end
+
