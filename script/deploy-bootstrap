@@ -10,9 +10,11 @@ set -e
 ln -sfn /app/shared/app_config.yml config/app_config.yml
 ln -sfn /app/shared/log log
 
-if ! sudo /usr/local/bin/check-nginx-syntax &> /dev/null; then
-  sudo /usr/local/bin/check-nginx-syntax
-  exit 1
+if [ -z "$COLD_DEPLOY" ]; then
+  if ! sudo /usr/local/bin/check-nginx-syntax &> /dev/null; then
+    sudo /usr/local/bin/check-nginx-syntax
+    exit 1
+  fi
 fi
 
 script/bootstrap

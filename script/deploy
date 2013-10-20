@@ -14,13 +14,14 @@ if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
   exit 1
 fi
 
-ssh "$DEPLOY_USER@$DEPLOY_HOST" -- "
+ssh -A "$DEPLOY_USER@$DEPLOY_HOST" -- "
   set -x
   set -e
   dir_name=\"\$(date +%s)-$ABBREV_SHA\"
   if [ -e current ]; then
     cp -r \"\$(readlink current)\" \$dir_name
   else
+    export COLD_DEPLOY=1
     git clone git@github.com:Sirupsen/contestrus.git \$dir_name
   fi
   cd \$dir_name
