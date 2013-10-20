@@ -31,14 +31,6 @@ fi
 
 ln -sfn "$(pwd)" /app/current
 
-comedy_worker_pid="$(initctl status comedy_worker | grep /running | awk '{print $NF}')"
-if [ ! -z "$comedy_worker_pid" ]; then
-  echo "Reloading comedy_worker"
-  kill -SIGUSR2 "$comedy_worker_pid"
-else
-  sudo service comedy_worker start
-fi
-
 puma_pid="$(initctl status puma | grep /running | awk '{print $NF}')"
 if [ ! -z "$puma_pid" ]; then
   echo "Reloading puma"
@@ -47,6 +39,7 @@ else
   sudo service puma start
 fi
 
+sudo service comedy_worker reload
 sudo service nginx reload
 
 if [ -n "$OLD_DEPLOY" ]; then
