@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
-require 'sqlite3'
+require 'jdbc/sqlite3'
+require 'activerecord-jdbcsqlite3-adapter'
 require 'rails'
 require 'active_record/railtie'
 require 'action_controller/railtie'
