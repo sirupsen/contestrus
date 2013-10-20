@@ -42,7 +42,7 @@ echo "ok."
 
 if [ -f /app/shared/puma.pid ] && [ -d "/proc/$(cat /app/shared/puma.pid)" ]; then
   OLD_PID="$(cat /app/shared/puma.pid)"
-  bin/pumactl -S /app/shared/puma.state restart
+  kill -USR2 "$OLD_PID"
   echo -n "Waiting for Pumas to roll over... "
   while [ ! -f /app/shared/puma.pid ] || [ "$(cat /app/shared/puma.pid)" = "$OLD_PID" ]; do
     sleep 0.1
