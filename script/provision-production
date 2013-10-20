@@ -28,6 +28,37 @@ http {
 }
 NGINX
 
+cat > /etc/init/puma.conf <<UPSTART
+description "puma"
+
+start on startup
+stop on shutdown
+
+setuid app
+setgid app
+chdir /app/current
+
+respawn
+
+exec /app/current/bin/puma -C /app/current/config/puma.rb
+UPSTART
+
+cat > /etc/init/comedy_worker.conf <<UPSTART
+description "comedy_worker"
+
+start on startup
+stop on shutdown
+
+setuid app
+setgid app
+chdir /app/current
+env RAILS_ENV=production
+
+respawn
+
+exec /app/current/bin/comedy_worker
+UPSTART
+
 if ! grep -q 'app ALL=NOPASSWD: ALL' /etc/sudoers; then
 
   cat >> /etc/sudoers <<SUDOERS
