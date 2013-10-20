@@ -6,6 +6,6 @@ class MetaTest < MiniTest::Unit::TestCase
       `bin/rails runner 0`
     end
 
-    assert bm.real < 2
+    assert bm.real < 2, "SO SLOW!!! #{bm.real}"
   end
 end
