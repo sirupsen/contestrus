@@ -54,7 +54,9 @@ class EvaluationJob
   private
 
   def prepare_image
-    c = create_container(language.image, "#{language.build} 1> /stdout 2> /stderr")
+    c = create_container(language.image, "#{language.build} 1> /stdout 2> /stderr",
+      'Memory' => 256*1024*1024 # Limit compilation memory usage
+    )
     c.start!(start_options)
     unless c.wait(30)['StatusCode'].zero?
       files = retrieve_stderr_stdout(c)
