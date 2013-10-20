@@ -22,17 +22,32 @@ Many contest environments are complicated to set up. Contestrus is aiming to be
 extremely simple to set up and will be run inside Docker containers for maximum
 deployment and development ease.
 
-## External dependencies
-
-Contestrus has PostgreSQL as its only external dependency.
-
-**Note:** Currently Contestrus uses sqlite3 but will eventually switch to
-PostgresSQL, because sqlite3 will not play nicely with the Docker architecture
-planned for Contestrus.
-
 ## Development
 
-Run `script/setup`. This sets up your development environment:
+Development should be done in a Vagrant box so all development environments
+closely reflect production environments and other developers' environments.
+
+Run `vagrant up` to create an Ubuntu 13.04 box for local development. This will
+run a provision script also used for production to install:
+
+* Install a lot of basic packages
+* Compile and install ruby 2.0.0
+* Docker
+* Docker containers for languages supported by Contestrus
+
+Once that's all done, you can clone down the repository and run the tests:
+
+```bash
+$ vagrant ssh
+
+# inside of vagrant
+$ git clone git@github.com:Sirupsen/contestrus.git
+$ cd contestrus
+$ script/setup # setup dev environment, database, gems, etc.
+$ bin/rake # run all tests
+```
+
+`script/setup` does things like..
 
 * Vendor all Contestrus' dependencies.
 * Create binstubs.
@@ -40,9 +55,9 @@ Run `script/setup`. This sets up your development environment:
 * Seeds the database with initial settings.
 * Seeds the database with a test contest.
 
-Run `bin/rake` to test Contestrus on your own machine.
+Run `bin/rake` to test Contestrus on your own machine. You can then run
+`bin/rails server` to boot the rails server.
 
-## Importing contests
+## Deployment
 
-The default importer uses the format in `/contests`. You can import all your
-contests in this folder with: `rake tasks:add`.
+Coming soon.
