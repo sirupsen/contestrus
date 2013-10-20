@@ -138,7 +138,7 @@ class EvaluationJob
   end
 
   def language
-    submission.language
+    Language[submission.language]
   end
 
   def task

@@ -3,7 +3,6 @@ require "comedy"
 class Submission < ActiveRecord::Base
   belongs_to :user
   belongs_to :task
-  belongs_to :language
 
   validates :source, presence: true
   validates :path, presence: true
@@ -27,7 +26,7 @@ class Submission < ActiveRecord::Base
 
   before_validation :set_language
   def set_language
-    self.language ||= language_from_path
+    self.language ||= Language.find_by_extension(extension).try(:key)
   end
 
   after_create :queue_evaluation, on: :create
@@ -36,10 +35,6 @@ class Submission < ActiveRecord::Base
   end
 
   private
-  def language_from_path
-    Language.find_by_extension(extension)
-  end
-
   def extension
     path.split(".").last if path
   end

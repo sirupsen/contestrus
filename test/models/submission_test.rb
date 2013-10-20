@@ -31,7 +31,7 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test "set language on creation" do
     submission = Submission.create(valid_submission_attributes)
-    assert_equal languages(:ruby), submission.language
+    assert_equal "ruby", submission.language
   end
 
   test "passed? should return true if evaluation passed" do

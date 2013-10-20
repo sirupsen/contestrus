@@ -1,31 +1,26 @@
-require 'test_helper'
+require 'light_test_helper'
+require_relative "../../app/models/language"
 
-class LanguageTest < ActiveSupport::TestCase
-  test "create valid language" do
-    assert Language.new(valid_language_attributes).valid?
+class LanguageTest < MiniTest::Unit::TestCase
+  def test_define_language
+    Language.define "ruby" do |language|
+      language.extension = "rb"
+      language.image = "bouk/ruby"
+      language.build = "ruby -c /sandbox/file.rb"
+      language.run = "ruby /sandbox/file.rb"
+    end
+
+    assert_equal "ruby", Language["ruby"].name
   end
 
-  test "validates presence of name" do
-    refute Language.new(valid_language_attributes.merge(name: nil)).valid?
-  end
+  def test_find_by_extension
+    Language.define "ruby" do |language|
+      language.extension = "rb"
+      language.image = "bouk/ruby"
+      language.build = "ruby -c /sandbox/file.rb"
+      language.run = "ruby /sandbox/file.rb"
+    end
 
-  test "validates presence of extension" do
-    refute Language.new(valid_language_attributes.merge(extension: nil)).valid?
-  end
-
-  test "validates presence of image" do
-    refute Language.new(valid_language_attributes.merge(image: nil)).valid?
-  end
-
-  test "validates presence of build" do
-    refute Language.new(valid_language_attributes.merge(build: nil)).valid?
-  end
-
-  test "validates presence of run" do
-    refute Language.new(valid_language_attributes.merge(run: nil)).valid?
-  end
-
-  def valid_language_attributes
-    languages(:ruby).attributes
+    assert_equal "ruby", Language.find_by_extension("rb").name
   end
 end
