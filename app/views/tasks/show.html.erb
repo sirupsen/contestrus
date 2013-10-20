@@ -46,7 +46,11 @@
         <tr class="<%= submission_class(submission) %> accordion-toggle" data-toggle="collapse" data-target="#evaluations-<%= submission.id %>">
           <td><%= submission.id %></td>
           <td><%= submission.created_at.to_formatted_s(:short) %></td>
+          <% if pending?(submission) %>
+          <td>Pending</td>
+          <% else %>
           <td><%= evaluation.status %></td>
+          <% end %>
         </tr>
         <% unless pending?(submission) %>
         <tr>
