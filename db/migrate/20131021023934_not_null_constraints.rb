@@ -20,7 +20,7 @@ class NotNullConstraints < ActiveRecord::Migration
     change_column :tasks,         :name,            :string,    null: false
     change_column :tasks,         :created_at,      :datetime,  null: false
     change_column :tasks,         :updated_at,      :datetime,  null: false
-    change_column :tasks,         :restrictions,    :text,      null: false
+    change_column :tasks,         :restrictions,    :text,      null: false, default: ""
 
     change_column :test_cases,    :input,           :text,      null: false
     change_column :test_cases,    :output,          :text,      null: false

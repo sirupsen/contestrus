@@ -42,12 +42,12 @@ ActiveRecord::Schema.define(version: 20131021024113) do
   end
 
   create_table "tasks", force: true do |t|
-    t.integer  "competition_id", null: false
-    t.string   "name",           null: false
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.integer  "competition_id",              null: false
+    t.string   "name",                        null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.text     "body"
-    t.text     "restrictions",   null: false
+    t.text     "restrictions",   default: "", null: false
   end
 
   create_table "test_cases", force: true do |t|
