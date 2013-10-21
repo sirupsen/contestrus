@@ -1,0 +1,16 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Solved #</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tasks.each do |task| %>
+      <tr>
+        <td><%= link_to task.name, task_path(task) %></td>
+        <td><%= task.times_solved %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -5,7 +5,7 @@ class Competition < ActiveRecord::Base
   validates :end_at, presence: true, if: :start_at
 
   has_many :tasks
-  has_many :submissions, through: :tasks
+  has_many :submissions
   has_many :participating_users, through: :submissions, source: :user
 
   def leaderboard
@@ -37,10 +37,5 @@ class Competition < ActiveRecord::Base
 
   def always_open?
     !end_at
-  end
-
-  # Returns true if a user has submitted to a contest.
-  def participating?(user)
-    submissions.where(user_id: user.id).any?
   end
 end

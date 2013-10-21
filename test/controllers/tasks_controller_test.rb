@@ -1,6 +1,14 @@
 require 'test_helper'
 
 class TasksControllerTest < ActionController::TestCase
+  test "show all tasks" do
+    sign_in
+
+    get :index
+
+    assert_response :success
+  end
+
   test "should not show task for future competition" do
     sign_in
 

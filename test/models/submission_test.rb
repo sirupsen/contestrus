@@ -22,13 +22,6 @@ class SubmissionTest < ActiveSupport::TestCase
     refute Submission.new(valid_submission_attributes.merge(path: "test.txt")).valid?
   end
 
-  test "validates within contest is within open time" do
-    competition = competitions(:past)
-    task = competition.tasks.first
-    refute Submission.new(valid_submission_attributes.merge(task: task)).valid?, 
-      "Submission for past competition should give a validation error."
-  end
-
   test "set language on creation" do
     submission = Submission.create(valid_submission_attributes)
     assert_equal "ruby", submission.language
@@ -44,6 +37,34 @@ class SubmissionTest < ActiveSupport::TestCase
       source: "puts 'Hello'"
     ))
     refute submission.passed?
+  end
+
+  test "competition_id is set for an ongoing competition" do
+    @task = tasks(:ongoing_hello_world)
+
+    submission = Submission.create(valid_submission_attributes)
+    assert_equal competitions(:ongoing), submission.competition
+  end
+
+  test "competition_id is not set for a past competition" do
+    @task = tasks(:past_hello_world)
+
+    submission = Submission.create(valid_submission_attributes)
+    refute submission.competition
+  end
+
+  test "passed_task.during_competition returns true when solved task during competition" do
+    @task = tasks(:ongoing_hello_world)
+
+    submission = Submission.create(valid_submission_attributes).reload
+    assert @user.submissions.passed.for_task(@task).during_competition.any?
+  end
+
+  test "passed_task.during_competition returns false when solved task after competition" do
+    @task = tasks(:past_hello_world)
+
+    submission = Submission.create(valid_submission_attributes).reload
+    refute @user.submissions.passed.for_task(@task).during_competition.any?
   end
 
   private

@@ -1,5 +1,9 @@
 class TasksController < ApplicationController
-  before_filter :visible_contest
+  before_filter :visible_contest, except: [:index]
+
+  def index
+    @tasks = Task.all
+  end
 
   def show
     @task        = Task.find(params[:id])

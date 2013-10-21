@@ -40,6 +40,7 @@
             <% if current_user %>
               <li><%= link_to "My profile", user_path(current_user) %></li>
               <li><%= link_to "Sign out", sessions_path, method: :delete %></li>
+              <li><%= link_to "Tasks", tasks_path %></li>
             <% end %>
 
             <li><%= link_to "Instructions", instructions_path %></li>
@@ -62,7 +63,7 @@
                   <% competition.tasks.each do |task| %>
                     <li>
                       <%= link_to task_path(task) do %>
-                        <%= task.name %> <%= task_badge(task) %>
+                        <%= task.name %> <%= task_status_badge(task) %>
                       <% end %>
                     </li>
                   <% end %>

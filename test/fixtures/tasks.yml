@@ -37,6 +37,14 @@ ongoing_hello_world:
     ---
     time: 1.0
 
+ongoing_sum:
+  competition: ongoing
+  name: "Ongoing sum"
+  body: "Sum two numbers."
+  restrictions: |
+    ---
+    time: 1.0
+
 future_hello_world: 
   competition: future
   name: "Future World"

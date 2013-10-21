@@ -16,21 +16,19 @@
 <h2><%= @task.name %></h2>
 <p><%= render_markdown(@task.body) %></p>
 
-<% if @task.competition.open? %>
-  <%= form_for @submission, url: task_submissions_path(@task.id), method: :post do |f| %>
-    <%= f.hidden_field :task_id, value: @task.id %>
-    <div class="control-group">
-      <div class="controls">
-        <%= f.file_field :source %>
+<%= form_for @submission, url: task_submissions_path(@task.id), method: :post do |f| %>
+  <%= f.hidden_field :task_id, value: @task.id %>
+  <div class="control-group">
+    <div class="controls">
+      <%= f.file_field :source %>
 
-        <div class="input-append">
-          <input class="browser input-large uneditable-input" id="pretty_file" type="text"/>
-          <a class="browser btn">Browse</a>
-          <%= f.button "Evaluate", class: "btn btn-primary" %>
-        </div>
+      <div class="input-append">
+        <input class="browser input-large uneditable-input" id="pretty_file" type="text"/>
+        <a class="browser btn">Browse</a>
+        <%= f.button "Evaluate", class: "btn btn-primary" %>
       </div>
     </div>
-  <% end %>
+  </div>
 <% end %>
 
 <% unless @submissions.empty? %>

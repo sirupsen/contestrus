@@ -1,10 +1,27 @@
 module ApplicationHelper
-  def task_badge(task)
-    if completed_task?(task) 
-      "<span class='label label-success'>Passed</span>".html_safe
-    elsif attempted_task?(task)
-      "<span class='label label-warning'>Attempted</span>".html_safe
+  def task_status_human(task, user = current_user)
+    if user.submissions.passed.for_task(task).during_competition.any?
+      "Passed"
+    elsif user.submissions.for_task(task).during_competition.any?
+      "Attempted"
+    else
+      "Not attempted"
     end
+  end
+
+  def task_status_class(task, user = current_user)
+    case task_status_human(task, user)
+    when "Passed"
+      "success"
+    when "Attempted"
+      "warning"
+    when "Not attempted"
+      "info"
+    end
+  end
+
+  def task_status_badge(task, user = current_user)
+    "<span class='label label-#{task_status_class(task, user)}'>#{task_status_human(task, user)}</span>".html_safe
   end
 
   def render_markdown(markdown)

@@ -3,6 +3,7 @@ require "comedy"
 class Submission < ActiveRecord::Base
   belongs_to :user
   belongs_to :task
+  belongs_to :competition
 
   validates :source, presence: true
   validates :path, presence: true
@@ -12,15 +13,8 @@ class Submission < ActiveRecord::Base
   serialize :body
 
   scope :passed, -> { where(:passed => true) }
-
-  # Validates that the submission was performed within the duration of the
-  # contest.
-  validate :contest_expirement
-  def contest_expirement
-    unless task.competition.open?
-      errors.add :base, "Competition is no longer open"
-    end
-  end
+  scope :for_task, ->(task) { where(task: task) }
+  scope :during_competition, -> { where("submissions.competition_id IS NOT NULL") }
 
   before_validation :set_language
   def set_language
@@ -30,6 +24,11 @@ class Submission < ActiveRecord::Base
   after_create :queue_evaluation, on: :create
   def queue_evaluation
     Comedy << EvaluationJob.new(self.id)
+  end
+
+  before_create :set_competition, on: :create
+  def set_competition
+    self.competition = task.competition if task.competition.ongoing?
   end
 
   private
