@@ -39,6 +39,7 @@ class ActionDispatch::IntegrationTest
   end
 
   def sign_out
-    visit sign_out_path
+    visit sessions_path
+    click_button "Sign out"
   end
 end
