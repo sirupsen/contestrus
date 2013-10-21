@@ -59,13 +59,13 @@ ActiveRecord::Schema.define(version: 20131021024113) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "username",        null: false
-    t.string   "password_digest", null: false
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.string   "email",           null: false
-    t.boolean  "admin",           null: false
-    t.string   "session_hash",    null: false
+    t.string   "username",                        null: false
+    t.string   "password_digest",                 null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.string   "email",                           null: false
+    t.boolean  "admin",           default: false, null: false
+    t.string   "session_hash",                    null: false
   end
 
   add_index "users", ["id"], name: "index_users_on_id"
