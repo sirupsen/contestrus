@@ -10,7 +10,7 @@ class Language
   end
 
   def version
-    `docker run -i -t #{image} #{@version}`
+    @docker_version ||= `docker run -i -t #{image} #{@version}`
   end
 
   class << self
