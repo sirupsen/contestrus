@@ -23,7 +23,7 @@ if [ -n "$COLD_DEPLOY" ]; then
   bin/rake db:create db:migrate db:seed
 fi
 
-bin/rake assets:precompile db:migrate
+bin/rake assets:precompile
 
 if [ -e /app/current ]; then
   OLD_DEPLOY="$(readlink /app/current)"
