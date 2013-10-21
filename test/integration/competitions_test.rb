@@ -92,4 +92,12 @@ class CompetitionsIntegrationTest < ActionDispatch::IntegrationTest
       assert_selector "a", text: competition.name
     end
   end
+
+  test "when not signed in no competitions should be shown" do
+    competition = competitions(:ongoing)
+
+    within "#sidebar" do
+      assert_no_selector "li", text: competition.name
+    end
+  end
 end

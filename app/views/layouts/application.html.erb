@@ -44,30 +44,32 @@
 
             <li><%= link_to "Instructions", instructions_path %></li>
 
-            <% Competition.all.includes(:tasks).each do |competition| %>
-              <li class="nav-header">
-                <% if competition.expired? || current_user.try(:admin?) %>
-                  <%= link_to leaderboard_competition_path(competition) do %>
+            <% if current_user %>
+              <% Competition.all.includes(:tasks).each do |competition| %>
+                <li class="nav-header">
+                  <% if competition.expired? || current_user.try(:admin?) %>
+                    <%= link_to leaderboard_competition_path(competition) do %>
+                      <%= competition.name %>
+                      <%= time_left_badge(competition) %>
+                    <% end %>
+                  <% else %>
                     <%= competition.name %>
                     <%= time_left_badge(competition) %>
                   <% end %>
-                <% else %>
-                  <%= competition.name %>
-                  <%= time_left_badge(competition) %>
-                <% end %>
-              </li>
-              <% if competition.visible? %>
+                </li>
+                <% if competition.visible? %>
 
-                <% competition.tasks.each do |task| %>
-                  <li>
-                    <%= link_to task_path(task) do %>
-                      <%= task.name %> <%= task_badge(task) %>
-                    <% end %>
-                  </li>
+                  <% competition.tasks.each do |task| %>
+                    <li>
+                      <%= link_to task_path(task) do %>
+                        <%= task.name %> <%= task_badge(task) %>
+                      <% end %>
+                    </li>
+                  <% end %>
                 <% end %>
               <% end %>
-            <% end %>
-          </ul>
+            </ul>
+          <% end %>
         </div>
 
         <div class="span9">
