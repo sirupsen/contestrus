@@ -11,80 +11,61 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131021020547) do
+ActiveRecord::Schema.define(version: 20131021024113) do
 
   create_table "comedy_jobs", force: true do |t|
     t.string   "class_name", null: false
     t.text     "ivars",      null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "competitions", force: true do |t|
-    t.string   "name"
+    t.string   "name",       null: false
     t.datetime "start_at"
     t.datetime "end_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "languages", force: true do |t|
-    t.string   "name"
-    t.string   "extension"
-    t.string   "image"
-    t.string   "build"
-    t.string   "run"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "participations", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "competition_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "submissions", force: true do |t|
-    t.text     "source"
-    t.integer  "task_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "language_id"
-    t.string   "path"
-    t.string   "status",      default: "Pending"
+    t.text     "source",                         null: false
+    t.integer  "task_id",                        null: false
+    t.integer  "user_id",                        null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "path",                           null: false
+    t.string   "status",     default: "Pending", null: false
     t.text     "body"
-    t.boolean  "passed",      default: false
-    t.string   "language"
+    t.boolean  "passed",     default: false
+    t.string   "language",                       null: false
   end
 
   create_table "tasks", force: true do |t|
-    t.integer  "competition_id"
-    t.string   "name"
-    t.string   "type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "competition_id",              null: false
+    t.string   "name",                        null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.text     "body"
-    t.text     "restrictions"
+    t.text     "restrictions",   default: "", null: false
   end
 
   create_table "test_cases", force: true do |t|
-    t.text     "input"
-    t.text     "output"
-    t.integer  "task_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.text     "input",      null: false
+    t.text     "output",     null: false
+    t.integer  "task_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: true do |t|
-    t.string   "username"
-    t.string   "password_digest"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "email"
-    t.boolean  "admin"
-    t.string   "session_hash",    null: false
+    t.string   "username",                        null: false
+    t.string   "password_digest",                 null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.string   "email",                           null: false
+    t.boolean  "admin",           default: false, null: false
+    t.string   "session_hash",                    null: false
   end
 
   add_index "users", ["id"], name: "index_users_on_id"
