@@ -16,7 +16,7 @@ holds.
 The first line contains three space-separated integers `$a, b, c$`
 `$1 \le a, b, c \le 1000, a > b$`. The first number (`$a$`) denotes the size of
 data needed to watch one second of the video. The second number (`$b$`) denotes the
-size of data Beatrice and Conrad can download from the per second. The third
+size of data Beatrice and Conrad can download from the innernette per second. The third
 number (`$c$`) denotes the video's length in seconds.
 
 ### Output
