@@ -13,7 +13,7 @@
     </tr>
   </thead>
   <tbody>
-    <% Language.languages.values.each do |language| %>
+    <% @languages.each do |language| %>
       <tr class="language">
         <td><%= language.name %></td>
         <td><%= language.version %></td>
