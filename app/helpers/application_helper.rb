@@ -40,8 +40,6 @@ module ApplicationHelper
     elsif competition.ongoing?(Time.now)
       seconds = (competition.end_at - Time.now).to_i
       "<span class='badge badge-warning'>#{seconds / 3600}:#{seconds / 60 % 60}:#{seconds % 60}</span>".html_safe
-    else
-      "<span class='label label-success'>Completed</span>".html_safe
     end
   end
 
