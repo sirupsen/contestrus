@@ -24,7 +24,7 @@ class Competition < ActiveRecord::Base
   end
 
   def expired?(time = Time.now)
-    time > end_at
+    always_open? || time > end_at
   end
 
   def ongoing?(time = Time.now)

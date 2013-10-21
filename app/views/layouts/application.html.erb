@@ -46,10 +46,18 @@
 
             <% Competition.all.includes(:tasks).each do |competition| %>
               <li class="nav-header">
-                <%= competition.name %>
-                <%= time_left_badge(competition) %>
+                <% if competition.expired? %>
+                  <%= link_to leaderboard_competition_path(competition) do %>
+                    <%= competition.name %>
+                    <%= time_left_badge(competition) %>
+                  <% end %>
+                <% else %>
+                  <%= competition.name %>
+                  <%= time_left_badge(competition) %>
+                <% end %>
               </li>
               <% if competition.visible? %>
+
                 <% competition.tasks.each do |task| %>
                   <li>
                     <%= link_to task_path(task) do %>
