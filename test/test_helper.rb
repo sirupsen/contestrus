@@ -13,6 +13,7 @@ class ActiveSupport::TestCase
 
   def sign_in(user = users(:sirup))
     session[:user_id] = user.id
+    session[:session_hash] = user.session_hash
     user
   end
 end
