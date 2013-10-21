@@ -3,7 +3,7 @@
 mega_inversions:
   competition: open
   name: "Mega Inversions"
-  body: "Number of triples for which <i>a_i > a_j > a_k</i> and <i>i < j < k</i>."
+  body: "Number of triples for which `$a_i > a_j > a_k$` and `$i < j < k$`."
 
 hello_world:
   competition: open
