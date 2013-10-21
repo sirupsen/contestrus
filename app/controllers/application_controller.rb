@@ -7,14 +7,19 @@ class ApplicationController < ActionController::Base
   def require_user
     unless current_user
       flash[:notice] = "You must be signed in to access that page."
-      redirect_to new_session_path
+      redirect_to new_sessions_path
       return false
     end
   end
 
+  helper_method :current_session
+  def current_session
+    @current_session ||= Session.new(session)
+  end
+
   helper_method :current_user
   def current_user
-    @user ||= User.find_by_id(session[:user_id])
+    current_session.user
   end
 
   def require_admin

@@ -1,4 +1,4 @@
-class SessionController < ApplicationController
+class SessionsController < ApplicationController
   skip_before_filter :require_user
   before_filter :to_user, only: [:new]
 
@@ -10,7 +10,7 @@ class SessionController < ApplicationController
     @user = User.find_by_username(params[:user][:username])
 
     if @user && @user.authenticate(params[:user][:password])
-      session[:user_id] = @user.id
+      current_session.user = @user
       redirect_to user_path(@user)
     else
       flash[:error] = "Invalid credentials."
@@ -18,8 +18,8 @@ class SessionController < ApplicationController
     end
   end
 
-  def sign_out
-    session[:user_id] = nil
+  def destroy
+    current_session.user = nil
     redirect_to root_path
   end
 

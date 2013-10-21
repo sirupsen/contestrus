@@ -1,8 +1,9 @@
 Contestrus::Application.routes.draw do
   get "pages/instructions"
-  root 'session#new'
+  root "sessions#new"
 
-  resources :sessions, controller: 'session'
+  resource :sessions
+
   resources :competitions do
     member do
       get "leaderboard" => "competitions#leaderboard"
@@ -15,6 +16,5 @@ Contestrus::Application.routes.draw do
     resources :submissions
   end
 
-  get '/sign_out' => 'session#sign_out'
   get '/instructions' => 'pages#instructions', as: 'instructions'
 end
