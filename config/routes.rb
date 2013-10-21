@@ -1,4 +1,5 @@
 Contestrus::Application.routes.draw do
+  get "pages/instructions"
   root 'session#new'
 
   resources :sessions, controller: 'session'
@@ -14,5 +15,6 @@ Contestrus::Application.routes.draw do
     resources :submissions
   end
 
-  get 'sign_out' => 'session#sign_out'
+  get '/sign_out' => 'session#sign_out'
+  get '/instructions' => 'pages#instructions', as: 'instructions'
 end

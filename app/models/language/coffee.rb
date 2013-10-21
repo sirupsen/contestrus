@@ -3,4 +3,5 @@ Language.define "Coffee" do |lang|
   lang.image = "bouk/coffee"
   lang.build = "coffee -c -o /tmp /sandbox/file.coffee"
   lang.run = "node /tmp/file.js"
+  lang.version = "node --version"
 end

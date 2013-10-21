@@ -41,12 +41,12 @@
               <li><%= link_to "My profile", user_path(current_user) %></li>
             <% end %>
 
+            <li><%= link_to "Instructions", instructions_path %></li>
+
             <% Competition.all.includes(:tasks).each do |competition| %>
               <li class="nav-header">
-                <%= link_to competition_path(competition) do %>
-                  <%= competition.name %>
-                  <%= time_left_badge(competition) %>
-                <% end %>
+                <%= competition.name %>
+                <%= time_left_badge(competition) %>
               </li>
               <% if competition.visible? %>
                 <% competition.tasks.each do |task| %>

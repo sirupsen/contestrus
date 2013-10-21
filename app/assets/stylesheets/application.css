@@ -65,3 +65,7 @@ li.success {
 .alert {
   margin-top: 15px;
 }
+
+tr.language td{
+  width: 120px;
+}

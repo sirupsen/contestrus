@@ -1,0 +1,26 @@
+<h1>Instructions</h1>
+
+<h2>Language support</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Language</th>
+      <th>Version</th>
+      <th>Extension</th>
+      <th>Build</th>
+      <th>Run</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% Language.languages.values.each do |language| %>
+      <tr class="language">
+        <td><%= language.name %></td>
+        <td><%= language.version %></td>
+        <td><%= language.extension %></td>
+        <td><pre><%= language.build %></pre></td>
+        <td><pre><%= language.run %></pre></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

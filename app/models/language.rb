@@ -1,5 +1,5 @@
 class Language
-  attr_accessor :name, :extension, :image, :build, :run
+  attr_accessor :name, :extension, :image, :build, :run, :version
 
   def initialize(name)
     @name = name
@@ -7,6 +7,10 @@ class Language
 
   def key
     name.downcase
+  end
+
+  def version
+    `docker run -i -t #{image} #{@version}`
   end
 
   class << self
