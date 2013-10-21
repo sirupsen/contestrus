@@ -1,8 +1,8 @@
 Contestrus::Application.routes.draw do
   get "pages/instructions"
-  root 'session#new'
+  root "sessions#new"
 
-  resource :sessions, controller: 'session'
+  resource :sessions
 
   resources :competitions do
     member do

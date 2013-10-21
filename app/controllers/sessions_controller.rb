@@ -1,4 +1,4 @@
-class SessionController < ApplicationController
+class SessionsController < ApplicationController
   skip_before_filter :require_user
   before_filter :to_user, only: [:new]
 
