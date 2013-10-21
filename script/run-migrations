@@ -8,8 +8,8 @@ set -e
 set -x
 cd /app/current
 export RAILS_ENV=production
-sudo service puma stop
-sudo service comedy_worker stop
+sudo service puma stop || true
+sudo service comedy_worker stop || true
 bin/rake db:migrate
 sudo service comedy_worker start
 sudo service puma start
