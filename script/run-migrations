@@ -1,0 +1,16 @@
+#!/bin/bash
+
+DEPLOY_USER="app"
+DEPLOY_HOST="contestrus"
+
+ssh "$DEPLOY_USER"@"$DEPLOY_HOST" -- "
+set -e
+set -x
+cd /app/current
+export RAILS_ENV=production
+sudo service puma stop
+sudo service comedy_worker stop
+bin/rake db:migrate
+sudo service comedy_worker start
+sudo service puma start
+"
