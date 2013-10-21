@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131020211301) do
+ActiveRecord::Schema.define(version: 20131021020547) do
 
   create_table "comedy_jobs", force: true do |t|
     t.string   "class_name", null: false
@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 20131020211301) do
     t.datetime "updated_at"
     t.string   "email"
     t.boolean  "admin"
+    t.string   "session_hash",    null: false
   end
 
   add_index "users", ["id"], name: "index_users_on_id"

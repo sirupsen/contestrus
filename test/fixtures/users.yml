@@ -4,10 +4,12 @@ sirup:
   username: sirup
   email: sirup@example.com
   admin: true
+  session_hash: 0123456789abcdef
   password_digest: "$2a$10$oTQoahqHtCo0rTCwhp0nZuQow19hJjAuH7h5CvlGg8cXfzh7Gyb9K" # seekrit
 
 bob:
   username: bob
   email: bob@example.com
+  session_hash: deadbeefdeafbeef
   password_digest: "$2a$10$oTQoahqHtCo0rTCwhp0nZuQow19hJjAuH7h5CvlGg8cXfzh7Gyb9K" # seekrit
   admin: false
