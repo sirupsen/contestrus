@@ -28,7 +28,7 @@ class Submission < ActiveRecord::Base
 
   before_create :set_competition, on: :create
   def set_competition
-    self.competition = task.competition if task.competition.ongoing?
+    self.competition = task.competition if task.competition.open?
   end
 
   private

@@ -53,6 +53,13 @@ class SubmissionTest < ActiveSupport::TestCase
     refute submission.competition
   end
 
+  test "competition_id is set for an open competition" do
+    @task = tasks(:hello_world)
+
+    submission = Submission.create(valid_submission_attributes)
+    assert_equal competitions(:open), submission.competition
+  end
+
   test "passed_task.during_competition returns true when solved task during competition" do
     @task = tasks(:ongoing_hello_world)
 
