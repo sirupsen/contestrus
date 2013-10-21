@@ -29,31 +29,17 @@ ActiveRecord::Schema.define(version: 20131021030931) do
   end
 
   create_table "submissions", force: true do |t|
-<<<<<<< HEAD
-    t.text     "source",                         null: false
-    t.integer  "task_id",                        null: false
-    t.integer  "user_id",                        null: false
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.string   "path",                           null: false
-    t.string   "status",     default: "Pending", null: false
-    t.text     "body"
-    t.boolean  "passed",     default: false
-    t.string   "language",                       null: false
-=======
-    t.text     "source"
-    t.integer  "task_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "language_id"
-    t.string   "path"
-    t.string   "status",         default: "Pending"
+    t.text     "source",                             null: false
+    t.integer  "task_id",                            null: false
+    t.integer  "user_id",                            null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.string   "path",                               null: false
+    t.string   "status",         default: "Pending", null: false
     t.text     "body"
     t.boolean  "passed",         default: false
-    t.string   "language"
+    t.string   "language",                           null: false
     t.integer  "competition_id"
->>>>>>> Set competition_id only during competition to allow submitting outside comp
   end
 
   add_index "submissions", ["task_id", "passed"], name: "index_submissions_on_task_id_and_passed"
