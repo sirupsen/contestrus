@@ -18,7 +18,7 @@ class SessionController < ApplicationController
     end
   end
 
-  def sign_out
+  def destroy
     current_session.user = nil
     redirect_to root_path
   end
