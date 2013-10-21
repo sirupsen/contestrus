@@ -146,7 +146,9 @@ class EvaluationJob
   end
 
   def mktemp_dir
-    `mktemp --directory`.strip
+    "/tmp/contestrus-#{$$}-#{SecureRandom.hex(4)}".tap do |dir|
+      Dir.mkdir(dir)
+    end
   end
 
   def submission
