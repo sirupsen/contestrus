@@ -9,4 +9,11 @@ class User < ActiveRecord::Base
   validates :username, presence: true, uniqueness: true
   validates :password, presence: true, length: { minimum: 6 }
   validates :email, presence: true, uniqueness: true
+
+  before_create :set_session_hash
+
+private
+  def set_session_hash
+    self.session_hash = SecureRandom.hex(8)
+  end
 end

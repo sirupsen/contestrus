@@ -39,6 +39,13 @@ class UserTest < ActiveSupport::TestCase
     assert_invalid user
   end
 
+  test "sets a session hash on creation" do
+    user = User.new(valid_params)
+    assert_predicate user.session_hash, :nil?
+    user.save
+    assert_match /\A[a-f0-9]{16}\z/, user.session_hash
+  end
+
   private
   def valid_params
     {
