@@ -9,7 +9,7 @@ class SessionIntegrationTest < ActionDispatch::IntegrationTest
 
     click_button "Sign in"
 
-    assert_equal '/competitions', current_path
+    assert_equal user_path(User.find_by_username("sirup")), current_path
   end
 
   test 'wrong password shows an error' do
@@ -22,10 +22,5 @@ class SessionIntegrationTest < ActionDispatch::IntegrationTest
 
     assert_equal '/sessions', current_path
     assert page.has_content?("Invalid credentials")
-  end
-
-  test 'unathorized' do
-    visit competitions_path
-    assert_equal new_session_path, current_path
   end
 end

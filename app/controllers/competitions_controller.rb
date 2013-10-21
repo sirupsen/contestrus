@@ -1,14 +1,6 @@
 class CompetitionsController < ApplicationController
   before_filter :require_admin_for_ongoing, only: [:leaderboard]
 
-  def index
-    @competitions = Competition.all
-  end
-
-  def show
-    @competition = Competition.find(params[:id]) 
-  end
-
   def leaderboard
     @competition = Competition.find(params[:id])
     @tasks = @competition.tasks

@@ -4,11 +4,7 @@ class SubmissionIntegrationTest < ActionDispatch::IntegrationTest
   test "cannot submit when contest is no longer open" do
     user = sign_in
 
-    within "#content" do
-      click_link competitions(:past).name
-    end
-
-    within "#content" do
+    within "#sidebar" do
       click_link competitions(:past).tasks.first.name
     end
 

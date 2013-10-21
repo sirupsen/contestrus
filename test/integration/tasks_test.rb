@@ -14,6 +14,7 @@ class TasksIntegrationTest < ActionDispatch::IntegrationTest
 
   test "submit right answer to task and see it passed" do
     user = sign_in
+
     within "#sidebar" do
       click_link tasks(:hello_world).name
     end

@@ -17,7 +17,7 @@ class UsersControllerTest < ActionController::TestCase
       }
     end
 
-    assert_redirected_to competitions_path
+    assert_redirected_to user_path(User.find_by_username("whatever"))
   end
 
   test "dont create user on failing validation" do

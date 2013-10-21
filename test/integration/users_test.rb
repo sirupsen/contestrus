@@ -12,7 +12,7 @@ class CompetitionsIntegrationTest < ActionDispatch::IntegrationTest
 
     click_button "Sign up"
 
-    assert_equal competitions_path, page.current_path
+    assert_equal user_path(User.find_by_username("Sirupsen")), page.current_path
   end
 
   test "show errors on invalid sign up" do

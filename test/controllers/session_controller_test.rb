@@ -13,7 +13,7 @@ class SessionControllerTest < ActionController::TestCase
     }
 
     assert_equal users(:sirup).id, session[:user_id]
-    assert_redirected_to competitions_path
+    assert_redirected_to user_path(users(:sirup))
   end
 
   test "should flash error on incorrect password" do
@@ -28,11 +28,11 @@ class SessionControllerTest < ActionController::TestCase
     assert_template :new
   end
 
-  test "redirect to competition when already signed in" do
+  test "redirect to user when already signed in" do
     sign_in
 
     get :new
 
-    assert_redirected_to competitions_path
+    assert_redirected_to user_path(users(:sirup))
   end
 end

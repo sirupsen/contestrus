@@ -1,6 +1,6 @@
 class SessionController < ApplicationController
   skip_before_filter :require_user
-  before_filter :to_competitions, only: [:new]
+  before_filter :to_user, only: [:new]
 
   def new
     @user = User.new
@@ -11,7 +11,7 @@ class SessionController < ApplicationController
 
     if @user && @user.authenticate(params[:user][:password])
       session[:user_id] = @user.id
-      redirect_to competitions_path
+      redirect_to user_path(@user)
     else
       flash[:error] = "Invalid credentials."
       render :new
@@ -24,7 +24,7 @@ class SessionController < ApplicationController
   end
 
   private
-  def to_competitions
-    redirect_to competitions_path if current_user
+  def to_user
+    redirect_to user_path(current_user) if current_user
   end
 end

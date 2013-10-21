@@ -1,10 +1,5 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-time_limited:
-  name: Time Limited Competition
-  start_at: 2013-08-30 22:00:00
-  end_at: 2013-08-30 24:00:00
-
 open:
   name: Open Competition
 
