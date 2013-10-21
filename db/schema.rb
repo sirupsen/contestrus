@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131021023934) do
+ActiveRecord::Schema.define(version: 20131021024113) do
 
   create_table "comedy_jobs", force: true do |t|
     t.string   "class_name", null: false
@@ -28,41 +28,22 @@ ActiveRecord::Schema.define(version: 20131021023934) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "languages", force: true do |t|
-    t.string   "name"
-    t.string   "extension"
-    t.string   "image"
-    t.string   "build"
-    t.string   "run"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "participations", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "competition_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "submissions", force: true do |t|
-    t.text     "source",                          null: false
-    t.integer  "task_id",                         null: false
-    t.integer  "user_id",                         null: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.integer  "language_id"
-    t.string   "path",                            null: false
-    t.string   "status",      default: "Pending", null: false
+    t.text     "source",                         null: false
+    t.integer  "task_id",                        null: false
+    t.integer  "user_id",                        null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "path",                           null: false
+    t.string   "status",     default: "Pending", null: false
     t.text     "body"
-    t.boolean  "passed",      default: false
-    t.string   "language",                        null: false
+    t.boolean  "passed",     default: false
+    t.string   "language",                       null: false
   end
 
   create_table "tasks", force: true do |t|
     t.integer  "competition_id", null: false
     t.string   "name",           null: false
-    t.string   "type"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.text     "body"
