@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131021024113) do
+ActiveRecord::Schema.define(version: 20131021030931) do
 
   create_table "comedy_jobs", force: true do |t|
     t.string   "class_name", null: false
@@ -41,6 +41,9 @@ ActiveRecord::Schema.define(version: 20131021024113) do
     t.string   "language",                       null: false
   end
 
+  add_index "submissions", ["task_id", "passed"], name: "index_submissions_on_task_id_and_passed"
+  add_index "submissions", ["task_id", "user_id"], name: "index_submissions_on_task_id_and_user_id"
+
   create_table "tasks", force: true do |t|
     t.integer  "competition_id",              null: false
     t.string   "name",                        null: false
@@ -50,6 +53,8 @@ ActiveRecord::Schema.define(version: 20131021024113) do
     t.text     "restrictions",   default: "", null: false
   end
 
+  add_index "tasks", ["competition_id"], name: "index_tasks_on_competition_id"
+
   create_table "test_cases", force: true do |t|
     t.text     "input",      null: false
     t.text     "output",     null: false
@@ -57,6 +62,8 @@ ActiveRecord::Schema.define(version: 20131021024113) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "test_cases", ["task_id"], name: "index_test_cases_on_task_id"
 
   create_table "users", force: true do |t|
     t.string   "username",                        null: false
@@ -68,6 +75,7 @@ ActiveRecord::Schema.define(version: 20131021024113) do
     t.string   "session_hash",                    null: false
   end
 
-  add_index "users", ["id"], name: "index_users_on_id"
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["username"], name: "index_users_on_username", unique: true
 
 end
