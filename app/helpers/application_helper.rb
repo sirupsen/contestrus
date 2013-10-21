@@ -14,11 +14,14 @@ module ApplicationHelper
   def time_left_badge(competition)
     if competition.always_open?
       nil
+    elsif Time.now < competition.start_at
+      seconds = (competition.start_at - Time.now).to_i
+      "<span class='badge badge-info'>#{seconds / 3600}:#{seconds / 60 % 60}:#{seconds % 60}</span>".html_safe
     elsif competition.ongoing?(Time.now)
       seconds = (competition.end_at - Time.now).to_i
-      "<span class='badge badge-info'>#{seconds / 3600}:#{seconds / 60 % 60}:#{seconds % 60}</span>".html_safe
+      "<span class='badge badge-warning'>#{seconds / 3600}:#{seconds / 60 % 60}:#{seconds % 60}</span>".html_safe
     else
-      "<span class='label label-warning'>Completed</span>".html_safe
+      "<span class='label label-success'>Completed</span>".html_safe
     end
   end
 

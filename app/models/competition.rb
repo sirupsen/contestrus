@@ -8,22 +8,6 @@ class Competition < ActiveRecord::Base
   has_many :submissions, through: :tasks
   has_many :participating_users, through: :submissions, source: :user
 
-  # Returns a range for which this contest is running.
-  def open?(time = Time.now)
-    !end_at || ongoing?(time)
-  end
-  alias_method :ongoing?, :open?
-
-  def ongoing?(time = Time.now)
-    (start_at..end_at).cover?(time)
-  end
-
-  # Returns whether this competition is always open, which it is if end_at or
-  # start_at is not set.
-  def always_open?
-    !end_at
-  end
-
   def leaderboard
     submissions.passed.group_by { |submission|
       submission.user
@@ -33,6 +17,26 @@ class Competition < ActiveRecord::Base
     }.reverse.map { |user, _|
       user
     }
+  end
+
+  def visible?(time = Time.now)
+    ongoing?(time) || always_open? || expired?(time)
+  end
+
+  def expired?(time = Time.now)
+    time > end_at
+  end
+
+  def ongoing?(time = Time.now)
+    (start_at..end_at).cover?(time)
+  end
+
+  def open?(time = Time.now)
+    ongoing?(time) || always_open?
+  end
+
+  def always_open?
+    !end_at
   end
 
   # Returns true if a user has submitted to a contest.

@@ -90,4 +90,20 @@ class CompetitionsIntegrationTest < ActionDispatch::IntegrationTest
         "Should show user #{user.username} on leaderboard after submitting solution to task."
     end
   end
+
+  test "browsing to a competition that has yet to start does not reveal any information" do
+    user = sign_in
+
+    competition = competitions(:future)
+
+    within "#content" do
+      click_link competition.name
+    end
+
+    within "#content" do
+      refute page.has_content?(tasks(:future_hello_world).name), 
+        "Should not see tasks when contest has yet to start."
+      assert page.has_content?("not started yet") 
+    end
+  end
 end

@@ -36,3 +36,11 @@ ongoing_hello_world:
   restrictions: |
     ---
     time: 1.0
+
+future_hello_world: 
+  competition: future
+  name: "Future World"
+  body: "Print hello world."
+  restrictions: |
+    ---
+    time: 1.0

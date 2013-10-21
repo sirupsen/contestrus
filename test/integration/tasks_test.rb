@@ -39,4 +39,13 @@ class TasksIntegrationTest < ActionDispatch::IntegrationTest
 
     page.assert_selector("tbody > tr.error")
   end
+
+  test "should not see the task of a future competition anywhere" do
+    user = sign_in
+
+    within "#sidebar" do
+      refute page.has_content?(tasks(:future_hello_world).name), 
+        "Should not show task for future contest in sidebar."
+    end
+  end
 end

@@ -1,23 +1,27 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th>Task</th>
-      <% if admin_or_expired?(@competition) %>
-        <th>Solved</th>
-      <% end %>
-    </tr>
-  </thead>
-  <tbody>
-    <% @competition.tasks.each do |task| %>
-      <tr class="<%= task_status_class(task) %>">
-        <td><%= link_to task.name, task_path(task) %></td>
+<% if @competition.visible? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Task</th>
         <% if admin_or_expired?(@competition) %>
-          <td><%= task.times_solved %></td>
+          <th>Solved</th>
         <% end %>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @competition.tasks.each do |task| %>
+        <tr class="<%= task_status_class(task) %>">
+          <td><%= link_to task.name, task_path(task) %></td>
+          <% if admin_or_expired?(@competition) %>
+            <td><%= task.times_solved %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>This contest has not started yet.</p>
+<% end %>
 
 <% if admin_or_expired?(@competition) %>
   <%= link_to "Leaderboard", leaderboard_competition_path(@competition), class: "btn" %>

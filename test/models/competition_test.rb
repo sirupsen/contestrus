@@ -110,6 +110,22 @@ class CompetitionTest < ActiveSupport::TestCase
     assert_equal [bob, sirup], competitions(:open).leaderboard 
   end
 
+  test "past contest is visible" do
+    assert_equal true, competitions(:past).visible?
+  end
+
+  test "ongoing contest is visible" do
+    assert_equal true, competitions(:ongoing).visible?
+  end
+
+  test "future contest is not visible" do
+    refute competitions(:future).visible?
+  end
+
+  test "open contest is visible" do
+    assert_equal true, competitions(:open).visible?
+  end
+
   private
   def valid_params
     {

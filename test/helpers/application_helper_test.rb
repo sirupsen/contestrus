@@ -12,4 +12,8 @@ class ApplicationHelperTest < ActionView::TestCase
   test "#time_left_badge for an expired competition returns completed" do
     assert_match /Completed/, time_left_badge(competitions(:past))
   end
+
+  test "#time_left_badge for an upcoming competition returns returns time to contest starts" do
+    assert_match /0:9:5/, time_left_badge(competitions(:future))
+  end
 end
