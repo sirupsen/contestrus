@@ -62,4 +62,34 @@ class CompetitionsIntegrationTest < ActionDispatch::IntegrationTest
         "Should not see tasks when contest has yet to start."
     end
   end
+
+  test "normal user can browse to leaderboard of expired competition" do
+    user = sign_in(users(:bob))
+
+    competition = competitions(:past)
+
+    within "#sidebar" do
+      assert_selector "a", text: competition.name
+    end
+  end
+
+  test "normal user cannot browse to leaderboard of ongoing competition" do
+    user = sign_in(users(:bob))
+
+    competition = competitions(:ongoing)
+
+    within "#sidebar" do
+      assert_no_selector "a", text: competition.name
+    end
+  end
+
+  test "admin user can browse to leaderboard of ongoing competition" do
+    user = sign_in
+
+    competition = competitions(:ongoing)
+
+    within "#sidebar" do
+      assert_selector "a", text: competition.name
+    end
+  end
 end
