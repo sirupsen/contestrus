@@ -12,6 +12,11 @@ class User < ActiveRecord::Base
 
   before_create :set_session_hash
 
+  def invalidate_sessions!
+    set_session_hash
+    save!
+  end
+
 private
   def set_session_hash
     self.session_hash = SecureRandom.hex(8)
