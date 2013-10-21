@@ -1,0 +1,13 @@
+<h2>Sign out</h2>
+
+<p>
+  Are you sure you wish to sign out?
+</p>
+
+<div class="control-group">
+  <div class="controls">
+    <%= form_for sessions_path, method: :delete do %>
+      <%= submit_tag "Sign out", class: "btn btn-default" %>
+    <% end %>
+  </div>
+</div>
