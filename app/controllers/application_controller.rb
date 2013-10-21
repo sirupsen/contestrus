@@ -12,9 +12,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  helper_method :current_session
+  def current_session
+    @current_session ||= Session.new(session)
+  end
+
   helper_method :current_user
   def current_user
-    @user ||= User.find_by_id(session[:user_id])
+    current_session.user
   end
 
   def require_admin
