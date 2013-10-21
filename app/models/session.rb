@@ -6,11 +6,23 @@ class Session
   end
 
   def user
-    @user ||= User.find(session[:user_id]) if session[:user_id]
+    return @user if defined?(@user)
+
+    if session[:user_id] && session[:session_hash]
+      user = User.find(session[:user_id])
+      if user.session_hash == session[:session_hash]
+        @user = user
+      end
+    end
   end
 
   def user=(user)
-    @user = user
-    session[:user_id] = user && user.id
+    if @user = user
+      session[:user_id] = user.id
+      session[:session_hash] = user.session_hash
+    else
+      session.delete(:user_id)
+      session.delete(:session_hash)
+    end
   end
 end
