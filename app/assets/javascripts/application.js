@@ -27,8 +27,6 @@ function typesetMath() {
   });
 
   MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-
-  $("#input-output").append("<script src='https://gist.github.com/Sirupsen/7111270.js'></script>")
 }
 
 $(document).ready(typesetMath)
