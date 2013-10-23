@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :require_user
   def require_user
-    flash[:notice] = "There is now 6 huge pizzas in the protoss room!"
+    flash[:notice] = "There is now 6 huge pizzas in the lounge!"
 
     unless current_user
       flash[:notice] = "You must be signed in to access that page."
