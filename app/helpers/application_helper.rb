@@ -36,8 +36,10 @@ module ApplicationHelper
 
     badge_class =
       if Time.now < competition.start_at
+        seconds = (competition.start_at - Time.now).to_i
         "badge-info"
       elsif competition.ongoing?
+        seconds = (competition.end_at - Time.now).to_i
         "badge-warning"
       end
 
