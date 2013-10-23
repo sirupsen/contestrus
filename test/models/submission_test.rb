@@ -22,6 +22,15 @@ class SubmissionTest < ActiveSupport::TestCase
     refute Submission.new(valid_submission_attributes.merge(path: "test.txt")).valid?
   end
 
+  test "only shows source missing validation error when upload is missing" do
+    submission = Submission.new(valid_submission_attributes.merge(source: nil, path: nil))
+    submission.valid? # run validations
+    errors = submission.errors.full_messages
+
+    assert_equal 1, submission.errors.full_messages.size,
+      "Expected only 1 error for missing source, but got: #{errors}"
+  end
+
   test "set language on creation" do
     submission = Submission.create(valid_submission_attributes)
     assert_equal "ruby", submission.language

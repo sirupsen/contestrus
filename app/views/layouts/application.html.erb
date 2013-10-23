@@ -59,7 +59,6 @@
                   <% end %>
                 </li>
                 <% if competition.visible? %>
-
                   <% competition.tasks.each do |task| %>
                     <li>
                       <%= link_to task_path(task) do %>

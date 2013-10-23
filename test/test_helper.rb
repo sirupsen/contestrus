@@ -2,6 +2,7 @@ ENV["RAILS_ENV"] ||= "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'capybara/rails'
+require 'timecop'
 
 class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
@@ -42,5 +43,10 @@ class ActionDispatch::IntegrationTest
   def sign_out
     visit sessions_path
     click_button "Sign out"
+  end
+
+  def submit_solution(name)
+    attach_file "submission_source", Rails.root + "test/data/submissions/#{name}"
+    click_button "Evaluate"
   end
 end

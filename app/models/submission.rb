@@ -6,9 +6,8 @@ class Submission < ActiveRecord::Base
   belongs_to :competition
 
   validates :source, presence: true
-  validates :path, presence: true
-
-  validates :language, presence: true
+  validates :path, presence: true, if: :source
+  validates :language, presence: true, if: :source
 
   serialize :body
 
