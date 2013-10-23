@@ -32,15 +32,16 @@ module ApplicationHelper
   end
 
   def time_left_badge(competition)
-    if competition.always_open?
-      nil
-    elsif Time.now < competition.start_at
-      seconds = (competition.start_at - Time.now).to_i
-      "<span class='badge badge-info'>#{seconds / 3600}:#{seconds / 60 % 60}:#{seconds % 60}</span>".html_safe
-    elsif competition.ongoing?(Time.now)
-      seconds = (competition.end_at - Time.now).to_i
-      "<span class='badge badge-warning'>#{seconds / 3600}:#{seconds / 60 % 60}:#{seconds % 60}</span>".html_safe
-    end
+    return nil if competition.always_open? # like 7-11
+
+    badge_class =
+      if Time.now < competition.start_at
+        "badge-info"
+      elsif competition.ongoing?
+        "badge-warning"
+      end
+
+    sprintf("<span class='badge #{badge_class}'>%d:%02d:%02d</span>", seconds / 3600, seconds / 60 % 60, seconds % 60).html_safe
   end
 
   private
