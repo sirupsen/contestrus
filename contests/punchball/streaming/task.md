@@ -38,7 +38,7 @@ downloaded and Beatrice and Conrad will have `$4$` units of data by the end of
 watching. Also every moment till the end of video they will have more data then
 necessary for watching.
 
-### Seconds sample
+### Second sample
 
     10 3 2
 
