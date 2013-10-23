@@ -1,12 +1,3 @@
-GIT
-  remote: git://github.com/swipely/docker-api.git
-  revision: 705afb69b642a0017b72f30cba0acafa105904db
-  specs:
-    docker-api (1.6.0)
-      archive-tar-minitar
-      excon (>= 0.27.3)
-      json
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -54,6 +45,10 @@ GEM
       execjs
     coffee-script-source (1.6.3)
     daemons (1.1.9)
+    docker-api (1.6.0.705afb6)
+      archive-tar-minitar
+      excon (>= 0.27.3)
+      json
     dotenv (0.9.0)
     erubis (2.7.0)
     excon (0.27.6)
@@ -151,7 +146,7 @@ DEPENDENCIES
   capybara (= 2.1.0)
   coffee-rails (~> 4.0.0)
   daemons (= 1.1.9)
-  docker-api!
+  docker-api (= 1.6.0.705afb6)
   foreman (= 0.63.0)
   jquery-rails (= 3.0.4)
   pry (= 0.9.12.2)

@@ -11,7 +11,7 @@ gem 'turbolinks', "1.3.0"
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem "redcarpet", "3.0.0"
 gem "daemons", "1.1.9"
-gem "docker-api", :git => "git://github.com/swipely/docker-api.git", :require => 'docker'
+gem "docker-api", "1.6.0.705afb6"
 gem 'pusher'
 
 group :test, :development do
