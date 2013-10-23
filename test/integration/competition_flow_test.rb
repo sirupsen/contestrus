@@ -65,4 +65,14 @@ class CompetitionFlowTest < ActionDispatch::IntegrationTest
 
     assert_no_selector "td"
   end
+
+  test "not see task for a competition in /tasks before competition is open" do
+    task = tasks(:future_hello_world)
+
+    sign_in users(:bob)
+
+    visit tasks_path
+
+    refute page.has_content?(task.name)
+  end
 end
