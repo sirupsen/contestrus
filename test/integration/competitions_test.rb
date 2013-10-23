@@ -83,16 +83,6 @@ class CompetitionsIntegrationTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "admin user can browse to leaderboard of ongoing competition" do
-    user = sign_in
-
-    competition = competitions(:ongoing)
-
-    within "#sidebar" do
-      assert_selector "a", text: competition.name
-    end
-  end
-
   test "when not signed in no competitions should be shown" do
     competition = competitions(:ongoing)
 
