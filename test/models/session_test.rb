@@ -33,4 +33,31 @@ class SessionTest < ActiveSupport::TestCase
     session.user = nil
     assert_equal({}, session_hash)
   end
+
+  test "logs in a user with correct username/password" do
+    session_hash = {}
+    session = Session.new(session_hash)
+
+    assert session.login("sirup", "seekrit")
+
+    assert_equal users(:sirup).id, session_hash[:user_id]
+  end
+
+  test "doesn't log in a user with correct username but incorrect password" do
+    session_hash = {}
+    session = Session.new(session_hash)
+
+    assert session.login("sirup", "fart")
+
+    refute session_hash.key?(:user_id)
+  end
+
+  test "doesn't log in a user with incorrect username" do
+    session_hash = {}
+    session = Session.new(session_hash)
+
+    assert session.login("whatever", "nope")
+
+    refute session_hash.key?(:user_id)
+  end
 end

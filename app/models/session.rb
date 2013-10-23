@@ -25,4 +25,13 @@ class Session
       session.delete(:session_hash)
     end
   end
+
+  def login(username, password)
+    if user = User.find_by_username(username)
+      if user.authenticate(password)
+        self.user = user
+        true
+      end
+    end
+  end
 end
