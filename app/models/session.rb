@@ -30,7 +30,6 @@ class Session
     if user = User.find_by_username(username)
       if user.authenticate(password)
         self.user = user
-        true
       end
     end
   end

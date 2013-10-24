@@ -1,5 +1,4 @@
 Contestrus::Application.routes.draw do
-  get "pages/instructions"
   root "sessions#new"
 
   resource :sessions

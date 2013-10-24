@@ -47,8 +47,7 @@ class SessionTest < ActiveSupport::TestCase
     session_hash = {}
     session = Session.new(session_hash)
 
-    assert session.login("sirup", "fart")
-
+    refute session.login("sirup", "fart")
     refute session_hash.key?(:user_id)
   end
 
@@ -56,8 +55,7 @@ class SessionTest < ActiveSupport::TestCase
     session_hash = {}
     session = Session.new(session_hash)
 
-    assert session.login("whatever", "nope")
-
+    refute session.login("whatever", "nope")
     refute session_hash.key?(:user_id)
   end
 end

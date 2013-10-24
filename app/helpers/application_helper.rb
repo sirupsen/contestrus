@@ -32,7 +32,7 @@ module ApplicationHelper
   end
 
   def time_left_badge(competition)
-    return nil if competition.always_open? # like 7-11
+    return nil if competition.always_open? || competition.expired? # like 7-11
 
     badge_class =
       if Time.now < competition.start_at

@@ -14,6 +14,6 @@ class ApplicationHelperTest < ActionView::TestCase
   end
 
   test "#time_left_badge for an upcoming competition returns returns time to contest starts" do
-    assert_match /0:9:5/, time_left_badge(competitions(:future))
+    assert_match /0:09:5/, time_left_badge(competitions(:future))
   end
 end
