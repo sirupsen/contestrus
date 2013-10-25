@@ -7,7 +7,7 @@
   </thead>
   <tbody>
     <% @tasks.each do |task| %>
-      <% if task.competition.open? %>
+      <% if task.competition.visible? %>
         <tr class="<%= current_user.submissions.for_task(task).passed.any? && "success" %>">
           <td><%= link_to task.name, task_path(task) %></td>
           <td><%= task.times_solved %></td>

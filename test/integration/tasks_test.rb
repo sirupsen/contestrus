@@ -49,4 +49,37 @@ class TasksIntegrationTest < ActionDispatch::IntegrationTest
         "Should not show task for future contest in sidebar."
     end
   end
+
+  test "should see the tasks of an expired competition" do
+    user = sign_in
+
+    click_link "Tasks"
+
+    within "#content" do
+      assert page.has_content?(tasks(:past_hello_world).name), 
+        "Should see a task of an expired compeition."
+    end
+  end
+
+  test "should see the tasks of an open competition" do
+    user = sign_in
+
+    click_link "Tasks"
+
+    within "#content" do
+      assert page.has_content?(tasks(:hello_world).name), 
+        "Should see a task of an expired compeition."
+    end
+  end
+
+  test "should see the tasks of an ongoing competition" do
+    user = sign_in
+
+    click_link "Tasks"
+
+    within "#content" do
+      assert page.has_content?(tasks(:ongoing_hello_world).name), 
+        "Should see a task of an expired compeition."
+    end
+  end
 end
