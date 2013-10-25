@@ -68,7 +68,7 @@ class TasksIntegrationTest < ActionDispatch::IntegrationTest
 
     within "#content" do
       assert page.has_content?(tasks(:hello_world).name), 
-        "Should see a task of an expired compeition."
+        "Should see a task of an open compeition."
     end
   end
 
@@ -79,7 +79,18 @@ class TasksIntegrationTest < ActionDispatch::IntegrationTest
 
     within "#content" do
       assert page.has_content?(tasks(:ongoing_hello_world).name), 
-        "Should see a task of an expired compeition."
+        "Should see a task of an ongoing compeition."
+    end
+  end
+
+  test "should not see the tasks of a future competition" do
+    user = sign_in
+
+    click_link "Tasks"
+
+    within "#content" do
+      refute page.has_content?(tasks(:future_hello_world).name), 
+        "Should not asee a task of a future compeition."
     end
   end
 end
