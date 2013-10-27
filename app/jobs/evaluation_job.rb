@@ -103,8 +103,12 @@ class EvaluationJob
   rescue => e
     {status: "Error"}
   ensure
-    c.kill
-    c.delete
+    begin
+      c.kill
+      c.delete
+    rescue => e
+      Rails.logger.warn "Could not kill/delete docker container: #{e.message}"
+    end
   end
 
   def start_options
