@@ -27,7 +27,7 @@ deployment and development ease.
 Development should be done in a Vagrant box so all development environments
 closely reflect production environments and other developers' environments.
 
-Run `vagrant up` to create an Ubuntu 13.04 box for local development. This will
+Run `vagrant up --provision` to create an Ubuntu 13.04 box for local development. This will
 run a provision script also used for production to install:
 
 * Basic packages (openssl, libxml2, lxc, ..)
@@ -45,7 +45,7 @@ Once that's all done, you can go to the repository and run the tests:
 # This will take a good while the first time to download and install everything.
 # Network is the main bottleneck here. script/provision-development is run when
 # the box is booted to provision it.
-$ vagrant up
+$ vagrant up --provision
 # ssh into the now provisioned Vagrant box.
 $ vagrant ssh
 
