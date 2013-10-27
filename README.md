@@ -60,4 +60,5 @@ on your own machine.
 
 ## Deployment
 
-Coming soon.
+Coming soon. For now `script/provision-production` should do the trick on an
+Ubuntu Raring x64 box.
