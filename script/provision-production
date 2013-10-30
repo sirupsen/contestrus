@@ -40,6 +40,8 @@ chdir /app/current
 
 respawn
 
+reload signal SIGUSR2
+
 exec /app/current/bin/puma -C /app/current/config/puma.rb
 UPSTART
 

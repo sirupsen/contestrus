@@ -20,14 +20,7 @@ fi
 
 ln -sfn "$(pwd)" /app/current
 
-puma_pid="$(initctl status puma | grep /running | awk '{print $NF}')"
-if [ ! -z "$puma_pid" ]; then
-  echo "Reloading puma"
-  kill -SIGUSR2 "$puma_pid"
-else
-  sudo service puma start
-fi
-
+sudo service puma reload
 sudo service comedy_worker reload
 sudo service nginx reload
 
