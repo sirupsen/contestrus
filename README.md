@@ -3,20 +3,21 @@
 Contestrus is a platform for hosting algorithmic competitions. It is planned to
 feature:
 
-* Different task styles. ACM ICPC (Accepted/Not accepted), IOI (Partial scores),
+* Different task styles. ACM ICPC (Accepted/Not accepted) ✓, IOI (Partial scores),
   Open/Hidden Input.
 * Customized contest forms. Contestrus comes with built-in importers for a
   simple contest format, but it's easy to write importers from an existing
-  format.
+  format. ✓
 * Simple, fast interface. A useful interface that helps the participants as much
   as possible.
 * API. An API that lets users submit their programs via an API and view their
   status.
 * Sandboxing. Sandboxing is provided by running each submission within its own
-  Docker container.
-* Administration interface. An interface to monitor and edit contests.
+  Docker container. ✓
+* Administration interface. An interface to monitor and edit contests. ✓
 * Contest and training. Support both running contests but also an open
-  environment to train on tasks of previous contests.
+  environment to train on tasks of previous contests. ✓
+* Support for teams.
 
 Many contest environments are complicated to set up. Contestrus is aiming to be
 extremely simple to set up and will be run inside Docker containers for maximum
