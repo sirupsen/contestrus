@@ -18,6 +18,8 @@ feature:
 * Contest and training. Support both running contests but also an open
   environment to train on tasks of previous contests. ✓
 * Support for teams.
+* Announcements. Ability to push announcements to participants during a
+  competition.
 
 Many contest environments are complicated to set up. Contestrus is aiming to be
 extremely simple to set up and will be run inside Docker containers for maximum
