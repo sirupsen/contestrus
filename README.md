@@ -66,8 +66,3 @@ on your own machine.
 
 Coming soon. For now `script/provision-production` should do the trick on an
 Ubuntu Raring x64 box.
-
-## Todo
-
-* API (and perhaps an accompanying CLI)
-* Team support
