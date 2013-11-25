@@ -64,6 +64,13 @@ You can then run `bin/rails server` to boot the Rails server from within Vagrant
 This listens on port 3000 inside the Vagrant box. This is forwarded to port 3001
 on your own machine.
 
+## Sample competition
+
+You can import the sample competition with `bundle exec rake
+competition:import[contests/punchball]`. Start the Rails server with `bundle
+exec rails server`. It should then be accessible on port `3005` on the host,
+forwarded from the Vagrant-managed VM.
+
 ## Deployment
 
 Coming soon. For now `script/provision-production` should do the trick on an
