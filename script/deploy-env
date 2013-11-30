@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd "$(dirname "$0")/.."
+CONFIG_FILE='config/deploy.yml'
+[ -f $CONFIG_FILE ] && eval $(ruby -ryaml -e "puts *YAML.load_file('${CONFIG_FILE}').to_a.map {|x| x * '='}")
+
+export DEPLOY_USER; DEPLOY_USER=${DEPLOY_USER:-app}
+export DEPLOY_HOST; DEPLOY_HOST=${DEPLOY_HOST:-contestrus}
