@@ -1,0 +1,41 @@
+<% ENV.update YAML.load_file("config/#{ENV['RAILS_ENV'] || 'development'}.yml")  %>
+server {
+  listen 80;
+
+  location / {
+    rewrite ^/(.*)$ <%= ENV['APP_SCHEME'] + ENV['APP_HOST'] %>/$1;
+  }
+}
+
+server {
+  ssl_certificate <%= ENV['APP_SSL_CERT'] %>;
+  ssl_certificate_key <%= ENV['APP_SSL_CERT_KEY'] %>;
+
+  listen 443 ssl;
+  server_name www.<%= ENV['APP_HOST'] %>;
+
+  location / {
+    rewrite ^/(.*)$ <%= ENV['APP_SCHEME'] + ENV['APP_HOST'] %>/$1;
+  }
+}
+
+server {
+  ssl_certificate <%= ENV['APP_SSL_CERT'] %>;
+  ssl_certificate_key <%= ENV['APP_SSL_CERT_KEY'] %>;
+
+  listen 443 ssl;
+  server_name <%= ENV['APP_HOST'] %>;
+  root <%= ENV['APP_ROOT'] %>/public;
+
+  error_log <%= ENV['NGINX_ERROR_LOG'] %>;
+
+  error_page 404 /404.html;
+  error_page 500 /500.html;
+
+  location / {
+    proxy_pass http://<%= ENV['APP_BIND'] %>;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_set_header Host $host;
+    proxy_buffering off;
+  }
+}

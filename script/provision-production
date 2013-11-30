@@ -3,12 +3,33 @@
 set -e
 set -x
 
+cd "`dirname \"$0\"`"
+
 ./provision-basic
+
+# Use default production.yml if none is present
+APP_ENV=/app/shared/production.yml
+[ -f $APP_ENV ] || cp ./../config/production.yml.sample "$APP_ENV"
+
+# Set production env vars
+eval $(ruby -ryaml -e "puts *YAML.load_file('${APP_ENV}').to_a.map {|x| x * '='}")
+
+# Generate an SSL certificate if none is present
+if [ ! -f "$APP_SSL_CERT" ]; then
+  if [ -z "$APP_HOST" ]; then
+    echo 'Please set APP_HOST to generate a certificate'
+    exit 1
+  fi
+  ./generate-ssl-certificate $APP_HOST
+  mv $APP_HOST.crt $APP_SSL_CERT
+  mv $APP_HOST.key $APP_SSL_CERT_KEY
+fi
 
 apt-get install -y nginx
 
-rm /etc/nginx/sites-enabled/default
-cat > /etc/nginx/sites-available/app <<NGINX
+
+[ -f /etc/nginx/sites-enabled/default ] && rm /etc/nginx/sites-enabled/default
+cat > /etc/nginx/nginx.conf <<NGINX
 user app;
 worker_processes 1;
 
@@ -25,10 +46,9 @@ http {
 
     types_hash_max_size 2048;
 
-    include /app/current/config/nginx.conf;
+    include $APP_ROOT/config/nginx.conf;
 }
 NGINX
-ln -s /etc/nginx/sites-available/app /etc/nginx/sites-enabled/app
 
 cat > /etc/init/puma.conf <<UPSTART
 description "puma"
@@ -38,13 +58,13 @@ stop on shutdown
 
 setuid app
 setgid app
-chdir /app/current
+chdir $APP_ROOT
 
 respawn
 
 reload signal SIGUSR2
 
-exec /app/current/bin/puma -C /app/current/config/puma.rb
+exec $APP_ROOT/bin/puma -C $APP_ROOT/config/puma.rb
 UPSTART
 
 cat > /etc/init/comedy_worker.conf <<UPSTART
@@ -55,12 +75,12 @@ stop on shutdown
 
 setuid app
 setgid app
-chdir /app/current
+chdir $APP_ROOT
 env RAILS_ENV=production
 
 respawn
 
-exec /app/current/bin/comedy_worker
+exec $APP_ROOT/bin/comedy_worker
 UPSTART
 
 if ! grep -q 'app ALL=NOPASSWD: ALL' /etc/sudoers; then

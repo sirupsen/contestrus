@@ -35,7 +35,7 @@ apt-get install -y \
   sudo \
   vim \
   zlib1g-dev \
-  linux-image-extra-`uname -r`
+  linux-image-extra-3.11.0-13-generic
 
 ## Create the app user and the /app directory
 

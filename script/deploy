@@ -1,11 +1,18 @@
 #!/bin/bash
 
+# deploy with git copy
+
+cd "$(dirname "$0")/.."
+CONFIG_FILE='config/deploy.yml'
+[ -f $CONFIG_FILE ] && eval $(ruby -ryaml -e "puts *YAML.load_file('${CONFIG_FILE}').to_a.map {|x| x * '='}")
+
 DEPLOY_USER=${DEPLOY_USER:-app}
 DEPLOY_HOST=${DEPLOY_HOST:-contestrus}
 
 DEPLOY_TARGET="${1:-HEAD}"
 SHA="$(git rev-parse "$DEPLOY_TARGET")"
 ABBREV_SHA="${SHA:0:10}"
+REPO_URL=${REPO_URL:-"`git config --get remote.origin.url`"}
 
 read -p "Deploying $ABBREV_SHA to production. Proceed? " -n 1
 echo
@@ -14,6 +21,7 @@ if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
   exit 1
 fi
 
+echo "As $DEPLOY_USER on $DEPLOY_HOST:"
 ssh -A "$DEPLOY_USER@$DEPLOY_HOST" -- "
   set -x
   set -e
@@ -22,7 +30,7 @@ ssh -A "$DEPLOY_USER@$DEPLOY_HOST" -- "
     cp -r \"\$(readlink current)\" \$dir_name
   else
     export COLD_DEPLOY=1
-    git clone https://github.com/Sirupsen/contestrus.git \$dir_name
+    git clone $REPO_URL \$dir_name
   fi
   cd \$dir_name
   git fetch origin -q
