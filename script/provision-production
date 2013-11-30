@@ -7,7 +7,8 @@ set -x
 
 apt-get install -y nginx
 
-cat > /etc/nginx/nginx.conf <<NGINX
+rm /etc/nginx/sites-enabled/default
+cat > /etc/nginx/sites-available/app <<NGINX
 user app;
 worker_processes 1;
 
@@ -27,6 +28,7 @@ http {
     include /app/current/config/nginx.conf;
 }
 NGINX
+ln -s /etc/nginx/sites-available/app /etc/nginx/sites-enabled/app
 
 cat > /etc/init/puma.conf <<UPSTART
 description "puma"

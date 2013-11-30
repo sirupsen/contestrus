@@ -20,9 +20,11 @@ fi
 
 ln -sfn "$(pwd)" /app/current
 
-sudo service puma reload
-sudo service comedy_worker reload
-sudo service nginx reload
+
+services=(puma comedy_worker nginx)
+for service in "${services[@]}"; do
+  sudo service "${service}" reload || sudo service "${service}" start
+done
 
 if [ -n "$OLD_DEPLOY" ]; then
   rm -rf "$OLD_DEPLOY"
