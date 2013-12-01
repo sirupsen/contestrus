@@ -34,8 +34,15 @@ apt-get install -y \
   sqlite3 \
   sudo \
   vim \
+  wget \
+  bsdtar \
+  curl \
   zlib1g-dev \
-  linux-image-extra-`uname -r`
+  aufs-tools \
+  lxc \
+  linux-virtual
+
+apt-get install linux-image-extra-`uname -r` || apt-get install linux-image-extra-3.11.0-13-generic
 
 ## Create the app user and the /app directory
 
@@ -70,6 +77,13 @@ fi
 if ! which docker >/dev/null; then
   wget -qO- https://get.docker.io/gpg | apt-key add -
   echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list
+
+  # check LXC support:
+  lxc_conf=$(sudo lxc-checkconfig)
+  if ! echo $lxc_conf | grep Namespaces | grep -q enabled; then
+    echo "provision-basic: LXC support must be enabled in the kernel"
+    exit 1
+  fi
   apt-get update
   apt-get install -y lxc-docker
 fi

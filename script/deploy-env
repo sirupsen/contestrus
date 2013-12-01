@@ -1,0 +1,7 @@
+#!/bin/bash
+
+DEPLOY_CONF_PATH="$(dirname "$0")/../config/deploy.sh"
+[ -f $DEPLOY_CONF_PATH ] && source $DEPLOY_CONF_PATH
+
+DEPLOY_USER=${DEPLOY_USER:-app}
+DEPLOY_HOST=${DEPLOY_HOST:-contestrus}

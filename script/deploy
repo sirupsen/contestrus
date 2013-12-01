@@ -1,11 +1,13 @@
 #!/bin/bash
 
-DEPLOY_USER="app"
-DEPLOY_HOST="contestrus"
+# deploy with git copy
+
+source $(dirname "$0")/deploy-env
 
 DEPLOY_TARGET="${1:-HEAD}"
 SHA="$(git rev-parse "$DEPLOY_TARGET")"
 ABBREV_SHA="${SHA:0:10}"
+REPO_URL=${REPO_URL:-"`git config --get remote.origin.url`"}
 
 read -p "Deploying $ABBREV_SHA to production. Proceed? " -n 1
 echo
@@ -22,7 +24,7 @@ ssh -A "$DEPLOY_USER@$DEPLOY_HOST" -- "
     cp -r \"\$(readlink current)\" \$dir_name
   else
     export COLD_DEPLOY=1
-    git clone https://github.com/Sirupsen/contestrus.git \$dir_name
+    git clone $REPO_URL \$dir_name
   fi
   cd \$dir_name
   git fetch origin -q
