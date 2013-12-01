@@ -73,7 +73,7 @@ forwarded from the Vagrant-managed VM.
 
 ## Deployment
 
-Provision an an Ubuntu Raring x64 box:
+Provision an an Ubuntu Saucy 13.10 x64 box:
 
 ```bash
 script/provision [SUDO_USER:]HOST
