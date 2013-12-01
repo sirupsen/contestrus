@@ -89,6 +89,12 @@ cd /tmp/contestrus
 sudo script/provision-production
 ```
 
+After provisioning, check that Boxer can use AUFS:
+```bash
+# All but "User namespace" should be enabled:
+sudo lxc-checkconfig
+```
+
 Provisioning script creates default configuration in /app/shared.
 You may want to change APP_HOST and other variables in `/app/shared/production.sh`.
 
