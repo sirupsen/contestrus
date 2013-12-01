@@ -2,7 +2,6 @@
 
 source $(dirname "$0")/deploy-env
 
-echo "As $DEPLOY_USER on $DEPLOY_HOST:"
 ssh "$DEPLOY_USER"@"$DEPLOY_HOST" -- "
 set -e
 set -x

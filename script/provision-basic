@@ -34,8 +34,15 @@ apt-get install -y \
   sqlite3 \
   sudo \
   vim \
+  wget \
+  bsdtar \
+  curl \
   zlib1g-dev \
-  linux-image-extra-3.11.0-13-generic
+  aufs-tools \
+  lxc \
+  linux-virtual
+
+apt-get install linux-image-extra-`uname -r` || apt-get install linux-image-extra-3.11.0-13-generic
 
 ## Create the app user and the /app directory
 

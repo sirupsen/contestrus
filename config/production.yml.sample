@@ -1,9 +1,0 @@
-# production environment file
-APP_HOST:         contestrus.net
-APP_SCHEME:       https://
-APP_ROOT:         /app/current
-APP_BIND:         unix:/app/shared/puma.sock
-APP_SSL_CERT:     /app/shared/ssl.crt
-APP_SSL_CERT_KEY: /app/shared/ssl.key
-NGINX_ERROR_LOG:  /app/shared/log/nginx_error
-

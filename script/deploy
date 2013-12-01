@@ -16,7 +16,6 @@ if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
   exit 1
 fi
 
-echo "As $DEPLOY_USER on $DEPLOY_HOST:"
 ssh -A "$DEPLOY_USER@$DEPLOY_HOST" -- "
   set -x
   set -e

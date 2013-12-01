@@ -7,23 +7,10 @@ cd "`dirname \"$0\"`"
 
 ./provision-basic
 
-# Use default production.yml if none is present
-APP_ENV=/app/shared/production.yml
-[ -f $APP_ENV ] || cp ./../config/production.yml.sample "$APP_ENV"
-
-# Set production env vars
-eval $(ruby -ryaml -e "puts *YAML.load_file('${APP_ENV}').to_a.map {|x| x * '='}")
-
-# Generate an SSL certificate if none is present
-if [ ! -f "$APP_SSL_CERT" ]; then
-  if [ -z "$APP_HOST" ]; then
-    echo 'Please set APP_HOST to generate a certificate'
-    exit 1
-  fi
-  ./generate-ssl-certificate $APP_HOST
-  mv $APP_HOST.crt $APP_SSL_CERT
-  mv $APP_HOST.key $APP_SSL_CERT_KEY
-fi
+# Load / create production environment config
+APP_ENV=/app/shared/production.sh
+[ -f $APP_ENV ] || cp ./../config/production.sh.sample "$APP_ENV"
+source $APP_ENV
 
 apt-get install -y nginx
 

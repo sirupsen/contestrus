@@ -73,5 +73,29 @@ forwarded from the Vagrant-managed VM.
 
 ## Deployment
 
-Coming soon. For now `script/provision-production` should do the trick on an
-Ubuntu Raring x64 box.
+Deploy to an an Ubuntu Raring x64 box.
+
+First, copy your public SSH key to your home directory on the target server:
+
+```bash
+scp ~/.ssh/id_rsa.pub me@host:/home/me/
+```
+
+Then provision the server:
+
+```bash
+git clone REPO_URL /tmp/contestrus
+cd /tmp/contestrus
+sudo script/provision-production
+```
+
+Provisioning script creates default configuration in /app/shared.
+You may want to change APP_HOST and other variables in `/app/shared/production.sh`.
+
+Now you can deploy.
+
+```bash
+script/deploy
+```
+
+Deploy user and host can be changed in `config/deploy.sh`, default: app@contestrus.

@@ -1,29 +1,37 @@
-<% ENV.update YAML.load_file("config/#{ENV['RAILS_ENV'] || 'development'}.yml")  %>
+<% scheme = {
+    'http://'  => <<-CONF,
+listen 80;
+    CONF
+    'https://' => <<-CONF
+ssl_certificate #{ENV['APP_SSL_CERT']};
+ssl_certificate_key #{ENV['APP_SSL_CERT_KEY']};
+listen 443 ssl;
+    CONF
+} %>
+
 server {
-  listen 80;
+  <%= scheme['http://'] %>
 
   location / {
     rewrite ^/(.*)$ <%= ENV['APP_SCHEME'] + ENV['APP_HOST'] %>/$1;
   }
 }
 
+<% if ENV['APP_SCHEME'] == 'https://' %>
 server {
-  ssl_certificate <%= ENV['APP_SSL_CERT'] %>;
-  ssl_certificate_key <%= ENV['APP_SSL_CERT_KEY'] %>;
+  <%= scheme['https://'] %>
 
-  listen 443 ssl;
   server_name www.<%= ENV['APP_HOST'] %>;
 
   location / {
     rewrite ^/(.*)$ <%= ENV['APP_SCHEME'] + ENV['APP_HOST'] %>/$1;
   }
 }
+<% end %>
 
 server {
-  ssl_certificate <%= ENV['APP_SSL_CERT'] %>;
-  ssl_certificate_key <%= ENV['APP_SSL_CERT_KEY'] %>;
+  <%= scheme[ENV['APP_SCHEME']] %>
 
-  listen 443 ssl;
   server_name <%= ENV['APP_HOST'] %>;
   root <%= ENV['APP_ROOT'] %>/public;
 
