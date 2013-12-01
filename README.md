@@ -73,31 +73,11 @@ forwarded from the Vagrant-managed VM.
 
 ## Deployment
 
-Deploy to an an Ubuntu Raring x64 box.
-
-First, copy your public SSH key to your home directory on the target server:
+Provision an an Ubuntu Raring x64 box:
 
 ```bash
-scp ~/.ssh/id_rsa.pub me@host:/home/me/
+script/provision HOST
 ```
-
-Then provision the server:
-
-```bash
-git clone REPO_URL /tmp/contestrus
-cd /tmp/contestrus
-sudo script/provision-production
-```
-
-After provisioning, check that Linux containers are enabled (for Docker):
-
-```bash
-# All but "User namespace" should be enabled:
-sudo lxc-checkconfig
-```
-
-Provisioning script creates default configuration in /app/shared.
-You may want to change APP_HOST and other variables in `/app/shared/production.sh`.
 
 Now you can deploy.
 
