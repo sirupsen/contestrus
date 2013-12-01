@@ -1,3 +1,0 @@
-# deploy config
-DEPLOY_USER=app
-DEPLOY_HOST=176.58.116.34
