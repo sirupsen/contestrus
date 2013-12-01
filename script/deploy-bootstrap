@@ -19,11 +19,11 @@ bin/rake assets:precompile
 source /app/shared/production.sh
 bin/erubis config/nginx.conf.erb > config/nginx.conf
 
-if [ -e /app/current ]; then
-  OLD_DEPLOY="$(readlink /app/current)"
+if [ -e $APP_ROOT ]; then
+  OLD_DEPLOY="$(readlink $APP_ROOT)"
 fi
 
-ln -sfn "$(pwd)" /app/current
+ln -sfn "$(pwd)" $APP_ROOT
 
 
 services=(puma comedy_worker nginx)
