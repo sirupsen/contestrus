@@ -79,6 +79,9 @@ Provision an an Ubuntu Raring x64 box:
 script/provision [SUDO_USER:]HOST
 ```
 
+On Linode and similar VPS services you may need to add [rootflags=nobarrier][vps-doc]
+to pv-grub config for provisioning and Docker to work.
+
 Now you can deploy.
 
 ```bash
@@ -86,3 +89,5 @@ script/deploy
 ```
 
 Deploy user and host can be changed in `config/deploy.sh`, default: app@contestrus.
+
+[vps-doc]: https://github.com/fgrehm/vagrant-lxc/wiki/Usage-on-Linode#configuring-grub
