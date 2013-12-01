@@ -89,7 +89,8 @@ cd /tmp/contestrus
 sudo script/provision-production
 ```
 
-After provisioning, check that Boxer can use AUFS:
+After provisioning, check that Linux containers are enabled (for Docker):
+
 ```bash
 # All but "User namespace" should be enabled:
 sudo lxc-checkconfig
