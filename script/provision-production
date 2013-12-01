@@ -7,11 +7,8 @@ cd "`dirname \"$0\"`"
 
 ./provision-basic
 
-# Load / create production environment config
-APP_ENV=/app/shared/production.sh
-[ -f $APP_ENV ] || cp ./../config/production.sh.sample "$APP_ENV"
-source $APP_ENV
-
+ENV_CONFIG_PATH=/app/shared/production.sh
+[ -f $ENV_CONFIG_PATH ] && source $ENV_CONFIG_PATH
 apt-get install -y nginx
 
 

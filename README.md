@@ -76,7 +76,7 @@ forwarded from the Vagrant-managed VM.
 Provision an an Ubuntu Raring x64 box:
 
 ```bash
-script/provision HOST
+script/provision [SUDO_USER:]HOST
 ```
 
 Now you can deploy.
