@@ -72,15 +72,36 @@ class SubmissionTest < ActiveSupport::TestCase
   test "passed_task.during_competition returns true when solved task during competition" do
     @task = tasks(:ongoing_hello_world)
 
-    submission = Submission.create(valid_submission_attributes).reload
+    Submission.create(valid_submission_attributes).reload
     assert @user.submissions.passed.for_task(@task).during_competition.any?
   end
 
   test "passed_task.during_competition returns false when solved task after competition" do
     @task = tasks(:past_hello_world)
 
-    submission = Submission.create(valid_submission_attributes).reload
+    Submission.create(valid_submission_attributes).reload
     refute @user.submissions.passed.for_task(@task).during_competition.any?
+  end
+
+  test "points returns the number of test cases passed" do
+    @task = tasks(:sum)
+    @task.update_attribute(:scoring, "ioi")
+
+    submission = Submission.create(valid_submission_attributes.merge({
+      source: "puts 3"
+    }))
+    submission.reload
+
+    assert_equal 50, submission.points
+  end
+
+  test "points raises an exception when called on acm style default" do
+    submission = Submission.create(valid_submission_attributes)
+    submission.reload
+
+    assert_raise RuntimeError do
+      submission.points
+    end
   end
 
   private

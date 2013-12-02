@@ -30,6 +30,15 @@ class Submission < ActiveRecord::Base
     self.competition = task.competition if task.competition.open?
   end
 
+  # Returns the amount of points for an IOI-style task submission.
+  def points
+    raise "Not an IOI style task." unless task.scoring == "ioi"
+
+    total  = body.count.to_f
+    passed = body.count { |test| test[:status] == "Correct" }
+    ((passed / total) * 100).round
+  end
+
   private
   def extension
     path.split(".").last if path
