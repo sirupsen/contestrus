@@ -10,13 +10,17 @@ export RAKE_ENV=production
 export PATH=/app/rubies/ruby-2.0.0-p247/bin:$PATH
 
 ln -sfn /app/shared/app_config.yml config/app_config.yml
-ln -sfn /app/shared/production.sh config/production.sh
+
+if [[ -f /app/shared/production.sh ]]; then
+  ln -sfn /app/shared/production.sh config/production.sh
+  source /app/shared/production.sh
+fi
+
 ln -sfn /app/shared/log log
 
 script/bootstrap
 
 bin/rake assets:precompile
-source /app/shared/production.sh
 bin/erubis config/nginx.conf.erb > config/nginx.conf
 
 if [ -e $APP_ROOT ]; then
