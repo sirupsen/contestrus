@@ -21,6 +21,7 @@ sum:
     ---
     time: 1.0
 
+
 past_hello_world: 
   competition: past
   name: "Past World"
@@ -41,6 +42,15 @@ ongoing_sum:
   competition: ongoing
   name: "Ongoing sum"
   body: "Sum two numbers."
+  restrictions: |
+    ---
+    time: 1.0
+
+ongoing_ioi_sum:
+  competition: open
+  name: "Ongoing IOI Sum"
+  body: "Sum two numbers."
+  scoring: "ioi"
   restrictions: |
     ---
     time: 1.0

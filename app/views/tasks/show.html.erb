@@ -49,7 +49,12 @@
           <% if pending?(submission) %>
             <td>Pending</td>
           <% else %>
-            <td><%= submission.status %></td>
+            <td>
+              <%= submission.status %>
+              <% if submission.task.scoring == "ioi" %>
+                (<%= submission.points %>/100)
+              <% end %>
+            </td>
           <% end %>
         </tr>
         <% unless pending?(submission) %>

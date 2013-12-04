@@ -21,6 +21,7 @@ namespace :competition do
       puts "\tAdding #{info["name"]}"
 
       task_obj = competition.tasks.create(name: info["name"],
+                             scoring: info["scoring"],
                              restrictions: info["restrictions"],
                              body: File.read(File.dirname(task) + "/task.md"))
 

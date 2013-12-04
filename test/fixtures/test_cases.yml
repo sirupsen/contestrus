@@ -9,3 +9,8 @@ sum_test:
   input: "1 2"
   output: "3"
   task: sum
+
+sum_test_2:
+  input: "2 7"
+  output: "9"
+  task: sum
