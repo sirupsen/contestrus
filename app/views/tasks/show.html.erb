@@ -16,6 +16,14 @@
 <h2><%= @task.name %></h2>
 <p><%= render_markdown(@task.body) %></p>
 
+<h3>Restrictions</h3>
+
+<ul>
+  <li>Memory limit: <%= number_to_human_size(@task.restrictions["memory"]) %></li>
+  <li>Time limit: <%= @task.restrictions["time"] %>s</li>
+  <li>Approximate worst case evaluation time: <%= distance_of_time_in_words(@task.test_cases.count * @task.restrictions["time"]) %>
+</ul>
+
 <%= form_for @submission, url: task_submissions_path(@task.id), method: :post do |f| %>
   <%= f.hidden_field :task_id, value: @task.id %>
   <div class="control-group">
