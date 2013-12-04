@@ -1,26 +1,18 @@
 #!/bin/bash
 
-set -x
-
 if [ "$#" = "0" ]; then
-  echo "Usage: script/provision [user:]host"
+  echo "Usage: script/provision host"
   echo
   echo "Provisions a new production Contestrus server."
   exit 1
 fi
 
-USER_HOST=$1
-HOST="`echo $USER_HOST | cut -d':' -f2`"
-
-FILES="script/provision-basic script/provision-production config/production.sh"
+FILES="script/provision-basic script/provision-production"
 
 if [ -f "$HOME/.ssh/id_rsa.pub" ]; then
   FILES="$FILES $HOME/.ssh/id_rsa.pub"
 fi
 
-if [ ! -f config/production.sh ]; then
-  sed "s/APP_HOST=.*/APP_HOST=$HOST/" config/production.sh.sample > config/production.sh
-fi
+scp $FILES "$1":
 
-scp $FILES "$USER_HOST":
-ssh "$USER_HOST" ENV_CONFIG_PATH=production.sh sudo ./provision-production
+ssh "$1" sudo ./provision-production

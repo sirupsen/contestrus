@@ -2,34 +2,27 @@
 # Do NOT run this on development machines.
 # This is intended to run on the production server as part of deploys.
 
-set -e
-set -a
-
 export RAILS_ENV=production
-export RAKE_ENV=production
 export PATH=/app/rubies/ruby-2.0.0-p247/bin:$PATH
 
+set -e
+
 ln -sfn /app/shared/app_config.yml config/app_config.yml
-ln -sfn /app/shared/production.sh config/production.sh
 ln -sfn /app/shared/log log
 
 script/bootstrap
 
 bin/rake assets:precompile
-source /app/shared/production.sh
-bin/erubis config/nginx.conf.erb > config/nginx.conf
 
-if [ -e $APP_ROOT ]; then
-  OLD_DEPLOY="$(readlink $APP_ROOT)"
+if [ -e /app/current ]; then
+  OLD_DEPLOY="$(readlink /app/current)"
 fi
 
-ln -sfn "$(pwd)" $APP_ROOT
+ln -sfn "$(pwd)" /app/current
 
-
-services=(puma comedy_worker nginx)
-for service in "${services[@]}"; do
-  sudo service "${service}" reload || sudo service "${service}" start
-done
+sudo service puma reload
+sudo service comedy_worker reload
+sudo service nginx reload
 
 if [ -n "$OLD_DEPLOY" ]; then
   rm -rf "$OLD_DEPLOY"

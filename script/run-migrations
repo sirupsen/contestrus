@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source $(dirname "$0")/deploy-env
+DEPLOY_USER="app"
+DEPLOY_HOST="contestrus"
 
 ssh "$DEPLOY_USER"@"$DEPLOY_HOST" -- "
 set -e

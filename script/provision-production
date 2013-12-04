@@ -3,16 +3,10 @@
 set -e
 set -x
 
-cd "`dirname \"$0\"`"
-
 ./provision-basic
 
-ENV_CONFIG_PATH=/app/shared/production.sh
-[ -f $ENV_CONFIG_PATH ] && source $ENV_CONFIG_PATH
 apt-get install -y nginx
 
-
-[ -f /etc/nginx/sites-enabled/default ] && rm /etc/nginx/sites-enabled/default
 cat > /etc/nginx/nginx.conf <<NGINX
 user app;
 worker_processes 1;
@@ -30,7 +24,7 @@ http {
 
     types_hash_max_size 2048;
 
-    include $APP_ROOT/config/nginx.conf;
+    include /app/current/config/nginx.conf;
 }
 NGINX
 
@@ -42,13 +36,13 @@ stop on shutdown
 
 setuid app
 setgid app
-chdir $APP_ROOT
+chdir /app/current
 
 respawn
 
 reload signal SIGUSR2
 
-exec $APP_ROOT/bin/puma -C $APP_ROOT/config/puma.rb
+exec /app/current/bin/puma -C /app/current/config/puma.rb
 UPSTART
 
 cat > /etc/init/comedy_worker.conf <<UPSTART
@@ -59,12 +53,12 @@ stop on shutdown
 
 setuid app
 setgid app
-chdir $APP_ROOT
+chdir /app/current
 env RAILS_ENV=production
 
 respawn
 
-exec $APP_ROOT/bin/comedy_worker
+exec /app/current/bin/comedy_worker
 UPSTART
 
 if ! grep -q 'app ALL=NOPASSWD: ALL' /etc/sudoers; then
