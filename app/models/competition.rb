@@ -9,11 +9,22 @@ class Competition < ActiveRecord::Base
   has_many :participating_users, through: :submissions, source: :user
 
   def leaderboard
-    submissions.passed.group_by { |submission|
+    submissions.group_by { |submission|
       submission.user
     }.sort_by { |user, submissions|
-      submissions = submissions.uniq(&:task_id)
-      [submissions.count, -submissions.inject(0) { |sum, sub| sum + sub.created_at.to_i }]
+
+      if submissions.first.task.scoring == "ioi"
+        submissions = submissions.uniq(&:task_id)
+        [
+          submissions.reduce(&:points), 
+          -submissions.inject(0) { |sum, sub| sum + sub.created_at.to_i }
+        ]
+      else
+        [
+          submissions.count, 
+          -submissions.inject(0) { |sum, sub| sum + sub.created_at.to_i }
+        ]
+      end
     }.reverse.map { |user, _|
       user
     }

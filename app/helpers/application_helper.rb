@@ -27,6 +27,21 @@ module ApplicationHelper
     "<span class='label label-#{task_status_class(task, user)}'>#{human_status}</span>".html_safe
   end
 
+  def task_points_badge(task, user = current_user)
+    submissions = user.submissions.for_task(task).during_competition
+                    .group_by(&:task_id)
+                    .map { |k, v| 
+                      v.max { |e| e.points } 
+                    }.flatten
+
+    total_points = submissions.reduce(0) { |sum, e| e.points }
+
+    html_label = "success" if total_points == 100
+    html_label ||= "warning"
+
+    "<span class='label label-#{html_label}'>#{total_points}</span>".html_safe
+  end
+
   def render_markdown(markdown)
     Markdown.render(markdown).html_safe
   end

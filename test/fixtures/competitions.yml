@@ -17,3 +17,6 @@ future:
   name: Future Competition
   start_at: <%= Time.now + 10.minutes %>
   end_at: <%= (Time.now + 10.minutes) + 2.hours %>
+
+ioi:
+  name: IOI Competition
