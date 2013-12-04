@@ -4,6 +4,9 @@ mega_inversions:
   competition: open
   name: "Mega Inversions"
   body: "Number of triples for which `$a_i > a_j > a_k$` and `$i < j < k$`."
+  restrictions: |
+    ---
+    time: 1.0
 
 hello_world:
   competition: open

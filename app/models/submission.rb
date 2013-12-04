@@ -33,8 +33,9 @@ class Submission < ActiveRecord::Base
   # Returns the amount of points for an IOI-style task submission.
   def points
     raise "Not an IOI style task." unless task.scoring == "ioi"
-
     total  = body.count.to_f
+    raise "Task has no tests." unless total > 0
+
     passed = body.count { |test| test[:status] == "Correct" }
     ((passed / total) * 100).round
   end
