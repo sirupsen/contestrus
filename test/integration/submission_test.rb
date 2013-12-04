@@ -34,4 +34,17 @@ class SubmissionIntegrationTest < ActionDispatch::IntegrationTest
       assert_no_selector ".label-success", text: "Passed"
     end
   end
+
+  test "submit with ioi style scoring shows the score" do
+    user = sign_in
+
+    within "#sidebar" do
+      click_link tasks(:ongoing_ioi_sum).name
+    end
+
+    within "#content" do
+      attach_file "submission_source", Rails.root + "test/data/submissions/sum.rb"
+      click_button "Evaluate"
+    end
+  end 
 end
