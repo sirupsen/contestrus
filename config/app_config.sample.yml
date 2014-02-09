@@ -1,0 +1,18 @@
+# This is a sample, empty configuration file for your Contestrus setup.
+secret_token: change me
+# Pusher credentials allow real-time updates of evaluations during a
+# competition.
+pusher:
+  key:
+  secret:
+  app_id:
+  delay:
+  prefix:
+# Rollbar is an application exception tracker.
+rollbar:
+  access_token:
+# Opbeat is an application exception tracker and release management tool.
+upbeat:
+  app_id:
+  organization_id:
+  secret_token:
