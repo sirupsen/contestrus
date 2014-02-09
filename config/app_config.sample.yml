@@ -12,7 +12,7 @@ pusher:
 rollbar:
   access_token:
 # Opbeat is an application exception tracker and release management tool.
-upbeat:
+opbeat:
   app_id:
   organization_id:
   secret_token:
