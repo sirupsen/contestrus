@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-Contestrus::Application.config.secret_key_base = 'change me'
+Contestrus::Application.config.secret_key_base = APP_CONFIG['secret_token']
