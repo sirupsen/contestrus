@@ -44,7 +44,7 @@ sudo service puma reload
 sudo service comedy_worker reload
 sudo service nginx reload
 
-if config "opbeat:app_id"; then
+if [[ -n $(config opbeat:app_id) ]]; then
   opbeat --org-id `config opbeat:organization_id`\
     --app-id `config opbeat:app_id`\
     --secret-token `config opbeat:secret_token`\
