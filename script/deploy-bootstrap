@@ -48,7 +48,7 @@ if config "opbeat:app_id"; then
   opbeat --org-id `config opbeat:organization_id`\
     --app-id `config opbeat:app_id`\
     --secret-token `config opbeat:secret_token`\
-    deployment --component path:`pwd`
+    deployment --component path:`pwd` name:contestrus
 fi
 
 if [ -n "$OLD_DEPLOY" ]; then
