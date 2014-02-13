@@ -1,0 +1,3 @@
+---
+- name: Add Puma to init
+  copy: src=puma.conf.j2 dest=/etc/init/puma.conf

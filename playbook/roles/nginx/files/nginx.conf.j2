@@ -1,0 +1,18 @@
+user app;
+worker_processes 1;
+
+events {
+  worker_connections 1024;
+}
+
+http {
+  default_type        application/octet-stream;
+  gzip                on;
+  include             mime.types;
+  keepalive_timeout   65;
+  sendfile            on;
+
+  types_hash_max_size 2048;
+
+  include /app/current/config/nginx.conf;
+}

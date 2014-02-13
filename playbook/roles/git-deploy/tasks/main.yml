@@ -1,0 +1,66 @@
+---
+- name: App user
+  user: name=app home=/app createhome=yes shell=/bin/bash
+
+- name: Add app user to sudoers
+  lineinfile: "dest=/etc/sudoers state=present line='app ALL=NOPASSWD: ALL'"
+
+- name: Add Github.com to known_hosts
+  copy: src=github.com dest=/app/.ssh/known_hosts  
+
+- name: Create shared directory between deployments
+  file: state=directory path=/app/shared owner=app
+
+- name: Create shared log directory
+  file: state=directory path=/app/shared/log owner=app
+
+- name: Set permission on known_hosts
+  file: owner=app mode=0644 path=/app/.ssh/known_hosts
+
+- name: Add environment file
+  file: src=environment.sh.j2 dest=/etc/profile.d/deploy-env.sh mode=0777 owner=app
+
+- name: Get unix timestamp
+  command: "date +%s"
+  register: unix_time
+
+- name: Get latest ref
+  command: 'git ls-remote --heads https://github.com/Sirupsen/contestrus.git | grep master | grep -Eo "\w{40}"'
+  register: ref
+
+- name: Test for cold deploy
+  command: test -d /app/current/.git
+  register: cold
+  ignore_errors: true
+
+- name: Make sure /app/current exists for a cold deploy to work
+  git:  repo=https://github.com/Sirupsen/contestrus.git
+        dest=/app/current
+  when: cold|failed
+
+- name: Echo deployed path
+  command: "echo \"/app/{{ unix_time.stdout }}-{{ ref.stdout | truncate(10, True, '') }}\""
+  register: deployed_path
+
+- name: Get latest revision
+  git:  "repo=https://github.com/Sirupsen/contestrus.git
+         dest='{{ deployed_path.stdout }}'
+         reference='/app/current'"
+
+- name: Run script/bootstrap
+  command: "{{ deployed_path.stdout }}/script/bootstrap"
+
+- name: Compile assets
+  command: "cd \"{{ deployed_path.stdout }}\" && bin rake assets:precompile"
+
+- name: Link logs to shared
+  command: "ln -sfn /app/shared/log {{ deployed_path.stdout }}/log"
+
+- name: Link latest revision to /app/current
+  command: "ln -sfn /app/current {{ deployed_path.stdout }}"
+
+- name: Chown newest revision back to app
+  file: path={{ deployed_path.stdout }} owner=app recurse=true
+
+- name: Add yourself to app user's authorized keys
+  authorized_key: user=app key='{{ lookup("file", "~/.ssh/id_rsa.pub") }}'
