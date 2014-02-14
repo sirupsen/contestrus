@@ -1,9 +1,16 @@
 ---
+- name: Set machine environment
+  shell: echo 'RAILS_ENV=production' > /etc/profile.d/env.sh
+
 - name: App user
   user: name=app home=/app createhome=yes shell=/bin/bash
 
-- name: Add app user to sudoers
-  lineinfile: "dest=/etc/sudoers state=present line='app ALL=NOPASSWD: ALL'"
+# - name: Add app user to sudoers
+#   lineinfile: "dest=/etc/sudoers state=present line='app ALL=NOPASSWD: ALL'"
+
+- name: Install application packages
+  apt: pkg={{ item }}
+  with_items: packages
 
 - name: Add Github.com to known_hosts
   copy: src=github.com dest=/app/.ssh/known_hosts  
@@ -17,8 +24,15 @@
 - name: Set permission on known_hosts
   file: owner=app mode=0644 path=/app/.ssh/known_hosts
 
+- name: Add yourself to app user's authorized keys
+  authorized_key: "user=app key='{{ lookup(\"file\", \"~/.ssh/id_rsa.pub\") }}'"
+
 - name: Add environment file
   file: src=environment.sh.j2 dest=/etc/profile.d/deploy-env.sh mode=0777 owner=app
+
+- name: Seed a random secret token
+  shell: 'echo "secret_token: $(openssl rand -hex 32)" > /app/shared/app_config.yml
+          creates=/app/shared/app_config.yml'
 
 - name: Get unix timestamp
   command: "date +%s"
@@ -28,39 +42,53 @@
   command: 'git ls-remote --heads https://github.com/Sirupsen/contestrus.git | grep master | grep -Eo "\w{40}"'
   register: ref
 
-- name: Test for cold deploy
-  command: test -d /app/current/.git
-  register: cold
-  ignore_errors: true
-
-- name: Make sure /app/current exists for a cold deploy to work
-  git:  repo=https://github.com/Sirupsen/contestrus.git
-        dest=/app/current
-  when: cold|failed
-
-- name: Echo deployed path
+- name: Get deployed path
   command: "echo \"/app/{{ unix_time.stdout }}-{{ ref.stdout | truncate(10, True, '') }}\""
   register: deployed_path
+
+- name: Git reference
+  shell: '(stat /app/current >/dev/null 2>&1 && echo "reference=/app/current") || echo ""'
+  register: reference
+  ignore_errors: true
 
 - name: Get latest revision
   git:  "repo=https://github.com/Sirupsen/contestrus.git
          dest='{{ deployed_path.stdout }}'
-         reference='/app/current'"
-
-- name: Run script/bootstrap
-  command: "{{ deployed_path.stdout }}/script/bootstrap"
-
-- name: Compile assets
-  command: "cd \"{{ deployed_path.stdout }}\" && bin rake assets:precompile"
+         {{ reference.stdout }}"
 
 - name: Link logs to shared
-  command: "ln -sfn /app/shared/log {{ deployed_path.stdout }}/log"
+  file: src=/app/shared/log 
+        dest={{ deployed_path.stdout }}/log
+        state=link
+        force=yes
+        owner=app
+        recurse=yes
+
+- name: Run script/bootstrap
+  shell:   RAILS_ENV=production script/bootstrap
+           chdir={{ deployed_path.stdout }}
+
+- name: Link shared application config into current deploy ref
+  file: src=/app/shared/app_config.yml 
+        dest={{ deployed_path.stdout }}/config/app_config.yml
+        state=link
+
+- name: Compile assets
+  shell: RAILS_ENV=production bin/rake assets:precompile
+         chdir={{ deployed_path.stdout }}
+
+- name: Ensure database exists
+  shell: "if [ ! -d /app/shared/production.sqlite3 ]; then RAILS_ENV=production bin/rake db:create db:setup db:migrate; fi
+          chdir={{ deployed_path.stdout }}"
 
 - name: Link latest revision to /app/current
-  command: "ln -sfn /app/current {{ deployed_path.stdout }}"
-
-- name: Chown newest revision back to app
-  file: path={{ deployed_path.stdout }} owner=app recurse=true
-
-- name: Add yourself to app user's authorized keys
-  authorized_key: user=app key='{{ lookup("file", "~/.ssh/id_rsa.pub") }}'
+  file: src={{ deployed_path.stdout }} 
+        dest=/app/current 
+        state=link
+        force=yes
+        owner=app
+        recurse=yes
+  notify:
+    - Reload Puma
+    - Reload comedy_worker
+    - Reload Nginx

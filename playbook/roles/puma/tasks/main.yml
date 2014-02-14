@@ -1,3 +1,9 @@
 ---
 - name: Add Puma to init
-  copy: src=puma.conf.j2 dest=/etc/init/puma.conf
+  copy: src=puma.conf.j2 
+        dest=/etc/init/puma.conf
+        owner=root
+        group=root
+        mode=544
+  notify:
+    - Start Puma

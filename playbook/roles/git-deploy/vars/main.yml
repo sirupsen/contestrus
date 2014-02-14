@@ -1,0 +1,5 @@
+---
+packages:
+  - sqlite3
+  - libsqlite3-dev
+  - nodejs

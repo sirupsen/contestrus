@@ -1,0 +1,4 @@
+---
+- name: Start Puma
+  service: name=puma
+           state=started
