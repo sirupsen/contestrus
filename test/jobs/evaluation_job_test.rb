@@ -41,7 +41,7 @@ class EvaluationJobTest < ActiveSupport::TestCase
 
     @submission.reload
 
-    assert_in_delta @submission.task.restrictions["time"], Time.now - past, 0.5
+    assert_in_delta @submission.task.restrictions["time"], Time.now - past, 1.0
     assert_equal "Time limit exceeded", @submission.body.first[:status]
   end
 
