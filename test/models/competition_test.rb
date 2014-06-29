@@ -71,7 +71,21 @@ class CompetitionTest < ActiveSupport::TestCase
     Submission.create(task: tasks(:ongoing_hello_world), user: bob, 
                       source: 'puts "Hello World"', path: "hello.rb")
 
-    assert_equal [user, bob], competition.leaderboard 
+    assert_equal [user, bob], competition.leaderboard
+  end
+
+  test "#leaderboard should return user with submissions with most total points" do
+    competition = competitions(:ongoing)
+
+    sirup = users(:sirup)
+    submission = Submission.create(task: tasks(:ongoing_sum), user: sirup,
+                      source: 'puts 9', path: "sum.rb")
+
+    bob = users(:bob)
+    submission = Submission.create(task: tasks(:ongoing_sum), user: bob,
+                      source: 'puts $stdin.gets.split(" ").map(&:to_i).reduce(:+)', path: "sum.rb")
+
+    assert_equal [bob, sirup], competition.leaderboard
   end
 
   test "#leaderboard should return user with earliest submission first at tie" do

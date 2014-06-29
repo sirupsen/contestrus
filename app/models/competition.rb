@@ -12,8 +12,11 @@ class Competition < ActiveRecord::Base
     submissions.passed.group_by { |submission|
       submission.user
     }.sort_by { |user, submissions|
-      submissions = submissions.uniq(&:task_id)
-      [submissions.count, -submissions.inject(0) { |sum, sub| sum + sub.created_at.to_i }]
+      grouped = submissions.group_by { |submission| submission.task_id }
+      score = grouped.reduce(0) { |sum, (_, task_submissions)| 
+        sum + task_submissions.max { |a, b| a.points <=> b.points }.points
+      }
+      [score, -submissions.inject(0) { |sum, sub| sum + sub.created_at.to_i }]
     }.reverse.map { |user, _|
       user
     }
