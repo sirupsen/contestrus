@@ -3,24 +3,41 @@
 hello_world_test:
   input: ""
   output: "Hello World"
+  group: hello_world
   task: hello_world
 
 sum_test:
   input: "1 2"
   output: "3"
+  group: sum
   task: sum
 
 sum_test_2:
   input: "2 7"
   output: "9"
+  group: sum2
+  task: sum
+
+sum_test_3:
+  input: "2 7"
+  output: "9"
+  group: sum2
   task: sum
 
 ioi_sum_test_1:
   input: "2 7"
   output: "9"
+  group: ioi_sum
+  task: ongoing_ioi_sum
+
+ioi_sum_test_2:
+  input: "3 7"
+  output: "10"
+  group_id: 2
   task: ongoing_ioi_sum
 
 mega_inversion_test_1:
   input: "4 3 3 2 1"
   output: "2"
+  group_id: 1
   task: mega_inversions

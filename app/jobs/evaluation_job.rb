@@ -22,13 +22,26 @@ class EvaluationJob
 
     if prepare_image
       begin
-        @result = task.test_cases.map {|test_case| evaluate(test_case)}
-        passed = @result.all? {|r| r[:status] == "Correct"}
+        results = {}
+        status = "Failed"
+
+        task.groups.each do |group|
+          results[group.id] = group.test_cases.map {|test_case| evaluate(test_case)}
+          if results[group.id].all? { |result| result[:status] == "Correct" }
+            status = "Partial"
+          end
+        end
+
+        if results.all? { |group_id, result| result.all? { |test| test[:status] == "Correct" } }
+          status = "Passed"
+        end
 
         submission.update_attributes(
-          status: if passed then "Passed" else "Failed" end,
-          body: @result,
-          passed: passed
+          #FIXME: remove status: if passed then "Passed" else "Failed" end,
+          # partial, passed, failed
+          status: status,
+          body: results,
+          #FIXME: remove it passed: passed
         )
       ensure
         @prepared_image.remove if @prepared_image
@@ -73,6 +86,10 @@ class EvaluationJob
       f.write test_case.input
     end
 
+    base = {
+      :test_case_id => test_case.id,
+    }
+
     c = create_container(@prepared_image.id, "#{language.run} 1> /stdout 2> /stderr < #{SANDBOX_DIR}/stdin",
       'Memory' => task.restrictions["memory"] || 128*1024*1024,
       'MemorySwap' => -1
@@ -81,14 +98,14 @@ class EvaluationJob
     c.start!(start_options)
     status_code = c.wait(task.restrictions["time"] || 2)['StatusCode']
     if status_code == SEGFAULT_STATUS
-      {
+      base.merge({
         status: "Segmentation fault",
         duration: Time.now - t
-      }
+      })
     else
       files = retrieve_stderr_stdout(c)
 
-      {
+      base.merge({
         output: files['stdout'] + files['stderr'],
         status: if test_case.output.strip == files['stdout'].strip
           "Correct"
@@ -96,12 +113,12 @@ class EvaluationJob
           "Wrong"
         end,
         duration: Time.now - t
-      }
+      })
     end
   rescue Docker::Error::TimeoutError
-    {status: "Time limit exceeded", duration: Time.now - t}
+    base.merge({status: "Time limit exceeded", duration: Time.now - t})
   rescue => e
-    {status: "Error"}
+    base.merge({status: "Error"})
   ensure
     begin
       c.kill
