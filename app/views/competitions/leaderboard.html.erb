@@ -17,9 +17,9 @@
             <td>
               <%= task_status_badge(task, user, true) %>
 
-              <%# <% if task.scoring == "ioi" %>
-              <%#   <%= task_points_badge(task, user) %>
-              <%# <% end %>
+              <% if task.groups.count > 1 %>
+                <%= task_points_badge(task, user) %>
+              <% end %>
             </td>
           <% end %>
         </tr>

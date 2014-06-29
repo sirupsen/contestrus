@@ -12,6 +12,9 @@ class Submission < ActiveRecord::Base
   serialize :body
 
   scope :passed, -> { where(:status => ["Partial", "Passed"]) }
+  scope :partial, -> { where(:status => "Partial") }
+  scope :completed, -> { where(:status => "Passed") }
+
   scope :for_task, ->(task) { where(task: task) }
   scope :during_competition, -> { where("submissions.competition_id IS NOT NULL") }
 

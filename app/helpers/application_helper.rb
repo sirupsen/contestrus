@@ -1,7 +1,9 @@
 module ApplicationHelper
   def task_status_human(task, user = current_user)
-    if user.submissions.passed.for_task(task).during_competition.any?
+    if user.submissions.completed.for_task(task).during_competition.any?
       "Passed"
+    elsif user.submissions.partial.for_task(task).during_competition.any?
+      "Partial"
     elsif user.submissions.for_task(task).during_competition.any?
       "Attempted"
     else
@@ -13,6 +15,8 @@ module ApplicationHelper
     case task_status_human(task, user)
     when "Passed"
       "success"
+    when "Partial"
+      "warning"
     when "Attempted"
       "warning"
     when "Not attempted"
@@ -28,18 +32,14 @@ module ApplicationHelper
   end
 
   def task_points_badge(task, user = current_user)
-    submissions = user.submissions.for_task(task).during_competition
-                    .group_by(&:task_id)
-                    .map { |k, v| 
-                      v.max { |e| e.points } 
-                    }.flatten
+    submission = user.submissions.for_task(task)
+      .during_competition
+      .max { |a,b| a.points <=> b.points }
 
-    total_points = submissions.reduce(0) { |sum, e| e.points }
-
-    html_label = "success" if total_points == 100
+    html_label = "success" if submission.points == submission.task.groups.inject(0) { |sum, g| sum + g.points }
     html_label ||= "warning"
 
-    "<span class='label label-#{html_label}'>#{total_points}</span>".html_safe
+    "<span class='label label-#{html_label}'>#{submission.points}</span>".html_safe
   end
 
   def render_markdown(markdown)
