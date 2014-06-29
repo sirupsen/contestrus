@@ -36,6 +36,8 @@ module ApplicationHelper
       .during_competition
       .max { |a,b| a.points <=> b.points }
 
+    return "" unless submission
+
     html_label = "success" if submission.points == submission.task.groups.inject(0) { |sum, g| sum + g.points }
     html_label ||= "warning"
 

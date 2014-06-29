@@ -38,7 +38,7 @@ class CompetitionsIntegrationTest < ActionDispatch::IntegrationTest
     competition = competitions(:ongoing)
 
     within "#sidebar" do
-      click_link competition.tasks.first.name
+      click_link tasks(:ongoing_hello_world).name
     end
 
     attach_file "submission_source", Rails.root + "test/data/submissions/hello_world.rb"
@@ -52,9 +52,71 @@ class CompetitionsIntegrationTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "browsing to a competition that has yet to start does not reveal any information" do
+  test "user who has submitted successful one group solution should not show points on the leaderboard" do
     user = sign_in
 
+    competition = competitions(:ongoing)
+    task = tasks(:ongoing_hello_world)
+
+    within "#sidebar" do
+      click_link task.name
+    end
+
+    attach_file "submission_source", Rails.root + "test/data/submissions/hello_world.rb"
+    click_button "Evaluate"
+
+    visit leaderboard_competition_path(competition)
+
+    within "#leaderboard" do
+      refute page.has_content?(task.points),
+        "Should show user #{user.username}'s points on leaderboard after submitting solution to task."
+      assert page.has_content?("Passed"),
+        "Should show user #{user.username}'s passed submitting solution to task."
+    end
+  end
+
+  test "user who has submitted successful multi-group solution should show points on the leaderboard" do
+    user = sign_in
+
+    task = tasks(:ongoing_sum)
+
+    within "#sidebar" do
+      click_link task.name
+    end
+
+    attach_file "submission_source", Rails.root + "test/data/submissions/sum.rb"
+    click_button "Evaluate"
+
+    within "#content" do
+      assert page.has_content?(task.points),
+        "Should show user #{user.username}'s points on leaderboard after submitting solution to task."
+      assert page.has_content?("Passed"),
+        "Should show user #{user.username}'s passed submitting solution to task."
+    end
+  end
+
+  test "user who has partial multi-group solution should show points on the leaderboard" do
+    user = sign_in
+
+    task = tasks(:ongoing_sum)
+
+    within "#sidebar" do
+      click_link task.name
+    end
+
+    attach_file "submission_source", Rails.root + "test/data/submissions/sum_2.rb"
+    click_button "Evaluate"
+
+    within "#content" do
+      assert page.has_content?(task.groups.second.points),
+        "Should show user #{user.username}'s points on leaderboard after submitting solution to task."
+      assert page.has_content?("Partial"),
+        "Should show user #{user.username}'s passed submitting solution to task."
+    end
+  end
+
+  test "browsing to a competition that has yet to start does not reveal any information" do
+    user = sign_in
     competition = competitions(:future)
 
     within "#sidebar" do

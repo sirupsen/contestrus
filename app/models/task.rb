@@ -14,6 +14,10 @@ class Task < ActiveRecord::Base
     user.submissions.where(task_id: self.id, status: ["Passed", "Partial"]).any?
   end
 
+  def points
+    groups.sum(:points)
+  end
+
   # Returns the number of distinct users who've solved a certain task.
   def times_solved
     User.all.inject(0) { |sum, user| sum + (self.passed?(user) ? 1 : 0) }
