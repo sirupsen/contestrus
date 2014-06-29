@@ -1,4 +1,7 @@
 name: Sum
+groups:
+  1: 40
+  2: 60
 restrictions:
   time: 1.0
   memory: 256000000

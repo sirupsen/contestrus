@@ -50,4 +50,10 @@ class TaskTest < ActiveSupport::TestCase
     Submission.create!(task: @task, user: users(:sirup), source: "puts 'Hello World'", path: "whatever.rb")
     assert_equal [], users(:bob).tasks.solved
   end
+
+  test "#solved with two solved test groups returns task" do
+    task = tasks(:ongoing_ioi_sum)
+    Submission.create!(task: task, user: users(:sirup), source: "puts STDIN.read.split.map(&:to_i).reduce(:+)", path: "omg.rb")
+    assert_equal [task], users(:sirup).tasks.solved
+  end
 end

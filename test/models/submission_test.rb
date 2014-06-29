@@ -33,7 +33,7 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test "set language on creation" do
     submission = Submission.create(valid_submission_attributes)
-    assert_equal "ruby", submission.language
+    assert_equal "ruby", submission.reload.language
   end
 
   test "passed? should return true if evaluation passed" do
@@ -45,7 +45,7 @@ class SubmissionTest < ActiveSupport::TestCase
     submission = Submission.create(valid_submission_attributes.merge(
       source: "puts 'Hello'"
     ))
-    refute submission.passed?
+    refute submission.reload.passed?
   end
 
   test "competition_id is set for an ongoing competition" do
@@ -83,25 +83,29 @@ class SubmissionTest < ActiveSupport::TestCase
     refute @user.submissions.passed.for_task(@task).during_competition.any?
   end
 
-  test "points returns the number of test cases passed" do
-    @task = tasks(:sum)
-    @task.update_attribute(:scoring, "ioi")
+  test "points return 100 for a simple one group task" do
+    @task = tasks(:hello_world)
 
-    submission = Submission.create(valid_submission_attributes.merge({
-      source: "puts 3"
-    }))
-    submission.reload
-
-    assert_equal 50, submission.points
+    submission = Submission.create(valid_submission_attributes).reload
+    assert_equal 100, submission.points
   end
 
-  test "points raises an exception when called on acm style default" do
-    submission = Submission.create(valid_submission_attributes)
-    submission.reload
+  test "points return 60 when solving one group of task" do
+    @task = tasks(:sum)
 
-    assert_raise RuntimeError do
-      submission.points
-    end
+    submission = Submission.create(valid_submission_attributes.merge({
+      source: "puts 9",
+    })).reload
+    assert_equal(60, submission.points)
+  end
+
+  test "points return 40 when solving other group of task" do
+    @task = tasks(:sum)
+
+    submission = Submission.create(valid_submission_attributes.merge({
+      source: "puts 3",
+    })).reload
+    assert_equal(40, submission.points)
   end
 
   private

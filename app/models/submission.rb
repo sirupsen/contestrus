@@ -11,7 +11,7 @@ class Submission < ActiveRecord::Base
 
   serialize :body
 
-  scope :passed, -> { where(:passed => true) }
+  scope :passed, -> { where(:status => ["Partial", "Passed"]) }
   scope :for_task, ->(task) { where(task: task) }
   scope :during_competition, -> { where("submissions.competition_id IS NOT NULL") }
 
@@ -30,14 +30,21 @@ class Submission < ActiveRecord::Base
     self.competition = task.competition if task.competition.open?
   end
 
-  # Returns the amount of points for an IOI-style task submission.
-  def points
-    raise "Not an IOI style task." unless task.scoring == "ioi"
-    total  = body.count.to_f
-    raise "Task has no tests." unless total > 0
+  # FIXME: LOL
+  def passed?
+    ["Partial", "Passed"].include?(status)
+  end
+  alias_method :points?, :passed?
 
-    passed = body.count { |test| test[:status] == "Correct" }
-    ((passed / total) * 100).round
+  # FIXME: LOL
+  def points
+    body.inject(0) { |sum, group|
+      if group[1].all? { |test| test[:status] == "Correct" }
+        sum + TestGroup.find(group.first).points
+      else
+        sum
+      end
+    }
   end
 
   private

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131202123524) do
+ActiveRecord::Schema.define(version: 20140629171933) do
 
   create_table "comedy_jobs", force: true do |t|
     t.string   "class_name", null: false
@@ -46,13 +46,12 @@ ActiveRecord::Schema.define(version: 20131202123524) do
   add_index "submissions", ["task_id", "user_id"], name: "index_submissions_on_task_id_and_user_id"
 
   create_table "tasks", force: true do |t|
-    t.integer  "competition_id",                 null: false
-    t.string   "name",                           null: false
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.integer  "competition_id",              null: false
+    t.string   "name",                        null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.text     "body"
-    t.text     "restrictions",   default: "",    null: false
-    t.string   "scoring",        default: "acm"
+    t.text     "restrictions",   default: "", null: false
   end
 
   add_index "tasks", ["competition_id"], name: "index_tasks_on_competition_id"
@@ -63,9 +62,18 @@ ActiveRecord::Schema.define(version: 20131202123524) do
     t.integer  "task_id",    null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "group_id",   null: false
   end
 
   add_index "test_cases", ["task_id"], name: "index_test_cases_on_task_id"
+
+  create_table "test_groups", force: true do |t|
+    t.integer  "points",                   null: false
+    t.string   "name",                     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "task_id",    default: 100, null: false
+  end
 
   create_table "users", force: true do |t|
     t.string   "username",                        null: false
