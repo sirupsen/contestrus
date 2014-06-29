@@ -18,6 +18,18 @@ sum_test_2:
   group: sum2
   task: sum
 
+ongoing_sum_test:
+  input: "1 2"
+  output: "3"
+  group: ongoing_sum
+  task: ongoing_sum
+
+ongoing_sum_test_2:
+  input: "2 7"
+  output: "9"
+  group: ongoing_sum2
+  task: ongoing_sum
+
 sum_test_3:
   input: "2 7"
   output: "9"
@@ -33,7 +45,7 @@ ioi_sum_test_1:
 ioi_sum_test_2:
   input: "3 7"
   output: "10"
-  group_id: 2
+  group: ioi_sum2
   task: ongoing_ioi_sum
 
 mega_inversion_test_1:

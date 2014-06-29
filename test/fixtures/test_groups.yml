@@ -15,14 +15,29 @@ sum2:
   points: 60
   task: sum
 
-ioi_sum:
+onging_hello_world:
   name: "1"
   points: 100
+  task: ongoing_hello_world
+
+ongoing_sum:
+  name: "1"
+  points: 40
+  task: ongoing_sum
+
+ongoing_sum2:
+  name: "2"
+  points: 60
+  task: ongoing_sum
+
+ioi_sum:
+  name: "1"
+  points: 40
   task: ongoing_ioi_sum
 
 ioi_sum_2:
   name: "1"
-  points: 100
+  points: 60
   task: ongoing_ioi_sum
 
 mega_inversion:
