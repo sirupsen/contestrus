@@ -39,6 +39,14 @@ class Submission < ActiveRecord::Base
   end
   alias_method :points?, :passed?
 
+  def completed?
+    status == "Passed"
+  end
+
+  def partial?
+    status == "Partial"
+  end
+
   # FIXME: LOL
   def points
     body.inject(0) { |sum, group|

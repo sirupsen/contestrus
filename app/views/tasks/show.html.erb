@@ -89,7 +89,7 @@
                 <% submission.body.each do |group_id, result| %>
                   <% result.each do |eval| %>
                     <% test_case = ::TestCase.find(eval[:test_case_id]) %>
-                    <tr class="<%= ["Correct", "Partial"].include?(eval[:status]) ? "success" : "error" %>">
+                    <tr class="<%= row_class(eval) %>">
                       <td><%= i += 1 %></td>
                       <td><%= test_case.group_id %></td>
                       <td><%= eval[:status].humanize %></td>

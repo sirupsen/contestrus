@@ -3,6 +3,8 @@ module TasksHelper
     case submission_status(submission)
     when "Pending"
       "info"
+    when "Partial"
+      "warning"
     when "Passed"
       "success"
     when "Failed"
@@ -10,11 +12,22 @@ module TasksHelper
     end
   end
 
+  def row_class(evaluation)
+    case evaluation[:status]
+    when "Correct"
+      "success"
+    else
+      "error"
+    end
+  end
+
   def submission_status(submission)
     if pending?(submission)
       "Pending"
-    elsif submission.passed?
+    elsif submission.completed?
       "Passed"
+    elsif submission.partial?
+      "Partial"
     else
       "Failed"
     end
