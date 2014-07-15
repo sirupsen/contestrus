@@ -9,7 +9,9 @@ class Session
     return @user if defined?(@user)
 
     if session[:user_id] && session[:session_hash]
-      user = User.find(session[:user_id])
+      user = User.find_by_id(session[:user_id])
+      return session[:user_id] = nil unless user
+
       if user.session_hash == session[:session_hash]
         @user = user
       end
