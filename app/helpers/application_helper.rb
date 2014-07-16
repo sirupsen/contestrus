@@ -4,6 +4,8 @@ module ApplicationHelper
       "Passed"
     elsif user.submissions.partial.for_task(task).during_competition.any?
       "Partial"
+    elsif user.submissions.pending.for_task(task).during_competition.any?
+      "Pending"
     elsif user.submissions.for_task(task).during_competition.any?
       "Attempted"
     else
@@ -19,6 +21,8 @@ module ApplicationHelper
       "warning"
     when "Attempted"
       "warning"
+    when "Pending"
+      "info"
     when "Not attempted"
       "info"
     end

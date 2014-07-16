@@ -35,6 +35,25 @@ class SubmissionIntegrationTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "submit for ongoing contest and see pending in sidebar and no points" do
+    user = sign_in
+
+    queue_jobs do
+      within "#sidebar" do
+        click_link tasks(:ongoing_hello_world).name
+      end
+
+      within "#content" do
+        attach_file "submission_source", Rails.root + "test/data/submissions/hello_world.rb"
+        click_button "Evaluate"
+      end
+
+      within "#sidebar" do
+        assert_selector ".label-info", text: "Pending"
+      end
+    end
+  end
+
   test "submit with ioi style scoring shows the score" do
     user = sign_in
 
