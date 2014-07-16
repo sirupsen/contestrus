@@ -36,4 +36,9 @@ module TasksHelper
   def pending?(submission)
     submission.status == "Pending"
   end
+
+  def evaluation_time(task)
+    test_cases = task.test_cases.count
+    distance_of_time_in_words(test_cases * task.restrictions["time"])
+  end
 end

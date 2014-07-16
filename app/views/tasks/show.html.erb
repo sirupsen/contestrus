@@ -21,7 +21,7 @@
 <ul>
   <li>Memory limit: <%= number_to_human_size(@task.restrictions["memory"]) %></li>
   <li>Time limit: <%= @task.restrictions["time"] %>s</li>
-  <li>Approximate worst case evaluation time: <%= distance_of_time_in_words(@task.test_cases.count * @task.restrictions["time"]) %>
+  <li>Approximate worst case evaluation time: <%= evaluation_time(@task) %>
 </ul>
 
 <%= form_for @submission, url: task_submissions_path(@task.id), method: :post do |f| %>
@@ -67,9 +67,9 @@
         <tr>
         <% if submission.status == "Build failed" %>
           <td colspan="6" style="padding: 0 !important">
-          <pre>
-          <%= submission.body %>
-          </pre>
+            <pre>
+              <%= submission.body %>
+            </pre>
           </td>
         <% else %>
           <td colspan="6" style="padding: 0 !important">
