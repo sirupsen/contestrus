@@ -7,7 +7,7 @@ pusher:
   secret:
   app_id:
   delay:
-  prefix:
+  prefix: "whatever"
 # Rollbar is an application exception tracker.
 rollbar:
   access_token:
