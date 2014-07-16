@@ -162,6 +162,22 @@ int main() {
     assert_equal true, @submission.reload.passed?
   end
 
+  test "run java program" do
+    c = <<-EOS
+public class Solution {
+  public static void main (String [] args) throws Exception {
+    System.out.println("Hello, World!");
+  }
+}
+    EOS
+
+    @submission.source = c
+    @submission.path = "Solution.java"
+    @submission.save!
+
+    assert_equal true, @submission.reload.passed?
+  end
+
   test "run cpp program" do
     c = <<-EOS
 #include<iostream>
