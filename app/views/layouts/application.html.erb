@@ -62,10 +62,7 @@
                     <li>
                       <%= link_to task_path(task) do %>
                         <%= task.name %> <%= task_status_badge(task) %>
-
-                        <% if task.groups.any? { |group| group.points } %>
-                          <%= task_points_badge(task, current_user) %>
-                        <% end %>
+                        <%= task_points_badge(task, current_user) %>
                       <% end %>
                     </li>
                   <% end %>

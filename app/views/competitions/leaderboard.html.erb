@@ -16,10 +16,7 @@
           <% @tasks.each do |task| %>
             <td>
               <%= task_status_badge(task, user, true) %>
-
-              <% if task.groups.any? { |group| group.points }  %>
-                <%= task_points_badge(task, user) %>
-              <% end %>
+              <%= task_points_badge(task, user) %>
             </td>
           <% end %>
         </tr>
