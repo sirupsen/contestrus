@@ -130,6 +130,22 @@ class CompetitionTest < ActiveSupport::TestCase
     assert_equal true, competitions(:open).visible?
   end
 
+  test "future? returns true for contest that hasn't started" do
+    assert competitions(:future).future?
+  end
+
+  test "future? returns false for contest that has started" do
+    refute competitions(:ongoing).future?
+  end
+
+  test "future? returns false for contest that has expired" do
+    refute competitions(:past).future?
+  end
+
+  test "future? returns false for an open competition" do
+    refute competitions(:open).future?
+  end
+
   private
   def valid_params
     {

@@ -41,4 +41,8 @@ class Competition < ActiveRecord::Base
   def always_open?
     !end_at
   end
+
+  def future?(time = Time.now)
+    !always_open? && time < start_at
+  end
 end

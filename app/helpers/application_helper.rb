@@ -52,7 +52,7 @@ module ApplicationHelper
     return nil if competition.always_open? || competition.expired? # like 7-11
 
     badge_class =
-      if Time.now < competition.start_at
+      if competition.future?
         seconds = (competition.start_at - Time.now).to_i
         "badge-info"
       elsif competition.ongoing?
