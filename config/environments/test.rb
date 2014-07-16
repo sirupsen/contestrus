@@ -1,4 +1,5 @@
 require 'pry'
+require 'comedy'
 
 Contestrus::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -31,3 +32,5 @@ Contestrus::Application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 end
+
+Comedy.inline = true

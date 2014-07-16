@@ -1,6 +1,8 @@
 require "thread"
 
 module Comedy
+  mattr_accessor :inline
+
   class Job < ActiveRecord::Base
     self.table_name = "comedy_jobs"
 
@@ -14,7 +16,7 @@ module Comedy
   end
 
   def self.<<(job)
-    if Rails.env.test?
+    if inline
       job.perform
     else
       class_name = job.class.to_s
