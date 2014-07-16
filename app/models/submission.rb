@@ -14,6 +14,7 @@ class Submission < ActiveRecord::Base
   scope :passed, -> { where(:status => ["Partial", "Passed"]) }
   scope :partial, -> { where(:status => "Partial") }
   scope :completed, -> { where(:status => "Passed") }
+  scope :pending, -> { where(:status => "Pending") }
 
   scope :for_task, ->(task) { where(task: task) }
   scope :during_competition, -> { where("submissions.competition_id IS NOT NULL") }

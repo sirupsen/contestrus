@@ -108,6 +108,18 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_equal(40, submission.points)
   end
 
+  test "#pending returns pending submissions" do
+    submission = nil
+
+    queue_jobs do
+      submission = Submission.create(valid_submission_attributes.merge({
+        source: "puts 3",
+      })).reload
+    end
+
+    assert_equal submission, @task.submissions.pending.first
+  end
+
   private
   def valid_submission_attributes
     {

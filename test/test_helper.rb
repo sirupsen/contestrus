@@ -12,6 +12,13 @@ class ActiveSupport::TestCase
     assert(!record.valid?, message || "Expected #{record} to be invalid.")
   end
 
+  def queue_jobs
+    Comedy.inline = false
+    yield
+  ensure
+    Comedy.inline = true
+  end
+
   def sign_in(user = users(:sirup))
     session[:user_id] = user.id
     session[:session_hash] = user.session_hash
