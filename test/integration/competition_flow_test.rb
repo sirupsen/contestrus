@@ -29,10 +29,10 @@ class CompetitionFlowTest < ActionDispatch::IntegrationTest
     click_link competition.name
 
     assert_equal "Not attempted", all("td")[2].text
-    assert_equal "Passed", all("td")[3].text
+    assert_equal "Passed 100", all("td")[3].text
 
     assert_equal "Not attempted", all("td")[6].text
-    assert_equal "Passed", all("td")[7].text
+    assert_equal "Passed 100", all("td")[7].text
   end
 
   test "waits for future competition and then attends" do

@@ -68,7 +68,7 @@ class CompetitionsIntegrationTest < ActionDispatch::IntegrationTest
     visit leaderboard_competition_path(competition)
 
     within "#leaderboard" do
-      refute page.has_content?(task.points),
+      assert page.has_content?(task.points),
         "Should show user #{user.username}'s points on leaderboard after submitting solution to task."
       assert page.has_content?("Passed"),
         "Should show user #{user.username}'s passed submitting solution to task."
