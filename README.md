@@ -67,6 +67,17 @@ docker run \
   Sirupsen/contestrus worker
 ```
 
+Grab the sandboxing images (will eventually be just one):
+
+```bash
+docker pull bouk/gcc
+docker pull bouk/coffee
+docker pull bouk/golang
+docker pull bouk/node
+docker pull bouk/pypy
+docker pull bouk/ruby
+```
+
 Import a competition (there's a sample in the root of the project):
 
 ```bash
