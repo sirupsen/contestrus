@@ -10,3 +10,5 @@ RUN /ruby.sh
 
 ADD . /app
 RUN /app/docker/contestrus/provision.sh
+
+ENTRYPOINT ["/app/script/run"]

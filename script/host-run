@@ -1,0 +1,8 @@
+#!/bin/bash
+
+docker run \
+  -e RAILS_ENV=production \
+  -v /var/log/contestrus:/log \
+  -v /var/lib/contestrus:/db \
+  -p 80:4000 \
+  whatevs web

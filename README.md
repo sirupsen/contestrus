@@ -73,5 +73,28 @@ forwarded from the Vagrant-managed VM.
 
 ## Deployment
 
-Coming soon. For now `script/provision-production` should do the trick on an
-Ubuntu Raring x64 box.
+Pull down the latest Contestrus Docker image:
+
+```bash
+docker pull Sirupsen/contestrus
+```
+
+Create and migrate the `sqlite` database:
+
+```bash
+docker run \
+  --volume  /var/lib/contestrus:/db \
+  --env     RAILS_ENV=production \
+  Sirupsen/contestrus migrate
+```
+
+Run the Contestrus web server:
+
+```bash
+docker run \
+  --volume  /var/log/contestrus:/app/log \
+  --volume  /var/lib/contestrus:/db \
+  --env     RAILS_ENV=production \
+  --publish 4000:80 \
+  Sirupsen/contestrus web
+```

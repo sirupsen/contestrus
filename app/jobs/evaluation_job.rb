@@ -54,7 +54,7 @@ class EvaluationJob
       )
     end
 
-    if config = APP_CONFIG['pusher']
+    if config = ENV['PUSHER']
       Thread.new(submission.user.username, config) do |username, config|
         sleep config['delay'].seconds
         Pusher[config['prefix'] + username].trigger('submission_judged', {})

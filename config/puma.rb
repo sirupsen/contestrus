@@ -1,8 +1,8 @@
-bind "unix:///app/shared/puma.sock"
-directory "/app/current"
-environment "production"
-pidfile "/app/shared/puma.pid"
-stdout_redirect "/app/shared/log/puma_stdout", "/app/shared/log/puma_stderr", true
+bind "tcp://0.0.0.0:4000"
+directory "/app"
+environment ENV["RAILS_ENV"]
+pidfile "/tmp/puma.pid"
+stdout_redirect "/app/log/puma_stdout", "/app/log/puma_stderr", true
 threads 4, 8
-restart_command "/app/current/bin/puma"
+restart_command "/app/bin/puma"
 workers 2

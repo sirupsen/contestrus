@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# create /tmp
+# port 4000
+
+if [[ $1 == "web" ]]; then
+  exec /app/bin/puma -C /app/config/puma.rb
+else if [[ $1 == "migrate" ]]; then
+  exec /app/bin/rake db:create db:migrate
+else
+  echo "Role $1 does not exist."
+  exit 1
+fi
