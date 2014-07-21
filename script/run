@@ -1,14 +1,13 @@
 #!/bin/bash
 
-# create /tmp
-# port 4000
-
 if [[ $1 == "web" ]]; then
   exec /app/bin/puma -C /app/config/puma.rb
 elif [[ $1 == "worker" ]]; then
   exec /app/bin/comedy_worker
 elif [[ $1 == "migrate" ]]; then
   exec /app/bin/rake db:create db:migrate
+elif [[ $1 == "import" ]]; then
+  exec /app/bin/rake competition:import[/competition]
 else
   echo "Role $1 does not exist."
   exit 1
