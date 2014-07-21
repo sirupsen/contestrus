@@ -41,7 +41,7 @@ Create and migrate the `sqlite` database:
 docker run \
   --volume  /var/lib/contestrus:/db \
   --env     RAILS_ENV=production \
-  Sirupsen/contestrus migrate
+  sirupsen/contestrus migrate
 ```
 
 Run the Contestrus web server:
@@ -52,7 +52,7 @@ docker run \
   --volume  /var/lib/contestrus:/db \
   --env     RAILS_ENV=production \
   --publish 80:4000 \
-  Sirupsen/contestrus web
+  sirupsen/contestrus web
 ```
 
 Run the Contestrus worker:
@@ -64,7 +64,7 @@ docker run \
   --volume  /var/run/docker.sock:/var/run/docker.sock \
   --volume  /var/lib/docker:/var/lib/docker \
   --env     RAILS_ENV=production \
-  Sirupsen/contestrus worker
+  sirupsen/contestrus worker
 ```
 
 Grab the sandboxing images (will eventually be just one):
@@ -83,5 +83,5 @@ Import a competition (there's a sample in the root of the project):
 ```bash
 docker run \
   --volume /home/me/competition:/competition \
-  Sirupsen/contestrus import
+  sirupsen/contestrus import
 ```

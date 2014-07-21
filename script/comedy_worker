@@ -3,9 +3,9 @@ require "./config/environment"
 require "comedy"
 
 if Rails.env.production?
-  File.write("/app/shared/comedy_worker.pid", $$.to_s) if Rails.env.production?
-  $stdout.reopen("/app/shared/log/comedy_worker_stdout", "a")
-  $stderr.reopen("/app/shared/log/comedy_worker_stderr", "a")
+  File.write("/var/run/comedy_worker.pid", $$.to_s) if Rails.env.production?
+  $stdout.reopen("/app/log/comedy_worker_stdout.log", "a")
+  $stderr.reopen("/app/log/comedy_worker_stderr.log", "a")
 end
 
 working = true
