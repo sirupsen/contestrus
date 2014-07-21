@@ -22,8 +22,7 @@ feature:
   competition.
 
 Many contest environments are complicated to set up. Contestrus is aiming to be
-extremely simple to set up and will be run inside Docker containers for maximum
-deployment and development ease.
+extremely simple to set up with Docker for ease of deployment.
 
 Current status is that it definitely works and the core is pretty stable. It's
 been used to host a few competitions at Shopify without problems.
@@ -66,4 +65,12 @@ docker run \
   --volume  /var/lib/docker:/var/lib/docker \
   --env     RAILS_ENV=production \
   Sirupsen/contestrus worker
+```
+
+Import a competition (there's a sample in the root of the project):
+
+```bash
+docker run \
+  --volume /home/me/competition:/competition \
+  Sirupsen/contestrus import
 ```
