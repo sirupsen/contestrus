@@ -1,5 +1,5 @@
 require 'pusher'
-if config = APP_CONFIG['pusher']
-  Pusher.url = "http://#{config['key']}:#{config['secret']}@api.pusherapp.com/apps/#{config['app_id']}"
+if config = ENV['PUSHER']
+  Pusher.url = "http://#{config['PUSHER_KEY']}:#{config['PUSHER_SECRET']}@api.pusherapp.com/apps/#{config['PUSHER_APP_ID']}"
   Pusher.logger = Rails.logger
 end
