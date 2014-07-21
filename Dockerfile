@@ -8,5 +8,5 @@ RUN /base.sh
 ADD docker/contestrus/ruby.sh /ruby.sh
 RUN /ruby.sh
 
-RUN docker/contestrus/provision.sh /provision.sh
-RUN /provision.sh
+ADD . /app
+RUN /app/docker/contestrus/provision.sh
