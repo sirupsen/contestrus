@@ -42,8 +42,6 @@ while working
       job.perform
     end
   rescue Exception => e
-    Rollbar.report_exception(e) if defined?(Rollbar)
-
     $stderr.puts "Exception while running #{job.class_name} job: #{e}: #{e.message}"
     e.backtrace.each do |bt|
       $stderr.puts "  #{bt}"

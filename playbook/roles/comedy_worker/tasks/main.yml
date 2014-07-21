@@ -1,7 +1,0 @@
----
-- name: Add comedy_worker to init
-  copy: src=comedy_worker.conf.j2 
-        dest=/etc/init/comedy_worker.conf
-        owner=root
-        group=root
-        mode=544

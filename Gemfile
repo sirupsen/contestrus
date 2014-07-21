@@ -13,7 +13,7 @@ gem "redcarpet", "3.0.0"
 gem "daemons", "1.1.9"
 gem "docker-api", "1.6.0.705afb6"
 gem 'pusher'
-gem "opbeat", "0.5.1"
+gem "therubyracer"
 
 group :test, :development do
   gem 'pry', '0.9.12.2'
@@ -26,5 +26,4 @@ end
 
 group :production do
   gem 'puma'
-  gem 'rollbar'
 end
