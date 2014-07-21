@@ -51,7 +51,7 @@ docker run \
   --volume  /var/log/contestrus:/app/log \
   --volume  /var/lib/contestrus:/db \
   --env     RAILS_ENV=production \
-  --publish 4000:80 \
+  --publish 80:4000 \
   Sirupsen/contestrus web
 ```
 
