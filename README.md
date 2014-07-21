@@ -98,3 +98,16 @@ docker run \
   --publish 4000:80 \
   Sirupsen/contestrus web
 ```
+
+Run the Contestrus worker:
+
+```bash
+docker run \
+  --volume  /var/log/contestrus:/app/log \
+  --volume  /var/lib/contestrus:/db \
+  --volume  /var/run/docker.sock:/var/run/docker.sock \
+  --volume  /var/lib/docker:/var/lib/docker \
+  --env     RAILS_ENV=production \
+  --publish 4000:80 \
+  Sirupsen/contestrus worker
+```

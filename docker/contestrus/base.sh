@@ -18,4 +18,7 @@ apt-get install -y \
   build-essential \
   libssl-dev \
   git \
-  libffi-dev
+  libffi-dev \
+  curl
+
+curl -sL https://get.docker.io/ | sh

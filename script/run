@@ -5,7 +5,9 @@
 
 if [[ $1 == "web" ]]; then
   exec /app/bin/puma -C /app/config/puma.rb
-else if [[ $1 == "migrate" ]]; then
+elif [[ $1 == "worker" ]]; then
+  exec /app/bin/comedy_worker
+elif [[ $1 == "migrate" ]]; then
   exec /app/bin/rake db:create db:migrate
 else
   echo "Role $1 does not exist."
