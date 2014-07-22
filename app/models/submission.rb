@@ -50,7 +50,7 @@ class Submission < ActiveRecord::Base
 
   # FIXME: LOL
   def points
-    return 0 unless body
+    return 0 unless body || body.is_a?(String)
     body.inject(0) { |sum, group|
       if group[1].all? { |test| test[:status] == "Correct" }
         sum + TestGroup.find(group.first).points
